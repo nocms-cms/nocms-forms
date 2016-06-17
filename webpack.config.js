@@ -22,6 +22,7 @@ const bundle = {
   output: {
     path: `${__dirname}/build`,
     filename: '[name].js',
+    libraryTarget: 'umd',
   },
   devtool: useSourceMaps ? 'eval-cheap-module-source-map' : null,
   module: {
