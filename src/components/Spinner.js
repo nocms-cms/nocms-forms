@@ -1,4 +1,4 @@
-const React = global.React || require('react');
+const React = require('react');
 
 const Spinner = (props) => {
   const {
