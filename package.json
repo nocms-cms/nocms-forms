@@ -2,9 +2,11 @@
   "name": "nocms-forms",
   "version": "0.0.1",
   "description": "React based forms for user input",
-  "main": "src/index.js",
+  "main": "build/script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p --progress",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
