@@ -1,0 +1,9 @@
+{
+  "extends": "airbnb",
+  "rules": {
+        "max-len": ["error", 200]
+    },
+	"plugins": [
+		"react"
+	]
+}
