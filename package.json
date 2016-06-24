@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "webpack --watch --inline",
     "test": "",
-    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react --plugins babel-plugin-add-module-exports && browserify ./lib/Form.js -o ./build/nocms-forms.js --transform browserify-global-shim --standalone NoCMSForms && uglifyjs ./build/nocms-forms.js --compress --mangle --output ./build/nocms-forms.min.js --source-map ./build/nocms-forms.min.js.map"
+    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react --plugins babel-plugin-add-module-exports && browserify ./lib/index.js -o ./build/nocms-forms.js --transform browserify-global-shim --standalone NoCMSForms && uglifyjs ./build/nocms-forms.js --compress --mangle --output ./build/nocms-forms.min.js --source-map ./build/nocms-forms.min.js.map"
   },
   "dependencies": {
     "moment": "^2.13.0",
