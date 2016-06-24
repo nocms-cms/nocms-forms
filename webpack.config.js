@@ -1,48 +1,50 @@
-const webpack = require('webpack');
-const fs = require('fs');
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+var path = require('path');
 
-const useSourceMaps = false;
-const minify = false;
+var host = '0.0.0.0';
+var port = '9000';
 
-const plugins = [];
-if (minify) {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({ output: { comments: false } }));
-}
-
-const nodeModules = {};
-fs.readdirSync('node_modules')
-  .filter(x => ['.bin'].indexOf(x) === -1)
-  .forEach(mod => {
-    nodeModules[mod] = `commonjs ${mod}`;
-  });
-const bundle = {
-  entry: {
-    scripts: './src/index.js',
-  },
+var config = {
+  entry: './example/src',
+  devtool: 'source-map',
   output: {
-    path: `${__dirname}/build`,
-    filename: '[name].js',
-    libraryTarget: 'umd',
+    path: __dirname + '/example/build',
+    filename: 'app.js',
+    publicPath: __dirname + '/example'
   },
-  devtool: useSourceMaps ? 'eval-cheap-module-source-map' : null,
   module: {
-    preLoaders: [
-      {
-        test: /\.jsx$|\.js$/,
-        loader: 'eslint-loader',
-        include: `${__dirname}/assets`,
-        exclude: /bundle\.js$/,
-      },
-    ],
     loaders: [
-      { test: /\.jsx?$/,
-        exclude: /(node_modules)/,
-        loader: 'babel-loader',
+      {
+        test: /(\.jsx|\.js)$/,
+        loader: 'babel',
+        exclude: /node_modules/,
       },
-    ],
+      {
+        test: /(\.jsx|\.js)$/,
+        loader: "eslint-loader",
+        exclude: /node_modules/
+      }
+    ]
   },
-  plugins: plugins.length > 0 ? plugins : null,
+  resolve: {
+    alias: {
+      'nocms-forms': '../../src'
+    },
+  },
 };
 
+new WebpackDevServer(webpack(config), {
+  contentBase: './example',
+  hot: true,
+  debug: true
+}).listen(port, host, function (err, result) {
+  if (err) {
+    console.log(err);
+  }
+});
+console.log('-------------------------');
+console.log('Local web server runs at http://' + host + ':' + port);
+console.log('-------------------------');
 
-module.exports = bundle;
+module.exports = config;

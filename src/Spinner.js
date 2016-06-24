@@ -23,7 +23,7 @@ const Spinner = (props) => {
 };
 
 Spinner.propTypes = {
-  visible: React.PropTypes.string,
+  visible: React.PropTypes.bool,
   text: React.PropTypes.string,
 };
 
