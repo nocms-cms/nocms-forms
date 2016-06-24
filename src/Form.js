@@ -14,6 +14,7 @@ class Form extends React.Component {
     this.state.isValid = false;
     this.state.isDisabled = false;
     this.state.isSubmitting = false;
+    this.state.errorText = null;
     if (global.environment !== 'server') {
       stores.createStore(props.store, props.initialState, this.handleStoreChange);
     }
@@ -25,13 +26,12 @@ class Form extends React.Component {
     }
   }
 
-
   handleStoreChange(store) {
     this.setState({ store });
   }
 
-  handleFinishSubmit() {
-    this.setState({ isSubmitting: false, isDisabled: false });
+  handleFinishSubmit(errorText) {
+    this.setState({ isSubmitting: false, isDisabled: false, errorText });
   }
 
   handleSubmit(e) {
@@ -100,20 +100,20 @@ class Form extends React.Component {
 
   render() {
     const classes = 'form';
-    const buttonText = this.state.isSubmitting ? <Spinner visible light /> : this.props.submitButton;
+    const buttonText = this.state.isSubmitting ? <Spinner visible light /> : this.props.submitButton || 'OK';
     return (
       <form
         onSubmit={this.handleSubmit}
         className={classes}
         noValidate
       >
-        {this.props.errorText ?
-          <div className="error error-summary visible">{this.props.errorText}</div>
+        {this.state.errorText ?
+          <div className="error error-summary visible">{this.state.errorText}</div>
         : null}
         {this.props.children}
         {global.environment !== 'server' ?
           <div className="button-container">
-            <button disabled={this.props.disabledSubmitButton || this.state.isDisabled} type="submit" id={this.props.submitButtonId} className="pure-button button-primary">{buttonText}</button>
+            <button disabled={this.state.isDisabled} type="submit" className="pure-button button-primary">{buttonText}</button>
           </div>
         : <Spinner visible />}
       </form>
@@ -123,15 +123,11 @@ class Form extends React.Component {
 
 Form.propTypes = {
   initialState: React.PropTypes.object,
-  store: React.PropTypes.string,
-  messageType: React.PropTypes.string,
-  onResponse: React.PropTypes.func,
+  store: React.PropTypes.string.isRequired,
   onSubmit: React.PropTypes.func,
   submitButton: React.PropTypes.string,
   errorText: React.PropTypes.string,
-  children: React.PropTypes.array,
-  disabledSubmitButton: React.PropTypes.bool,
-  submitButtonId: React.PropTypes.string,
+  children: React.PropTypes.node,
 };
 
 export default Form;

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "moment": "^2.13.0",
+    "nocms-events": "git+ssh://git@bitbucket.org/nocms/nocms-events.git",
     "nocms-stores": "git+ssh://git@bitbucket.org/nocms/nocms-stores.git",
     "nocms-utils": "git+ssh://git@bitbucket.org/nocms/nocms-utils.git"
   },

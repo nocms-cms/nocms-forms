@@ -7,6 +7,28 @@ Form package for NoCMS. Currently supports the following form fields:
 * Select
 * TextArea
 
+## Form
+This component keeps track of the form's data by initializing a named store.
+
+#### store [required], string
+Name of the store. Needs to be the same as the store property of the Input elements in the form. |
+
+#### initialState, object
+Object containing the initial state of the named store.
+
+**Default** `{}`
+
+#### onSubmit (storeObject, handleFinishSubmit), function
+This function is called on submit after successful validation. The store object and a callback is passed in.
+`handleFinishSubmit` should be called upon completion. It takes in an optional errorText parameter which is displayed.
+`handleFinishSubmit ([errorText])`
+
+**Default** `undefined`
+
+#### submitButton, string
+Text for submit button
+
+**Default** "OK"
 
 ## Demo & Examples
 
