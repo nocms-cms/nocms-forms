@@ -2,7 +2,7 @@
   "name": "nocms-forms",
   "version": "0.0.1",
   "description": "React forms for NoCMS",
-  "main": "lib/Forms.js",
+  "main": "lib/index.js",
   "author": {},
   "license": "MIT",
   "keywords": [
