@@ -69,18 +69,20 @@ Text for submit button
 Error text on form level. E.g. couldn't submit the form.
 
 ### Input
-Input form field.
+Form input with label and validation.
 
 #### value, string
 Input value.
 
+**Default** `''`
+
 #### type, string
-Type of input field.  
+Wraps the native `input` element's type attribute. If type = `checkbox`, the boolean state of the checkbox is passed as value, and not the value of the `value` property.
 
 **Default** "text"
 
 #### name [required], string
-Unique identifier for this input field in the form store
+Is both a wrapper of the native `input` element's name attribute, and an identifier of the field in the store.
 
 #### store [required], string
 The store this input field belongs to
@@ -91,7 +93,9 @@ Whether this input field is required or not
 **Default** false
 
 #### deleteOnUnmount, boolean
-Useful in forms with complex dynamic input fields based on e.g. radio buttons selection.
+Some forms may have sections that are only available based on values of other fields in the form, such as *"Show advanced options"*, followed by conditional input fields. Such inputs should only appear in the store if they are visible, and because they are initiated upon mount, this option allows for them to delete the value in the store upon unmount.
+
+**Default** `false`
 
 #### validate, string
 Validation rule according to validator options
