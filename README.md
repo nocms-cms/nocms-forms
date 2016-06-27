@@ -63,7 +63,7 @@ This function is called on submit after successful validation. The store object 
 #### submitButton, string
 Text for submit button
 
-**Default** "OK"
+**Default** OK
 
 #### errorText, string
 Error text on form level. E.g. couldn't submit the form.
