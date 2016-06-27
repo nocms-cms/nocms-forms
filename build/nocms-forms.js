@@ -719,8 +719,8 @@ var Select = function (_React$Component) {
     value: function render() {
       var containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
       var classes = this.state.isValid ? '' : 'error';
-
-      var options = this.props.options.map(function (o, index) {
+      var emptyOption = !!this.props.emptyLabel ? [{ label: this.props.emptyLabel, value: '' }] : [];
+      var options = emptyOption.concat(this.props.options.map(function (o, index) {
         var option = o;
         if (typeof option === 'string') {
           option = { label: option, value: option };
@@ -730,7 +730,7 @@ var Select = function (_React$Component) {
           { key: index, value: option.value },
           option.label
         );
-      });
+      }));
 
       return React.createElement(
         'div',
@@ -771,6 +771,7 @@ exports.default = Select;
 Select.propTypes = {
   value: React.PropTypes.string,
   name: React.PropTypes.string.isRequired,
+  emptyLabel: React.PropTypes.string,
   store: React.PropTypes.string,
   options: React.PropTypes.array,
   errorText: React.PropTypes.string,
