@@ -84,14 +84,14 @@ export default class Select extends React.Component {
   render() {
     const containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
     const classes = this.state.isValid ? '' : 'error';
-
-    const options = this.props.options.map((o, index) => {
+    const emptyOption = !!this.props.emptyLabel ? [{ label: this.props.emptyLabel, value: '' }] : [];
+    const options = emptyOption.concat(this.props.options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {
         option = { label: option, value: option };
       }
       return <option key={index} value={option.value}>{option.label}</option>;
-    });
+    }));
 
     return (
       <div className={containerClasses}>
@@ -119,6 +119,7 @@ export default class Select extends React.Component {
 Select.propTypes = {
   value: React.PropTypes.string,
   name: React.PropTypes.string.isRequired,
+  emptyLabel: React.PropTypes.string,
   store: React.PropTypes.string,
   options: React.PropTypes.array,
   errorText: React.PropTypes.string,
