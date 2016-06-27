@@ -92,10 +92,10 @@ export default class TextArea extends React.Component {
 TextArea.propTypes = {
   validate: React.PropTypes.string,
   required: React.PropTypes.bool,
-  store: React.PropTypes.string,
+  store: React.PropTypes.string.isRequired,
   value: React.PropTypes.string,
   errorText: React.PropTypes.string,
-  name: React.PropTypes.string,
+  name: React.PropTypes.string.isRequired,
   label: React.PropTypes.string,
   customClasses: React.PropTypes.string,
   labelId: React.PropTypes.string,

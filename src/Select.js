@@ -118,7 +118,7 @@ export default class Select extends React.Component {
 
 Select.propTypes = {
   value: React.PropTypes.string,
-  name: React.PropTypes.string,
+  name: React.PropTypes.string.isRequired,
   store: React.PropTypes.string,
   options: React.PropTypes.array,
   errorText: React.PropTypes.string,
@@ -130,4 +130,5 @@ Select.propTypes = {
 
 Select.defaultProps = {
   value: '',
+
 };
