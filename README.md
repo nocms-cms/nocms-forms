@@ -2,16 +2,51 @@
 
 Form package for NoCMS. Currently supports the following form fields:
 
-* Input
+* Input (including checkbox)
 * RadioButtons
 * Select
 * TextArea
 
-## Form
+## Demo & Examples
+
+To build the examples locally, run:
+
+```
+npm install
+npm run dev
+```
+
+Then open [`localhost:9000`](http://localhost:9000) in a browser.
+
+
+## Installation
+
+The easiest way to use nocms-forms is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
+
+You can also use the standalone build by including `dist/nocms-forms.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
+
+```
+npm install nocms-forms --save
+```
+
+
+## Usage
+
+```
+import { Form, Input } from 'nocms-forms';
+
+<Form store="test-store" submitButton="Submit test form" onSubmit={this.handleSubmit}>
+  <Input store="test-store" name="inputName" label="Input label" />
+</Form>
+```
+
+## API
+
+### Form
 This component keeps track of the form's data by initializing a named store.
 
 #### store [required], string
-Name of the store. Needs to be the same as the store property of the Input elements in the form. |
+Name of the store. Needs to be the same as the store property of the Input elements in the form.
 
 #### initialState, object
 Object containing the initial state of the named store.
@@ -30,56 +65,167 @@ Text for submit button
 
 **Default** "OK"
 
-## Demo & Examples
+#### errorText, string
+Error text on form level. E.g. couldn't submit the form.
 
-To build the examples locally, run:
+### Input
+Input form field.
 
+#### value, string
+Input value.
+
+#### type, string
+Type of input field.  
+
+**Default** "text"
+
+#### name [required], string
+Unique identifier for this input field in the form store
+
+#### store [required], string
+The store this input field belongs to
+
+#### required, boolean
+Whether this input field is required or not
+
+**Default** false
+
+#### deleteOnUnmount, boolean
+Useful in forms with complex dynamic input fields based on e.g. radio buttons selection.
+
+#### validate, string
+Validation rule according to validator options
+
+#### inlineLabel, boolean
+Stylistic option for inline labels. Gives you an extra class hook for styling
+
+#### errorText, string
+Error text to show when validator fails
+
+#### label, string
+Label for the input field
+
+#### requiredMark, string
+Text or symbol for marking of required fields
+
+**Default** "*"
+
+#### maxLength, number
+Max number of chars
+
+#### disabled, boolean
+The input field is disabled
+
+**Default** false
+
+#### placeholder, string
+Text to show as placeholder string
+
+#### labelId, string
+Id for the label
+
+### RadioButtons
+Radio buttons input
+
+#### name [required], string
+Unique identifier for this input field in the form store
+
+#### value: React.PropTypes.string,
+Which radio button is active (name)
+
+#### store [required], string
+The store this input field belongs to
+
+#### option, array
+Array of options for each radio button, possible keys are label, value, disabled. E.g.
 ```
-npm install
-npm start
+arr radioOptions = [
+{
+  label: 'Option 1',
+  value: 'one',
+  disabled: false,
+},
+{...}, ]
 ```
 
-Then open [`localhost:8000`](http://localhost:8000) in a browser.
+#### onChange, function
+Function to call when selection changes
 
+#### required, boolean
+Required or notEmpty
 
-## Installation
+**Default** false
 
-The easiest way to use nocms-forms is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
+#### validate
+Validation rule
 
-You can also use the standalone build by including `dist/nocms-test.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
+#### label, string
+Label for radio button group
 
-```
-npm install nocms-forms --save
-```
+### Select
+Select input field
 
+#### name [required], string
+Unique identifier for this input field in the form store
 
-## Usage
+#### store [required], string
+The store this input field belongs to
 
-__EXPLAIN USAGE HERE__
+#### value, string
+Default value
 
-```
-var NocmsTest = require('nocms-test');
+#### options, array
+Select options
 
-<NocmsTest>Example</NocmsTest>
-```
+#### errorText, string
+Error text when validation fails
 
-### Properties
+#### onChange, function
+Function to trigger when selection changes
 
-* __DOCUMENT PROPERTIES HERE__
+#### required, boolean
+Required or not
 
-### Notes
+#### validate, string
+Validation rule
 
-__ADDITIONAL USAGE NOTES__
+#### label, string
+Label for select field
 
+### TextArea
+Textarea input field
 
-## Development (`src`, `lib` and the build process)
+#### name [required], string
+Unique identifier for this input field in the form store
 
-**NOTE:** The source code for the component is in `src`. A transpiled CommonJS version (generated with Babel) is available in `lib` for use with node.js, browserify and webpack. A UMD bundle is also built to `dist`, which can be included without the need for any build system.
+#### store [required], string
+The store this input field belongs to
 
-To build, watch and serve the examples (which will also watch the component source), run `npm start`. If you just want to watch changes to `src` and rebuild `lib`, run `npm run watch` (this is useful if you are working with `npm link`).
+#### value, string
+Default value
 
-## License
+#### validate, string
+Validation rule
 
-__PUT LICENSE HERE__
+#### required, boolean
+Required or not
 
-Copyright (c) 2016 Wenche.
+#### errorText, string
+Text to display on validation error
+
+#### label, string
+Label text
+
+#### customClasses, string
+Custom classes added to field wrapper
+
+#### labelId, string
+Id for label
+
+#### maxLength, number
+Max number of chars
+
+#### requiredMark, string
+Text or symbol for marking if field is required
+
+**Default** "*"

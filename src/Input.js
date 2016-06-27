@@ -144,16 +144,16 @@ class Input extends Component {
 Input.propTypes = {
   value: React.PropTypes.string,
   type: React.PropTypes.string,
-  name: React.PropTypes.string,
-  store: React.PropTypes.string,
+  name: React.PropTypes.string.isRequired,
+  store: React.PropTypes.string.isRequired,
   required: React.PropTypes.bool,
   deleteOnUnmount: React.PropTypes.bool,
   validate: React.PropTypes.string,
-  inlineLabel: React.PropTypes.string,
+  inlineLabel: React.PropTypes.bool,
   errorText: React.PropTypes.string,
   label: React.PropTypes.string,
   requiredMark: React.PropTypes.string,
-  maxLength: React.PropTypes.string,
+  maxLength: React.PropTypes.number,
   disabled: React.PropTypes.bool,
   placeholder: React.PropTypes.string,
   labelId: React.PropTypes.string,
@@ -163,6 +163,8 @@ Input.propTypes = {
 Input.defaultProps = {
   requiredMark: '*',
   type: 'text',
+  required: false,
+  disabled: false,
 };
 
 export default Input;

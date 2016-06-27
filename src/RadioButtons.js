@@ -117,13 +117,17 @@ export default class RadioButtons extends React.Component {
 }
 
 RadioButtons.propTypes = {
-  name: React.PropTypes.string,
+  name: React.PropTypes.string.isRequired,
   value: React.PropTypes.string,
   errorText: React.PropTypes.string,
-  store: React.PropTypes.string,
+  store: React.PropTypes.string.isRequired,
   onChange: React.PropTypes.func,
   required: React.PropTypes.bool,
   validate: React.PropTypes.string,
   options: React.PropTypes.array,
   label: React.PropTypes.string,
+};
+
+RadioButtons.defaultProps = {
+  required: false,
 };
