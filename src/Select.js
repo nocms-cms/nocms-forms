@@ -8,6 +8,7 @@ export default class Select extends React.Component {
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
     this.validate = this.validate.bind(this);
 
     this.state = {
@@ -66,6 +67,11 @@ export default class Select extends React.Component {
     }
   }
 
+  handleBlur(e) {
+    e.stopPropagation();
+    this.validate();
+  }
+
   validate() {
     if (this.props.validate || this.props.required) {
       const isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
@@ -82,7 +88,7 @@ export default class Select extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
+    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' error' : '');
     const classes = this.state.isValid ? '' : 'error';
     const emptyOption = !!this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
     const options = emptyOption.concat(this.props.options.map((o, index) => {
@@ -104,6 +110,7 @@ export default class Select extends React.Component {
             aria-required={this.props.required}
             onChange={this.handleChange}
             onKeyDown={this.handleEnterKey}
+            onBlur={this.handleBlur}
           >
             {options}
           </select>
