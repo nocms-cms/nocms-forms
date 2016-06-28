@@ -84,7 +84,7 @@ export default class Select extends React.Component {
   render() {
     const containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
     const classes = this.state.isValid ? '' : 'error';
-    const emptyOption = !!this.props.emptyLabel ? [{ label: this.props.emptyLabel, value: '' }] : [];
+    const emptyOption = !!this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
     const options = emptyOption.concat(this.props.options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {
