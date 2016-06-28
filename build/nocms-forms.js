@@ -719,7 +719,11 @@ var Select = function (_React$Component) {
     value: function render() {
       var containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
       var classes = this.state.isValid ? '' : 'error';
-      var emptyOption = !!this.props.emptyLabel ? [{ label: this.props.emptyLabel, value: '' }] : [];
+      var emptyOption = !!this.props.emptyLabel ? [React.createElement(
+        'option',
+        { key: 'empty', value: '' },
+        this.props.emptyLabel
+      )] : [];
       var options = emptyOption.concat(this.props.options.map(function (o, index) {
         var option = o;
         if (typeof option === 'string') {
