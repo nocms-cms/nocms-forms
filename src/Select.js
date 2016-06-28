@@ -1,6 +1,6 @@
 const React = require('react');
 const stores = require('nocms-stores');
-const Validator = require('./validator');
+const Validator = require('nocms-validation');
 
 export default class Select extends React.Component {
   constructor(props) {

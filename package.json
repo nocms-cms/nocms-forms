@@ -19,10 +19,10 @@
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react --plugins babel-plugin-add-module-exports && browserify ./lib/index.js -o ./build/nocms-forms.js --transform browserify-global-shim --standalone NoCMSForms && uglifyjs ./build/nocms-forms.js --compress --mangle --output ./build/nocms-forms.min.js --source-map ./build/nocms-forms.min.js.map"
   },
   "dependencies": {
-    "moment": "^2.13.0",
     "nocms-events": "git+ssh://git@bitbucket.org/nocms/nocms-events.git",
     "nocms-stores": "git+ssh://git@bitbucket.org/nocms/nocms-stores.git",
-    "nocms-utils": "git+ssh://git@bitbucket.org/nocms/nocms-utils.git"
+    "nocms-utils": "git+ssh://git@bitbucket.org/nocms/nocms-utils.git",
+    "nocms-validation": "git+ssh://git@bitbucket.org/nocms/nocms-validation.git"
   },
   "devDependencies": {
     "babel": "^6.5.2",

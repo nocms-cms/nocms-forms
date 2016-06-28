@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 const stores = require('nocms-stores');
-import Validator from './validator';
+import Validator from 'nocms-validation';
 
 class Input extends Component {
   constructor(props) {

@@ -317,6 +317,7 @@
 	    _this.state.isValid = false;
 	    _this.state.isDisabled = false;
 	    _this.state.isSubmitting = false;
+	    _this.state.errorText = null;
 	    if (global.environment !== 'server') {
 	      stores.createStore(props.store, props.initialState, _this.handleStoreChange);
 	    }
@@ -337,8 +338,8 @@
 	    }
 	  }, {
 	    key: 'handleFinishSubmit',
-	    value: function handleFinishSubmit() {
-	      this.setState({ isSubmitting: false, isDisabled: false });
+	    value: function handleFinishSubmit(errorText) {
+	      this.setState({ isSubmitting: false, isDisabled: false, errorText: errorText });
 	    }
 	  }, {
 	    key: 'handleSubmit',
@@ -415,7 +416,7 @@
 	    key: 'render',
 	    value: function render() {
 	      var classes = 'form';
-	      var buttonText = this.state.isSubmitting ? React.createElement(Spinner, { visible: true, light: true }) : this.props.submitButton;
+	      var buttonText = this.state.isSubmitting ? React.createElement(Spinner, { visible: true, light: true }) : this.props.submitButton || 'OK';
 	      return React.createElement(
 	        'form',
 	        {
@@ -423,10 +424,10 @@
 	          className: classes,
 	          noValidate: true
 	        },
-	        this.props.errorText ? React.createElement(
+	        this.state.errorText ? React.createElement(
 	          'div',
 	          { className: 'error error-summary visible' },
-	          this.props.errorText
+	          this.state.errorText
 	        ) : null,
 	        this.props.children,
 	        global.environment !== 'server' ? React.createElement(
@@ -434,7 +435,7 @@
 	          { className: 'button-container' },
 	          React.createElement(
 	            'button',
-	            { disabled: this.props.disabledSubmitButton || this.state.isDisabled, type: 'submit', id: this.props.submitButtonId, className: 'pure-button button-primary' },
+	            { disabled: this.state.isDisabled, type: 'submit', className: 'pure-button button-primary' },
 	            buttonText
 	          )
 	        ) : React.createElement(Spinner, { visible: true })
@@ -447,15 +448,11 @@
 	
 	Form.propTypes = {
 	  initialState: React.PropTypes.object,
-	  store: React.PropTypes.string,
-	  messageType: React.PropTypes.string,
-	  onResponse: React.PropTypes.func,
+	  store: React.PropTypes.string.isRequired,
 	  onSubmit: React.PropTypes.func,
 	  submitButton: React.PropTypes.string,
 	  errorText: React.PropTypes.string,
-	  children: React.PropTypes.array,
-	  disabledSubmitButton: React.PropTypes.bool,
-	  submitButtonId: React.PropTypes.string
+	  children: React.PropTypes.node
 	};
 	
 	exports.default = Form;
@@ -21263,9 +21260,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _validator = __webpack_require__(175);
+	var _nocmsValidation = __webpack_require__(175);
 	
-	var _validator2 = _interopRequireDefault(_validator);
+	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -21382,7 +21379,7 @@
 	    key: 'validate',
 	    value: function validate() {
 	      if (this.props.validate || this.props.required) {
-	        var isValid = _validator2.default.validate(this.state.value, this.props.validate, this.props.required);
+	        var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
 	        var state = {};
 	        state[this.props.name] = {
 	          value: this.state.value,
@@ -21452,16 +21449,16 @@
 	Input.propTypes = {
 	  value: _react2.default.PropTypes.string,
 	  type: _react2.default.PropTypes.string,
-	  name: _react2.default.PropTypes.string,
-	  store: _react2.default.PropTypes.string,
+	  name: _react2.default.PropTypes.string.isRequired,
+	  store: _react2.default.PropTypes.string.isRequired,
 	  required: _react2.default.PropTypes.bool,
 	  deleteOnUnmount: _react2.default.PropTypes.bool,
 	  validate: _react2.default.PropTypes.string,
-	  inlineLabel: _react2.default.PropTypes.string,
+	  inlineLabel: _react2.default.PropTypes.bool,
 	  errorText: _react2.default.PropTypes.string,
 	  label: _react2.default.PropTypes.string,
 	  requiredMark: _react2.default.PropTypes.string,
-	  maxLength: _react2.default.PropTypes.string,
+	  maxLength: _react2.default.PropTypes.number,
 	  disabled: _react2.default.PropTypes.bool,
 	  placeholder: _react2.default.PropTypes.string,
 	  labelId: _react2.default.PropTypes.string
@@ -21469,7 +21466,9 @@
 	
 	Input.defaultProps = {
 	  requiredMark: '*',
-	  type: 'text'
+	  type: 'text',
+	  required: false,
+	  disabled: false
 	};
 	
 	exports.default = Input;
@@ -21560,6 +21559,7 @@
 	    return false;
 	  }
 	};
+	//# sourceMappingURL=index.js.map
 
 /***/ },
 /* 176 */
@@ -21569,92 +21569,93 @@
 	
 	// https://github.com/miles-no/no-validation
 	
-	module.exports = function () {
-	  var mod11OfNumberWithControlDigit = function mod11OfNumberWithControlDigit(input) {
-	    var controlNumber = 2,
-	        sumForMod = 0,
-	        i,
-	        result;
+	var _luhnValue = function _luhnValue(number) {
+	  var sum = 0;
+	  var dbl = 0;
+	  var i = void 0;
+	  for (i = number.length - 2; i >= 0; i -= 2) {
+	    dbl = (parseInt(number.charAt(i), 10) * 2).toString();
+	    sum += parseInt(dbl.charAt(0), 10) + parseInt(dbl.charAt(1) || 0, 10);
+	  }
+	  for (i = number.length - 3; i >= 0; i -= 2) {
+	    sum += parseInt(number.charAt(i), 10);
+	  }
+	  sum = sum.toString();
+	  return 10 - parseInt(sum.charAt(sum.length - 1), 10);
+	};
 	
-	    for (i = input.length - 2; i >= 0; --i) {
-	      sumForMod += input.charAt(i) * controlNumber;
-	      if (++controlNumber > 7) {
-	        controlNumber = 2;
-	      }
+	var _sum = function _sum(number, factors) {
+	  var sum = 0;
+	  for (var i = 0, l = factors.length; i < l; ++i) {
+	    sum += parseInt(number.charAt(i), 10) * factors[i];
+	  }
+	  return sum;
+	};
+	
+	var _mod11OfNumberWithControlDigit = function _mod11OfNumberWithControlDigit(input) {
+	  var controlNumber = 2;
+	  var sumForMod = 0;
+	  var i = void 0;
+	
+	  for (i = input.length - 2; i >= 0; --i) {
+	    sumForMod += input.charAt(i) * controlNumber;
+	    if (++controlNumber > 7) {
+	      controlNumber = 2;
 	    }
-	    result = 11 - sumForMod % 11;
+	  }
+	  var result = 11 - sumForMod % 11;
+	  return result === 11 ? 0 : result;
+	};
 	
-	    return result === 11 ? 0 : result;
-	  };
+	var accountNumber = function accountNumber(accNumber) {
+	  if (!accNumber) {
+	    return false;
+	  }
+	  var validatedAccountNumber = accNumber.toString().replace(/\./g, '');
+	  if (validatedAccountNumber.length !== 11) {
+	    return false;
+	  }
+	  return parseInt(validatedAccountNumber.charAt(validatedAccountNumber.length - 1), 10) === _mod11OfNumberWithControlDigit(validatedAccountNumber);
+	};
 	
-	  var accountNumber = function accountNumber(_accountNumber) {
-	    if (!_accountNumber) {
-	      return false;
-	    }
-	    _accountNumber = _accountNumber.toString().replace(/\./g, '');
-	    if (_accountNumber.length !== 11) {
-	      return false;
-	    }
-	    return parseInt(_accountNumber.charAt(_accountNumber.length - 1), 10) === mod11OfNumberWithControlDigit(_accountNumber);
-	  };
+	var organizationNumber = function organizationNumber(orgNumber) {
+	  var validatedOrgNumber = orgNumber;
+	  validatedOrgNumber += '';
+	  if (!validatedOrgNumber || validatedOrgNumber.length !== 9) {
+	    return false;
+	  }
+	  return parseInt(validatedOrgNumber.charAt(validatedOrgNumber.length - 1), 10) === _mod11OfNumberWithControlDigit(validatedOrgNumber);
+	};
 	
-	  var organizationNumber = function organizationNumber(orgNumber) {
-	    orgNumber += '';
-	    if (!orgNumber || orgNumber.length !== 9) {
-	      return false;
-	    }
-	    return parseInt(orgNumber.charAt(orgNumber.length - 1), 10) === mod11OfNumberWithControlDigit(orgNumber);
-	  };
+	var birthNumber = function birthNumber(number) {
+	  var validatedBirthNumber = number.toString();
+	  if (!validatedBirthNumber || validatedBirthNumber.length !== 11) {
+	    return false;
+	  }
+	  var checksum1 = 11 - _sum(validatedBirthNumber, [3, 7, 6, 1, 8, 9, 4, 5, 2]) % 11;
+	  if (checksum1 === 11) {
+	    checksum1 = 0;
+	  }
+	  var checksum2 = 11 - _sum(validatedBirthNumber, [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]) % 11;
+	  if (checksum2 === 11) {
+	    checksum2 = 0;
+	  }
+	  return checksum1 === parseInt(validatedBirthNumber.charAt(9), 10) && checksum2 === parseInt(validatedBirthNumber.charAt(10), 10);
+	};
 	
-	  var birthNumber = function birthNumber(_birthNumber) {
-	    _birthNumber = _birthNumber.toString();
-	    if (!_birthNumber || _birthNumber.length !== 11) {
-	      return false;
-	    }
+	var kidNumber = function kidNumber(number) {
+	  var validatedKidNumber = number.toString();
+	  var controlDigit = validatedKidNumber.charAt(validatedKidNumber.length - 1);
+	  return parseInt(controlDigit, 10) === _mod11OfNumberWithControlDigit(validatedKidNumber) || parseInt(controlDigit, 10) === _luhnValue(validatedKidNumber);
+	};
 	
-	    var sum = function sum(number, factors) {
-	      var sum = 0;
-	      for (var i = 0, l = factors.length; i < l; ++i) {
-	        sum += parseInt(number.charAt(i), 10) * factors[i];
-	      }
-	      return sum;
-	    };
-	
-	    var checksum1 = 11 - _sum(_birthNumber, [3, 7, 6, 1, 8, 9, 4, 5, 2]) % 11;
-	    if (checksum1 === 11) checksum1 = 0;
-	    var checksum2 = 11 - _sum(_birthNumber, [5, 4, 3, 2, 7, 6, 5, 4, 3, 2]) % 11;
-	    if (checksum2 === 11) checksum2 = 0;
-	    return checksum1 === parseInt(_birthNumber.charAt(9), 10) && checksum2 === parseInt(_birthNumber.charAt(10), 10);
-	  };
-	
-	  var kidNumber = function kidNumber(_kidNumber) {
-	    _kidNumber = _kidNumber.toString();
-	    var controlDigit = _kidNumber.charAt(_kidNumber.length - 1);
-	    return parseInt(controlDigit, 10) === mod11OfNumberWithControlDigit(_kidNumber) || parseInt(controlDigit, 10) === luhnValue(_kidNumber);
-	  };
-	
-	  var luhnValue = function luhnValue(number) {
-	    var sum = 0,
-	        dbl = 0,
-	        i;
-	    for (i = number.length - 2; i >= 0; i -= 2) {
-	      dbl = (parseInt(number.charAt(i), 10) * 2).toString();
-	      sum += parseInt(dbl.charAt(0), 10) + parseInt(dbl.charAt(1) || 0, 10);
-	    }
-	    for (i = number.length - 3; i >= 0; i -= 2) {
-	      sum += parseInt(number.charAt(i), 10);
-	    }
-	    sum = sum.toString();
-	    return 10 - parseInt(sum.charAt(sum.length - 1), 10);
-	  };
-	
-	  return {
-	    accountNumber: accountNumber,
-	    organizationNumber: organizationNumber,
-	    birthNumber: birthNumber,
-	    kidNumber: kidNumber
-	  };
-	}();
+	module.exports = {
+	  accountNumber: accountNumber,
+	  organizationNumber: organizationNumber,
+	  birthNumber: birthNumber,
+	  kidNumber: kidNumber
+	};
+	//# sourceMappingURL=index.js.map
 
 /***/ },
 /* 177 */
@@ -35623,15 +35624,19 @@
 	
 	
 	RadioButtons.propTypes = {
-	  name: React.PropTypes.string,
+	  name: React.PropTypes.string.isRequired,
 	  value: React.PropTypes.string,
 	  errorText: React.PropTypes.string,
-	  store: React.PropTypes.string,
+	  store: React.PropTypes.string.isRequired,
 	  onChange: React.PropTypes.func,
 	  required: React.PropTypes.bool,
 	  validate: React.PropTypes.string,
 	  options: React.PropTypes.array,
 	  label: React.PropTypes.string
+	};
+	
+	RadioButtons.defaultProps = {
+	  required: false
 	};
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
@@ -35758,8 +35763,12 @@
 	    value: function render() {
 	      var containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
 	      var classes = this.state.isValid ? '' : 'error';
-	
-	      var options = this.props.options.map(function (o, index) {
+	      var emptyOption = !!this.props.emptyLabel ? [React.createElement(
+	        'option',
+	        { key: 'empty', value: '' },
+	        this.props.emptyLabel
+	      )] : [];
+	      var options = emptyOption.concat(this.props.options.map(function (o, index) {
 	        var option = o;
 	        if (typeof option === 'string') {
 	          option = { label: option, value: option };
@@ -35769,7 +35778,7 @@
 	          { key: index, value: option.value },
 	          option.label
 	        );
-	      });
+	      }));
 	
 	      return React.createElement(
 	        'div',
@@ -35809,7 +35818,8 @@
 	
 	Select.propTypes = {
 	  value: React.PropTypes.string,
-	  name: React.PropTypes.string,
+	  name: React.PropTypes.string.isRequired,
+	  emptyLabel: React.PropTypes.string,
 	  store: React.PropTypes.string,
 	  options: React.PropTypes.array,
 	  errorText: React.PropTypes.string,
@@ -35821,6 +35831,7 @@
 	
 	Select.defaultProps = {
 	  value: ''
+	
 	};
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
@@ -35969,10 +35980,10 @@
 	TextArea.propTypes = {
 	  validate: React.PropTypes.string,
 	  required: React.PropTypes.bool,
-	  store: React.PropTypes.string,
+	  store: React.PropTypes.string.isRequired,
 	  value: React.PropTypes.string,
 	  errorText: React.PropTypes.string,
-	  name: React.PropTypes.string,
+	  name: React.PropTypes.string.isRequired,
 	  label: React.PropTypes.string,
 	  customClasses: React.PropTypes.string,
 	  labelId: React.PropTypes.string,
