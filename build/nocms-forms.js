@@ -110,13 +110,20 @@ var Form = function (_React$Component) {
       setTimeout(function () {
         var target = domNode.querySelector('.error');
         if (target) {
-          (function () {
+          var _ret = function () {
             var targetPos = target.offsetTop;
             var input = target.querySelector('input');
+            if (!input) {
+              return {
+                v: void 0
+              };
+            }
             utils.scrollTo(document.body, targetPos - 160, 400, function () {
               input.focus();
             });
-          })();
+          }();
+
+          if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
         }
       }, 0);
     }
