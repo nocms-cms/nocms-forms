@@ -80,6 +80,9 @@ class Form extends React.Component {
       if (target) {
         const targetPos = target.offsetTop;
         const input = target.querySelector('input');
+        if (!input) {
+          return;
+        }
         utils.scrollTo(document.body, targetPos - 160, 400, () => {
           input.focus();
         });
