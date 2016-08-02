@@ -80,7 +80,6 @@ class App extends React.Component {
              label="Required text field"
              name="required"
              errorText="Error"
-             validate="notEmpty"
            />
            <RadioButtons
              store={storeName}

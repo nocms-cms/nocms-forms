@@ -207,8 +207,7 @@
 	            store: storeName,
 	            label: 'Required text field',
 	            name: 'required',
-	            errorText: 'Error',
-	            validate: 'notEmpty'
+	            errorText: 'Error'
 	          }),
 	          React.createElement(_nocmsForms.RadioButtons, {
 	            store: storeName,
@@ -21485,7 +21484,10 @@
 	var moment = __webpack_require__(177);
 	
 	module.exports = {
-	  validate: function validate(value, validationRule, isRequired) {
+	  validate: function validate(value) {
+	    var validationRule = arguments.length <= 1 || arguments[1] === undefined ? 'notEmpty' : arguments[1];
+	    var isRequired = arguments[2];
+	
 	    if (!value && isRequired) {
 	      return false;
 	    } else if (!value && !isRequired) {
@@ -21560,6 +21562,7 @@
 	  }
 	};
 	//# sourceMappingURL=index.js.map
+
 
 /***/ },
 /* 176 */
@@ -35676,6 +35679,7 @@
 	    _this.handleStoreChange = _this.handleStoreChange.bind(_this);
 	    _this.handleChange = _this.handleChange.bind(_this);
 	    _this.handleEnterKey = _this.handleEnterKey.bind(_this);
+	    _this.handleBlur = _this.handleBlur.bind(_this);
 	    _this.validate = _this.validate.bind(_this);
 	
 	    _this.state = {
@@ -35742,6 +35746,12 @@
 	      }
 	    }
 	  }, {
+	    key: 'handleBlur',
+	    value: function handleBlur(e) {
+	      e.stopPropagation();
+	      this.validate();
+	    }
+	  }, {
 	    key: 'validate',
 	    value: function validate() {
 	      if (this.props.validate || this.props.required) {
@@ -35761,7 +35771,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
+	      var containerClasses = 'form__control-group' + (!this.state.isValid ? ' error' : '');
 	      var classes = this.state.isValid ? '' : 'error';
 	      var emptyOption = !!this.props.emptyLabel ? [React.createElement(
 	        'option',
@@ -35796,7 +35806,8 @@
 	              'aria-invalid': !this.state.isValid,
 	              'aria-required': this.props.required,
 	              onChange: this.handleChange,
-	              onKeyDown: this.handleEnterKey
+	              onKeyDown: this.handleEnterKey,
+	              onBlur: this.handleBlur
 	            },
 	            options
 	          ),
