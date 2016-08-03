@@ -5525,7 +5525,10 @@ var noValidation = require('norwegian-validation');
 var moment = require('moment');
 
 module.exports = {
-  validate: function validate(value, validationRule, isRequired) {
+  validate: function validate(value) {
+    var validationRule = arguments.length <= 1 || arguments[1] === undefined ? 'notEmpty' : arguments[1];
+    var isRequired = arguments[2];
+
     if (!value && isRequired) {
       return false;
     } else if (!value && !isRequired) {
@@ -5599,6 +5602,7 @@ module.exports = {
     return false;
   }
 };
+
 
 },{"moment":8,"norwegian-validation":13}],13:[function(require,module,exports){
 'use strict';
