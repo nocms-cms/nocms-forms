@@ -5566,7 +5566,7 @@ module.exports = {
             return false;
           }
         }
-        return moment(value, 'DD.MM.YYYY').format('DD.MM.YYYY') === value;
+        return false;
       }
 
       if (validationRule === 'int') {
@@ -5602,7 +5602,6 @@ module.exports = {
     return false;
   }
 };
-
 
 },{"moment":8,"norwegian-validation":13}],13:[function(require,module,exports){
 'use strict';
