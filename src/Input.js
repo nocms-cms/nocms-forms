@@ -9,6 +9,7 @@ class Input extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
     this.validate = this.validate.bind(this);
     this.state = {
       value: props.value || '',
@@ -109,19 +110,12 @@ class Input extends Component {
     const classes = this.state.isValid ? '' : 'form__error';
     const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
-    let label;
-    if (this.props.required) {
-      label = <span><span className="form__label">{this.props.label}</span><span className={isRequiredLabelClass}>{this.props.requiredMark}</span></span>;
-    } else {
-      label = <span className="form__label">{this.props.label}</span>;
-    }
     return (
       <div className={containerClasses}>
         {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
           <div className="form__error-text">{this.props.errorText}</div>
         : null}
-        <label id={this.props.labelId}>
-           {this.props.inlineLabel ? null : label}
+        <label id={this.props.labelId}><span className="form__label">{this.props.label}</span> {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
           <input
             className={classes}
             type={type}
@@ -133,12 +127,13 @@ class Input extends Component {
             placeholder={this.props.placeholder ? this.props.placeholder : ''}
             aria-invalid={!this.state.isValid}
             aria-required={this.props.required}
+            onFocus={this.handleFocus}
             onChange={this.handleChange}
             onClick={this.props.type === 'checkbox' ? this.handleChange : null}
             onKeyDown={this.handleEnterKey}
             onBlur={this.handleBlur}
           />
-          {this.props.inlineLabel ? label : null}
+
          {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
            <div className="form__error-text">{this.props.errorText}</div>
          : null}
@@ -172,7 +167,6 @@ Input.defaultProps = {
   type: 'text',
   required: false,
   disabled: false,
-  inlineLabel: false,
 };
 
 export default Input;

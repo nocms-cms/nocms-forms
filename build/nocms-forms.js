@@ -229,6 +229,7 @@ var Input = function (_Component) {
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleEnterKey = _this.handleEnterKey.bind(_this);
     _this.handleBlur = _this.handleBlur.bind(_this);
+    _this.handleFocus = _this.handleFocus.bind(_this);
     _this.validate = _this.validate.bind(_this);
     _this.state = {
       value: props.value || '',
@@ -342,29 +343,6 @@ var Input = function (_Component) {
       var classes = this.state.isValid ? '' : 'form__error';
       var containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
       var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
-      var label = void 0;
-      if (this.props.required) {
-        label = _react2.default.createElement(
-          'span',
-          null,
-          _react2.default.createElement(
-            'span',
-            { className: 'form__label' },
-            this.props.label
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: isRequiredLabelClass },
-            this.props.requiredMark
-          )
-        );
-      } else {
-        label = _react2.default.createElement(
-          'span',
-          { className: 'form__label' },
-          this.props.label
-        );
-      }
       return _react2.default.createElement(
         'div',
         { className: containerClasses },
@@ -376,7 +354,17 @@ var Input = function (_Component) {
         _react2.default.createElement(
           'label',
           { id: this.props.labelId },
-          this.props.inlineLabel ? null : label,
+          _react2.default.createElement(
+            'span',
+            { className: 'form__label' },
+            this.props.label
+          ),
+          ' ',
+          this.props.required ? _react2.default.createElement(
+            'span',
+            { className: isRequiredLabelClass },
+            this.props.requiredMark
+          ) : null,
           _react2.default.createElement('input', {
             className: classes,
             type: type,
@@ -388,12 +376,12 @@ var Input = function (_Component) {
             placeholder: this.props.placeholder ? this.props.placeholder : '',
             'aria-invalid': !this.state.isValid,
             'aria-required': this.props.required,
+            onFocus: this.handleFocus,
             onChange: this.handleChange,
             onClick: this.props.type === 'checkbox' ? this.handleChange : null,
             onKeyDown: this.handleEnterKey,
             onBlur: this.handleBlur
           }),
-          this.props.inlineLabel ? label : null,
           !this.props.inlineLabel && this.props.errorText && !this.state.isValid ? _react2.default.createElement(
             'div',
             { className: 'form__error-text' },
@@ -429,8 +417,7 @@ Input.defaultProps = {
   requiredMark: '*',
   type: 'text',
   required: false,
-  disabled: false,
-  inlineLabel: false
+  disabled: false
 };
 
 exports.default = Input;
