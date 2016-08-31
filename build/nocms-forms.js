@@ -229,7 +229,6 @@ var Input = function (_Component) {
     _this.handleChange = _this.handleChange.bind(_this);
     _this.handleEnterKey = _this.handleEnterKey.bind(_this);
     _this.handleBlur = _this.handleBlur.bind(_this);
-    _this.handleFocus = _this.handleFocus.bind(_this);
     _this.validate = _this.validate.bind(_this);
     _this.state = {
       value: props.value || '',
@@ -376,7 +375,6 @@ var Input = function (_Component) {
             placeholder: this.props.placeholder ? this.props.placeholder : '',
             'aria-invalid': !this.state.isValid,
             'aria-required': this.props.required,
-            onFocus: this.handleFocus,
             onChange: this.handleChange,
             onClick: this.props.type === 'checkbox' ? this.handleChange : null,
             onKeyDown: this.handleEnterKey,

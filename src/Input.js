@@ -9,7 +9,6 @@ class Input extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
-    this.handleFocus = this.handleFocus.bind(this);
     this.validate = this.validate.bind(this);
     this.state = {
       value: props.value || '',
@@ -127,7 +126,6 @@ class Input extends Component {
             placeholder={this.props.placeholder ? this.props.placeholder : ''}
             aria-invalid={!this.state.isValid}
             aria-required={this.props.required}
-            onFocus={this.handleFocus}
             onChange={this.handleChange}
             onClick={this.props.type === 'checkbox' ? this.handleChange : null}
             onKeyDown={this.handleEnterKey}
