@@ -101,7 +101,7 @@ export default class Select extends React.Component {
 
     return (
       <div className={containerClasses}>
-        <label>{this.props.label}
+        <label><span className="form__label">{this.props.label}</span>
           <select
             className={classes}
             name={this.props.name}

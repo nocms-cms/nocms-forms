@@ -69,7 +69,7 @@ export default class TextArea extends React.Component {
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
-        <label id={this.props.labelId}>{this.props.label} {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
+        <label id={this.props.labelId}><span className="form__label">{this.props.label}</span> {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
           <textarea
             name={this.props.name}
             aria-invalid={!this.state.isValid}

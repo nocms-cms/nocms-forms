@@ -353,7 +353,11 @@ var Input = function (_Component) {
         _react2.default.createElement(
           'label',
           { id: this.props.labelId },
-          this.props.label,
+          _react2.default.createElement(
+            'span',
+            { className: 'form__label' },
+            this.props.label
+          ),
           ' ',
           this.props.required ? _react2.default.createElement(
             'span',
@@ -547,7 +551,7 @@ var RadioButtons = function (_React$Component) {
         }
         return React.createElement(
           'label',
-          { key: _this2.props.name + '_' + index, className: 'pure-radio' + (option.disabled ? ' disabled' : '') },
+          { key: _this2.props.name + '_' + index, className: 'form__radio-label' + (option.disabled ? ' disabled' : '') },
           React.createElement('input', {
             checked: _this2.state.value === option.value,
             type: 'radio',
@@ -757,7 +761,11 @@ var Select = function (_React$Component) {
         React.createElement(
           'label',
           null,
-          this.props.label,
+          React.createElement(
+            'span',
+            { className: 'form__label' },
+            this.props.label
+          ),
           React.createElement(
             'select',
             {
@@ -956,7 +964,11 @@ var TextArea = function (_React$Component) {
         React.createElement(
           'label',
           { id: this.props.labelId },
-          this.props.label,
+          React.createElement(
+            'span',
+            { className: 'form__label' },
+            this.props.label
+          ),
           ' ',
           this.props.required ? React.createElement(
             'span',

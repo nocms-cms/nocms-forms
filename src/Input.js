@@ -114,7 +114,7 @@ class Input extends Component {
         {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
           <div className="form__error-text">{this.props.errorText}</div>
         : null}
-        <label id={this.props.labelId}>{this.props.label} {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
+        <label id={this.props.labelId}><span className="form__label">{this.props.label}</span> {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
           <input
             className={classes}
             type={type}
