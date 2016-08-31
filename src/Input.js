@@ -109,9 +109,11 @@ class Input extends Component {
     const classes = this.state.isValid ? '' : 'form__error';
     const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
-    let label = <span className="form__label">{this.props.label}</span>;
+    let label;
     if (this.props.required) {
-      label += <span className={isRequiredLabelClass}>{this.props.requiredMark}</span>;
+      label = <span><span className="form__label">{this.props.label}</span><span className={isRequiredLabelClass}>{this.props.requiredMark}</span></span>;
+    } else {
+      label = <span className="form__label">{this.props.label}</span>;
     }
     return (
       <div className={containerClasses}>
@@ -136,7 +138,7 @@ class Input extends Component {
             onKeyDown={this.handleEnterKey}
             onBlur={this.handleBlur}
           />
-          {this.props.inlineLabel ? label : null} 
+          {this.props.inlineLabel ? label : null}
          {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
            <div className="form__error-text">{this.props.errorText}</div>
          : null}
