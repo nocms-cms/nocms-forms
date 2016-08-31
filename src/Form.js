@@ -76,7 +76,7 @@ class Form extends React.Component {
   scrollToError() {
     const domNode = ReactDOM.findDOMNode(this);
     setTimeout(() => {
-      const target = domNode.querySelector('.error');
+      const target = domNode.querySelector('.form__error');
       if (target) {
         const targetPos = target.offsetTop;
         const input = target.querySelector('input');
@@ -102,21 +102,21 @@ class Form extends React.Component {
   }
 
   render() {
-    const classes = 'form';
+    const className = this.props.className ? `${this.props.className} form` : 'form';
     const buttonText = this.state.isSubmitting ? <Spinner visible light /> : this.props.submitButton || 'OK';
     return (
       <form
         onSubmit={this.handleSubmit}
-        className={classes}
+        className={className}
         noValidate
       >
         {this.state.errorText ?
-          <div className="error error-summary visible">{this.state.errorText}</div>
+          <div className="form__error form__error-summary visible">{this.state.errorText}</div>
         : null}
         {this.props.children}
         {global.environment !== 'server' ?
-          <div className="button-container">
-            <button disabled={this.state.isDisabled} type="submit" className="pure-button button-primary">{buttonText}</button>
+          <div className="form__button-container">
+            <button disabled={this.state.isDisabled} type="submit" className="button button__primary">{buttonText}</button>
           </div>
         : <Spinner visible />}
       </form>
@@ -131,6 +131,7 @@ Form.propTypes = {
   submitButton: React.PropTypes.string,
   errorText: React.PropTypes.string,
   children: React.PropTypes.node,
+  className: React.PropTypes.string,
 };
 
 export default Form;

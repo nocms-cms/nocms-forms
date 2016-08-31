@@ -106,13 +106,13 @@ class Input extends Component {
 
   render() {
     const type = this.props.type || 'text';
-    const classes = this.state.isValid ? '' : 'error';
-    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
-    const isRequiredLabelClass = this.props.required ? 'label-required' : '';
+    const classes = this.state.isValid ? '' : 'form__error';
+    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
+    const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
         {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-          <div className="error-text">{this.props.errorText}</div>
+          <div className="form__error-text">{this.props.errorText}</div>
         : null}
         <label id={this.props.labelId}>{this.props.label} {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
           <input
@@ -133,7 +133,7 @@ class Input extends Component {
           />
 
          {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-           <div className="error-text">{this.props.errorText}</div>
+           <div className="form__error-text">{this.props.errorText}</div>
          : null}
         </label>
       </div>

@@ -81,7 +81,7 @@ export default class RadioButtons extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '');
+    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '');
     const radios = this.props.options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {
@@ -108,7 +108,7 @@ export default class RadioButtons extends React.Component {
           <legend>{this.props.label}</legend>
           {radios}
           {this.props.errorText && !this.state.isValid ?
-            <div className="error-text">{this.props.errorText}</div>
+            <div className="form__error-text">{this.props.errorText}</div>
           : null}
         </fieldset>
       </div>

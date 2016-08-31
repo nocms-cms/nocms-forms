@@ -68,6 +68,9 @@ Text for submit button
 #### errorText, string
 Error text on form level. E.g. couldn't submit the form.
 
+#### className, string
+Custom class name to add on form element
+
 ### Input
 Form input with label and validation.
 

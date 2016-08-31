@@ -65,8 +65,8 @@ export default class TextArea extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = 'pure-control-group' + (!this.state.isValid ? ' error' : '') + (this.props.customClasses ? ' ' + this.props.customClasses : '');
-    const isRequiredLabelClass = this.props.required ? 'label-required' : '';
+    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.customClasses ? ' ' + this.props.customClasses : '');
+    const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
         <label id={this.props.labelId}>{this.props.label} {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
@@ -81,7 +81,7 @@ export default class TextArea extends React.Component {
           />
 
          {this.props.errorText && !this.state.isValid ?
-           <div className="error-text">{this.props.errorText}</div>
+           <div className="form__error-text">{this.props.errorText}</div>
          : null}
         </label>
       </div>

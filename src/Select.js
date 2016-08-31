@@ -88,8 +88,8 @@ export default class Select extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' error' : '');
-    const classes = this.state.isValid ? '' : 'error';
+    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '');
+    const classes = this.state.isValid ? '' : 'form__error';
     const emptyOption = !!this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
     const options = emptyOption.concat(this.props.options.map((o, index) => {
       let option = o;
@@ -115,7 +115,7 @@ export default class Select extends React.Component {
             {options}
           </select>
           {this.props.errorText && !this.state.isValid ?
-            <div className="error-text">{this.props.errorText}</div>
+            <div className="form__error-text">{this.props.errorText}</div>
           : null}
         </label>
       </div>
