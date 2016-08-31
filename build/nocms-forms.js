@@ -342,6 +342,18 @@ var Input = function (_Component) {
       var classes = this.state.isValid ? '' : 'form__error';
       var containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
       var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
+      var label = _react2.default.createElement(
+        'span',
+        { className: 'form__label' },
+        this.props.label
+      );
+      if (this.props.required) {
+        label += _react2.default.createElement(
+          'span',
+          { className: isRequiredLabelClass },
+          this.props.requiredMark
+        );
+      }
       return _react2.default.createElement(
         'div',
         { className: containerClasses },
@@ -353,17 +365,7 @@ var Input = function (_Component) {
         _react2.default.createElement(
           'label',
           { id: this.props.labelId },
-          _react2.default.createElement(
-            'span',
-            { className: 'form__label' },
-            this.props.label
-          ),
-          ' ',
-          this.props.required ? _react2.default.createElement(
-            'span',
-            { className: isRequiredLabelClass },
-            this.props.requiredMark
-          ) : null,
+          this.props.inlineLabel ? null : label,
           _react2.default.createElement('input', {
             className: classes,
             type: type,
@@ -380,6 +382,7 @@ var Input = function (_Component) {
             onKeyDown: this.handleEnterKey,
             onBlur: this.handleBlur
           }),
+          this.props.inlineLabel ? label : null,
           !this.props.inlineLabel && this.props.errorText && !this.state.isValid ? _react2.default.createElement(
             'div',
             { className: 'form__error-text' },
@@ -415,7 +418,8 @@ Input.defaultProps = {
   requiredMark: '*',
   type: 'text',
   required: false,
-  disabled: false
+  disabled: false,
+  inlineLabel: false
 };
 
 exports.default = Input;

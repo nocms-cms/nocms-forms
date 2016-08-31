@@ -109,12 +109,17 @@ class Input extends Component {
     const classes = this.state.isValid ? '' : 'form__error';
     const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
+    let label = <span className="form__label">{this.props.label}</span>;
+    if (this.props.required) {
+      label += <span className={isRequiredLabelClass}>{this.props.requiredMark}</span>;
+    }
     return (
       <div className={containerClasses}>
         {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
           <div className="form__error-text">{this.props.errorText}</div>
         : null}
-        <label id={this.props.labelId}><span className="form__label">{this.props.label}</span> {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
+        <label id={this.props.labelId}>
+           {this.props.inlineLabel ? null : label}
           <input
             className={classes}
             type={type}
@@ -131,7 +136,7 @@ class Input extends Component {
             onKeyDown={this.handleEnterKey}
             onBlur={this.handleBlur}
           />
-
+          {this.props.inlineLabel ? label : null} 
          {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
            <div className="form__error-text">{this.props.errorText}</div>
          : null}
@@ -165,6 +170,7 @@ Input.defaultProps = {
   type: 'text',
   required: false,
   disabled: false,
+  inlineLabel: false,
 };
 
 export default Input;
