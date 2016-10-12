@@ -15,13 +15,17 @@ class App extends React.Component {
     };
   }
 
-  handleSubmit(formData, callback) {
-    this.setState({ submitted: true, formData });
-    callback();
+  getUppercaseName(dependency) {
+    return dependency.name.value.toUpperCase();
   }
 
   handleReset() {
     this.setState({ submitted: false, formData: null });
+  }
+
+  handleSubmit(formData, callback) {
+    this.setState({ submitted: true, formData });
+    callback();
   }
 
   render() {
@@ -65,6 +69,13 @@ class App extends React.Component {
              store={storeName}
              label="Text field"
              name="name"
+           />
+           <Input
+             dependOn="name"
+             dependencyFunc={this.getUppercaseName}
+             store={storeName}
+             label="Dependent text field"
+             name="aggregatedName"
            />
            <Input
              required

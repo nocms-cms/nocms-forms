@@ -48,7 +48,38 @@ class Input extends Component {
     }
   }
 
-  handleStoreChange(store) {
+  handleDependentState(store, changes) {
+    if (this.props.dependOn) {
+      const fields = this.props.dependOn.split(',').map((f) => f.trim());
+      const values = {};
+
+      // Check if any of the changed values are in the dependOn list
+      const doUpdate = fields.reduce((val, f) => {
+        values[f] = store[f];
+        if (changes[f]) {
+          return true;
+        }
+        return val;
+      }, false);
+
+      if (!doUpdate) {
+        return false;
+      }
+
+      const aggregatedValue = this.props.dependencyFunc(values);
+      const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
+      this.setState(aggregatedState);
+      this.updateStore(aggregatedValue, true, true);
+      return true;
+    }
+    return false;
+  }
+
+  handleStoreChange(store, changes) {
+    if (this.handleDependentState(store, changes)) {
+      return;
+    }
+
     let newState = store[this.props.name];
     if (typeof newState !== 'object') {
       // Upgrade simple data values to input state in store
@@ -62,21 +93,10 @@ class Input extends Component {
   }
 
   handleChange(e) {
-    const data = {};
     const value = this.props.type === 'checkbox' ? e.currentTarget.checked : e.currentTarget.value;
-
-    data[this.props.name] = { value, isValid: true };
-    const state = {};
-    state[this.props.name] = {
-      value,
-      isValid: true,
-      isValidated: this.state.isValidated,
-      validate: this.validate,
-      convertDate: this.props.type === 'date',
-    };
-
-    stores.update(this.props.store, state);
+    this.updateStore(value, true, this.state.isValidated);
   }
+
   handleEnterKey(e) {
     if (e.keyCode === 13) { // Enter
       this.validate();
@@ -88,17 +108,24 @@ class Input extends Component {
     this.validate();
   }
 
+  updateStore(value, isValid, isValidated) {
+    const state = {};
+    state[this.props.name] = {
+      value,
+      isValid,
+      isValidated,
+      validate: this.validate,
+      convertDate: this.props.type === 'date',
+    };
+
+    stores.update(this.props.store, state);
+  }
+
   validate() {
     if (this.props.validate || this.props.required) {
       const isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
-      const state = {};
-      state[this.props.name] = {
-        value: this.state.value,
-        isValid,
-        isValidated: true,
-        convertDate: this.props.type === 'date',
-      };
-      stores.update(this.props.store, state);
+      this.updateStore(this.state.value, isValid, true);
+
       return isValid;
     }
     return true;
@@ -157,6 +184,8 @@ Input.propTypes = {
   disabled: React.PropTypes.bool,
   placeholder: React.PropTypes.string,
   labelId: React.PropTypes.string,
+  dependOn: React.PropTypes.string,
+  dependencyFunc: React.PropTypes.func,
 };
 
 
