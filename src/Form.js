@@ -103,6 +103,7 @@ class Form extends React.Component {
 
   render() {
     const className = this.props.className ? `${this.props.className} form` : 'form';
+    const buttonContainerClassName = this.props.centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
     const buttonText = this.state.isSubmitting ? <Spinner visible light /> : this.props.submitButton || 'OK';
     return (
       <form
@@ -115,7 +116,7 @@ class Form extends React.Component {
         : null}
         {this.props.children}
         {global.environment !== 'server' ?
-          <div className="form__button-container">
+          <div className={buttonContainerClassName}>
             <button disabled={this.state.isDisabled} type="submit" className="button button__primary">{buttonText}</button>
           </div>
         : <Spinner visible />}
@@ -132,6 +133,11 @@ Form.propTypes = {
   errorText: React.PropTypes.string,
   children: React.PropTypes.node,
   className: React.PropTypes.string,
+  centerSubmitButton: React.PropTypes.bool,
+};
+
+Form.defaultProps = {
+  centerSubmitButton: true,
 };
 
 export default Form;
