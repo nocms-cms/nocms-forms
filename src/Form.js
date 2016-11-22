@@ -41,7 +41,7 @@ class Form extends React.Component {
 
     Object.keys(this.state.store).forEach((field) => {
       const prop = this.state.store[field];
-      if (typeof props === null) {
+      if (typeof prop === null) {
         return;
       }
       if (typeof prop !== 'object') {
