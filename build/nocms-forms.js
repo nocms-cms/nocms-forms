@@ -72,7 +72,7 @@ var Form = function (_React$Component) {
 
       Object.keys(this.state.store).forEach(function (field) {
         var prop = _this2.state.store[field];
-        if (typeof prop === null) {
+        if (prop === null) {
           return;
         }
         if ((typeof prop === 'undefined' ? 'undefined' : _typeof(prop)) !== 'object') {
