@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "extends": [
     "webteam",
     "webteam/rules/react"
