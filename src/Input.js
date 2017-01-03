@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-const stores = require('nocms-stores');
 import Validator from 'nocms-validation';
+
+const stores = require('nocms-stores');
 
 class Input extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Input extends Component {
 
   handleDependentState(store, changes) {
     if (this.props.dependOn) {
-      const fields = this.props.dependOn.split(',').map((f) => f.trim());
+      const fields = this.props.dependOn.split(',').map(f => f.trim());
       const values = {};
 
       // Check if any of the changed values are in the dependOn list
@@ -159,8 +160,8 @@ class Input extends Component {
             onBlur={this.handleBlur}
           />
 
-         {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-           <div className="form__error-text">{this.props.errorText}</div>
+          {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
+            <div className="form__error-text">{this.props.errorText}</div>
          : null}
         </label>
       </div>
