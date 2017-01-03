@@ -1,6 +1,6 @@
 .publish/*
 dist/*
-example/dist/*
+example/*
 src/noValidation.js
 lib/*
 node_modules/*
