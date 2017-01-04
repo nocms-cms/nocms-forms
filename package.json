@@ -39,6 +39,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.8.0",
+    "eslint-loader": "^1.6.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "watch": "^0.19.1",
