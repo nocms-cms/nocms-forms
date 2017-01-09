@@ -21,12 +21,11 @@ Then open [`localhost:9000`](http://localhost:9000) in a browser.
 
 ## Installation
 
-The easiest way to use nocms-forms is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
+Install nocms-forms with package.json and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
 
-You can also use the standalone build by including `dist/nocms-forms.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
 
 ```
-npm install nocms-forms --save
+"nocms-forms": "git+https://github.com/nocms/nocms-forms.git",
 ```
 
 
@@ -65,11 +64,26 @@ Text for submit button
 
 **Default** OK
 
+#### submitButtonClassName, string
+Optional class name for submit button
+
+**Default** button button__primary
+
 #### errorText, string
 Error text on form level. E.g. couldn't submit the form.
 
 #### className, string
 Custom class name to add on form element
+
+#### centerSubmitButton, boolean
+form__button-container--center class is added on wrapping submit button div.
+
+#### spinner, object
+Spinner element used instead of submit button text when submitting. If both spinner and
+submittingText is declared, spinner will be used.
+
+#### submittingText, text
+Text used instead of submit button text when submitting.
 
 ### Input
 Form input with label and validation.
