@@ -62,12 +62,12 @@ This function is called on submit after successful validation. The store object 
 #### submitButton, string
 Text for submit button
 
-**Default** OK
+**Default** `OK`
 
 #### submitButtonClassName, string
 Optional class name for submit button
 
-**Default** button button__primary
+**Default** `button button__primary`
 
 #### errorText, string
 Error text on form level. E.g. couldn't submit the form.
