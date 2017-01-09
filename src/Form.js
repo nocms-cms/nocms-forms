@@ -3,7 +3,9 @@ const ReactDOM = require('react-dom');
 const stores = require('nocms-stores');
 const utils = require('nocms-utils');
 const events = require('nocms-events');
-const Spinner = require('./Spinner');
+
+const SUBMITTING_DEFAULT = '...';
+const SUBMIT_BUTTON_DEFAULT = 'OK';
 
 class Form extends React.Component {
   constructor(props) {
@@ -102,13 +104,28 @@ class Form extends React.Component {
   }
 
   render() {
-    const className = this.props.className ? `${this.props.className} form` : 'form';
-    const buttonContainerClassName = this.props.centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
-    const buttonText = this.state.isSubmitting ? <Spinner visible light /> : this.props.submitButton || 'OK';
+    const {
+      submitButton,
+      spinner,
+      submittingText,
+      className,
+      centerSubmitButton,
+    } = this.props;
+    let submitInProgress;
+    if (spinner) {
+      submitInProgress = spinner;
+    } else if (submittingText) {
+      submitInProgress = submittingText;
+    } else {
+      submitInProgress = SUBMITTING_DEFAULT;
+    }
+    const formClassName = className ? `${className} form` : 'form';
+    const buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
+    const buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
     return (
       <form
         onSubmit={this.handleSubmit}
-        className={className}
+        className={formClassName}
         noValidate
       >
         {this.state.errorText ?
@@ -119,7 +136,7 @@ class Form extends React.Component {
           <div className={buttonContainerClassName}>
             <button disabled={this.state.isDisabled} type="submit" className="button button__primary">{buttonText}</button>
           </div>
-        : <Spinner visible />}
+        : spinner }
       </form>
     );
   }
@@ -134,6 +151,8 @@ Form.propTypes = {
   children: React.PropTypes.node,
   className: React.PropTypes.string,
   centerSubmitButton: React.PropTypes.bool,
+  spinner: React.PropTypes.object,
+  submittingText: React.PropTypes.string,
 };
 
 Form.defaultProps = {
