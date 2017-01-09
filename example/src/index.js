@@ -2,6 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 import { Form, Input, RadioButtons, Select, TextArea } from 'nocms-forms';
 const storeName = 'test-form';
+const Spinner = require('./Spinner');
 
 class App extends React.Component {
   constructor(props) {
@@ -64,6 +65,8 @@ class App extends React.Component {
            initialState={initialData}
            errorText={this.state.errorText}
            onSubmit={this.handleSubmit}
+           spinner={<Spinner />}
+           submittingText='Vent litt'
          >
            <Input
              store={storeName}

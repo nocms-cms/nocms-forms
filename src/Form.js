@@ -106,6 +106,7 @@ class Form extends React.Component {
   render() {
     const {
       submitButton,
+      submitButtonClassName,
       spinner,
       submittingText,
       className,
@@ -134,7 +135,7 @@ class Form extends React.Component {
         {this.props.children}
         {global.environment !== 'server' ?
           <div className={buttonContainerClassName}>
-            <button disabled={this.state.isDisabled} type="submit" className="button button__primary">{buttonText}</button>
+            <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button_primary'}>{buttonText}</button>
           </div>
         : spinner }
       </form>
@@ -147,6 +148,7 @@ Form.propTypes = {
   store: React.PropTypes.string.isRequired,
   onSubmit: React.PropTypes.func,
   submitButton: React.PropTypes.string,
+  submitButtonClassName: React.PropTypes.string,
   errorText: React.PropTypes.string,
   children: React.PropTypes.node,
   className: React.PropTypes.string,
