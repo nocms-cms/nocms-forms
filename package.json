@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org/nocms/nocms-forms.git"
+    "url": "git://github.com/miles-no/nocms-forms.git"
   },
   "scripts": {
     "dev": "webpack --watch --inline",
