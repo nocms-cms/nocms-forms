@@ -1,6 +1,6 @@
 {
   "name": "nocms-forms",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "React forms for NoCMS",
   "main": "lib/index.js",
   "author": "Miles",
