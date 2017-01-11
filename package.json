@@ -19,10 +19,10 @@
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react,stage-1 --plugins babel-plugin-add-module-exports"
   },
   "dependencies": {
-    "nocms-events": "git+ssh://git@bitbucket.org/nocms/nocms-events.git",
-    "nocms-stores": "git+ssh://git@bitbucket.org/nocms/nocms-stores.git",
-    "nocms-utils": "git+ssh://git@bitbucket.org/nocms/nocms-utils.git",
-    "nocms-validation": "git+ssh://git@bitbucket.org/nocms/nocms-validation.git"
+    "nocms-events": "git+https://github.com/miles-no/nocms-events.git",
+    "nocms-stores": "git+https://github.com/miles-no/nocms-stores.git",
+    "nocms-utils": "git+https://github.com/miles-no/nocms-utils.git",
+    "nocms-validation": "git+https://github.com/miles-no/nocms-validation.git"
   },
   "devDependencies": {
     "babel": "^6.5.2",
