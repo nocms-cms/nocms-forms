@@ -59,8 +59,12 @@
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(34);
 	
+	var Spinner = __webpack_require__(191);
+	var One = __webpack_require__(192);
+	var Two = __webpack_require__(193);
+	
 	var storeName = 'test-form';
-	var Spinner = __webpack_require__(189);
+	var wizardStoreName = 'test-form-wizard';
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -97,6 +101,16 @@
 	      callback();
 	    }
 	  }, {
+	    key: 'goBack',
+	    value: function goBack(wizardData, currentStep) {
+	      return currentStep - 1;
+	    }
+	  }, {
+	    key: 'goNext',
+	    value: function goNext(wizardData, currentStep) {
+	      return currentStep + 1;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var radioOptions = [{
@@ -110,6 +124,7 @@
 	      var initialData = {
 	        radio: 'one'
 	      };
+	      var steps = [React.createElement(One, { store: wizardStoreName + '-step-0' }), React.createElement(Two, { store: wizardStoreName + '-step-1' })];
 	      return React.createElement(
 	        'div',
 	        null,
@@ -241,6 +256,17 @@
 	            label: 'Text area',
 	            name: 'textarea'
 	          })
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
+	          'h2',
+	          null,
+	          'Wizard form example'
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(_nocmsForms.Wizard, { goNext: this.goNext, goBack: this.goBack, store: wizardStoreName, steps: steps })
 	        )
 	      );
 	    }
@@ -260,7 +286,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
+	exports.WizardStep = exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
 	
 	var _Form2 = __webpack_require__(2);
 	
@@ -282,6 +308,14 @@
 	
 	var _TextArea3 = _interopRequireDefault(_TextArea2);
 	
+	var _Wizard2 = __webpack_require__(189);
+	
+	var _Wizard3 = _interopRequireDefault(_Wizard2);
+	
+	var _WizardStep2 = __webpack_require__(190);
+	
+	var _WizardStep3 = _interopRequireDefault(_WizardStep2);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.Form = _Form3.default;
@@ -289,6 +323,8 @@
 	exports.RadioButtons = _RadioButtons3.default;
 	exports.Select = _Select3.default;
 	exports.TextArea = _TextArea3.default;
+	exports.Wizard = _Wizard3.default;
+	exports.WizardStep = _WizardStep3.default;
 
 /***/ },
 /* 2 */
@@ -344,6 +380,10 @@
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (global.environment !== 'server') {
+	        if (this.props.wizardStep) {
+	          stores.unsubscribe(this.props.store, this.handleStoreChange);
+	          return;
+	        }
 	        stores.remove(this.props.store, this.handleStoreChange);
 	      }
 	    }
@@ -444,7 +484,8 @@
 	          spinner = _props.spinner,
 	          submittingText = _props.submittingText,
 	          className = _props.className,
-	          centerSubmitButton = _props.centerSubmitButton;
+	          centerSubmitButton = _props.centerSubmitButton,
+	          noSubmitButton = _props.noSubmitButton;
 	
 	      var submitInProgress = void 0;
 	      if (spinner) {
@@ -454,9 +495,21 @@
 	      } else {
 	        submitInProgress = SUBMITTING_DEFAULT;
 	      }
-	      var formClassName = className ? className + ' form' : 'form';
+	      var submit = null;
 	      var buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
-	      var buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
+	      if (!noSubmitButton) {
+	        var buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
+	        submit = React.createElement(
+	          'div',
+	          { className: buttonContainerClassName },
+	          React.createElement(
+	            'button',
+	            { disabled: this.state.isDisabled, type: 'submit', className: submitButtonClassName || 'button button_primary' },
+	            buttonText
+	          )
+	        );
+	      }
+	      var formClassName = className ? className + ' form' : 'form';
 	      return React.createElement(
 	        'form',
 	        {
@@ -470,15 +523,7 @@
 	          this.state.errorText
 	        ) : null,
 	        this.props.children,
-	        global.environment !== 'server' ? React.createElement(
-	          'div',
-	          { className: buttonContainerClassName },
-	          React.createElement(
-	            'button',
-	            { disabled: this.state.isDisabled, type: 'submit', className: submitButtonClassName || 'button button_primary' },
-	            buttonText
-	          )
-	        ) : spinner
+	        global.environment !== 'server' ? submit : spinner
 	      );
 	    }
 	  }]);
@@ -492,12 +537,13 @@
 	  onSubmit: React.PropTypes.func,
 	  submitButton: React.PropTypes.string,
 	  submitButtonClassName: React.PropTypes.string,
-	  errorText: React.PropTypes.string,
+	  noSubmitButton: React.PropTypes.bool,
 	  children: React.PropTypes.node,
 	  className: React.PropTypes.string,
 	  centerSubmitButton: React.PropTypes.bool,
 	  spinner: React.PropTypes.object,
-	  submittingText: React.PropTypes.string
+	  submittingText: React.PropTypes.string,
+	  wizardStep: React.PropTypes.bool
 	};
 	
 	Form.defaultProps = {
@@ -23185,6 +23231,252 @@
 /* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _WizardStep = __webpack_require__(190);
+	
+	var _WizardStep2 = _interopRequireDefault(_WizardStep);
+	
+	var _nocmsStores = __webpack_require__(180);
+	
+	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Wizard = function (_Component) {
+	  _inherits(Wizard, _Component);
+	
+	  function Wizard(props) {
+	    _classCallCheck(this, Wizard);
+	
+	    var _this = _possibleConstructorReturn(this, (Wizard.__proto__ || Object.getPrototypeOf(Wizard)).call(this, props));
+	
+	    _this.goBack = _this.goBack.bind(_this);
+	    _this.goNext = _this.goNext.bind(_this);
+	    _this.state = { currentStep: 0, lastStepIndex: props.steps.length - 1, wizardData: [] };
+	    return _this;
+	  }
+	
+	  _createClass(Wizard, [{
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      var _this2 = this;
+	
+	      if (global.environment !== 'server') {
+	        this.props.steps.forEach(function (step, index) {
+	          _nocmsStores2.default.deleteStore(_this2.getStoreForStep(index));
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'getStoreForStep',
+	    value: function getStoreForStep(index) {
+	      return this.props.store + '-step-' + index;
+	    }
+	  }, {
+	    key: 'getStep',
+	    value: function getStep() {
+	      var current = this.state.currentStep;
+	      return {
+	        index: current,
+	        component: this.props.steps[current],
+	        store: this.getStoreForStep(current),
+	        data: this.state.wizardData[current],
+	        isFirst: current === 0,
+	        isLast: current === this.props.steps.length - 1
+	      };
+	    }
+	  }, {
+	    key: 'goBack',
+	    value: function goBack() {
+	      if (this.props.goBack) {
+	        this.setState({ currentStep: this.props.goBack(this.state.wizardData, this.state.currentStep) });
+	        return;
+	      }
+	      this.setState({ currentStep: Math.max(0, this.state.currentStep - 1) });
+	    }
+	  }, {
+	    key: 'goNext',
+	    value: function goNext(formData, cb) {
+	      if (this.props.goNext) {
+	        this.setState({ currentStep: this.props.goNext(this.state.wizardData, this.state.currentStep) });
+	        return;
+	      }
+	      this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var step = this.getStep();
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _WizardStep2.default,
+	          {
+	            goNext: this.goNext,
+	            goBack: this.goBack,
+	            store: step.store,
+	            stepState: step.data,
+	            showBackButton: !step.isFirst,
+	            showNextButton: !step.isLast
+	          },
+	          this.props.steps[this.state.currentStep]
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Wizard;
+	}(_react.Component);
+	
+	exports.default = Wizard;
+	
+	
+	Wizard.propTypes = {
+	  steps: _react.PropTypes.array,
+	  store: _react.PropTypes.string,
+	  goBack: _react.PropTypes.func,
+	  goNext: _react.PropTypes.func
+	};
+	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Form = __webpack_require__(2);
+	
+	var _Form2 = _interopRequireDefault(_Form);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var WizardStep = function (_Component) {
+	  _inherits(WizardStep, _Component);
+	
+	  function WizardStep(props) {
+	    _classCallCheck(this, WizardStep);
+	
+	    var _this = _possibleConstructorReturn(this, (WizardStep.__proto__ || Object.getPrototypeOf(WizardStep)).call(this, props));
+	
+	    _this.handleGoBack = _this.handleGoBack.bind(_this);
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(WizardStep, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit() {
+	      this.props.goNext();
+	    }
+	  }, {
+	    key: 'handleGoBack',
+	    value: function handleGoBack(e) {
+	      e.preventDefault();
+	      this.props.goBack();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          className = _props.className,
+	          store = _props.store,
+	          stepState = _props.stepState,
+	          errorText = _props.errorText,
+	          spinner = _props.spinner;
+	
+	      var formClassName = className ? className + ' form' : 'form';
+	      return _react2.default.createElement(
+	        _Form2.default,
+	        {
+	          wizardStep: true, key: store,
+	          onSubmit: this.handleSubmit,
+	          initialState: stepState,
+	          className: formClassName,
+	          store: store,
+	          errorText: errorText,
+	          noSubmitButton: true
+	        },
+	        this.props.children,
+	        global.environment !== 'server' ? _react2.default.createElement(
+	          'div',
+	          { className: 'button-container' },
+	          this.props.showBackButton ? _react2.default.createElement(
+	            'button',
+	            { onClick: this.handleGoBack, className: 'pure-button button-secondary' },
+	            'Tilbake'
+	          ) : null,
+	          this.props.showNextButton ? _react2.default.createElement(
+	            'button',
+	            { type: 'submit', className: 'pure-button button-primary' },
+	            'Neste'
+	          ) : null
+	        ) : spinner
+	      );
+	    }
+	  }]);
+	
+	  return WizardStep;
+	}(_react.Component);
+	
+	exports.default = WizardStep;
+	
+	
+	WizardStep.propTypes = {
+	  goBack: _react.PropTypes.func,
+	  goNext: _react.PropTypes.func,
+	  className: _react.PropTypes.string,
+	  store: _react.PropTypes.string,
+	  stepState: _react.PropTypes.object,
+	  errorText: _react.PropTypes.string,
+	  showBackButton: _react.PropTypes.bool,
+	  showNextButton: _react.PropTypes.bool,
+	  children: _react2.default.PropTypes.node,
+	  spinner: _react2.default.PropTypes.object
+	
+	};
+	module.exports = exports['default'];
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 	
 	var _react = __webpack_require__(3);
@@ -23202,6 +23494,74 @@
 	};
 	
 	module.exports = Spinner;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsForms = __webpack_require__(1);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var One = function One(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'h2',
+	      null,
+	      'F\xF8rste steg'
+	    ),
+	    _react2.default.createElement(_nocmsForms.Input, { required: true,
+	      store: props.store,
+	      label: 'F\xF8rste',
+	      name: 'firsttext',
+	      errorText: 'Oisann',
+	      validate: 'notEmpty' })
+	  );
+	};
+	
+	module.exports = One;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsForms = __webpack_require__(1);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Two = function Two(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'h2',
+	      null,
+	      'Andre steg'
+	    ),
+	    _react2.default.createElement(_nocmsForms.Input, { required: true,
+	      store: props.store,
+	      label: 'Andre',
+	      name: 'lasttext',
+	      errorText: 'Oisann',
+	      validate: 'notEmpty' })
+	  );
+	};
+	
+	module.exports = Two;
 
 /***/ }
 /******/ ]);

@@ -1,8 +1,12 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-import { Form, Input, RadioButtons, Select, TextArea } from 'nocms-forms';
-const storeName = 'test-form';
+import { Form, Input, RadioButtons, Select, TextArea, Wizard } from 'nocms-forms';
 const Spinner = require('./Spinner');
+const One = require('./One');
+const Two = require('./Two');
+
+const storeName = 'test-form';
+const wizardStoreName = 'test-form-wizard';
 
 class App extends React.Component {
   constructor(props) {
@@ -29,6 +33,14 @@ class App extends React.Component {
     callback();
   }
 
+  goBack(wizardData, currentStep) {
+    return currentStep -1;
+  }
+
+  goNext(wizardData, currentStep) {
+    return currentStep +1;
+  }
+
   render() {
     const radioOptions = [
       {
@@ -46,6 +58,10 @@ class App extends React.Component {
     const initialData = {
       radio: 'one',
     };
+    const steps = [
+      <One store={`${wizardStoreName}-step-0`} />,
+      <Two store={`${wizardStoreName}-step-1`} />
+    ];
     return (
       <div>
        {this.state.submitted ?
@@ -113,6 +129,11 @@ class App extends React.Component {
              name="textarea"
            />
          </Form>}
+         < hr />
+         <h2>Wizard form example</h2>
+         <div>
+         <Wizard goNext={this.goNext} goBack={this.goBack} store={wizardStoreName} steps={steps} />
+         </div>
       </div>
 		);
   }
