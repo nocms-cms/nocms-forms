@@ -5,6 +5,7 @@ export default class WizardStep extends Component {
   constructor(props) {
     super(props);
     this.handleGoBack = this.handleGoBack.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit() {
     this.props.goNext();
@@ -50,7 +51,7 @@ WizardStep.propTypes = {
   goBack: PropTypes.func,
   goNext: PropTypes.func,
   className: PropTypes.string,
-  store: PropTypes.object,
+  store: PropTypes.string,
   stepState: PropTypes.object,
   errorText: PropTypes.string,
   showBackButton: PropTypes.bool,

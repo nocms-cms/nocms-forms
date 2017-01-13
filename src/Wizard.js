@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import WizardStep from './WizardStep';
+import stores from 'nocms-stores';
 
 export default class Wizard extends Component {
 
@@ -13,7 +14,7 @@ export default class Wizard extends Component {
   componentWillUnmount() {
     if (global.environment !== 'server') {
       this.props.steps.forEach((step, index) => {
-        global.NoCMS.deleteStore(this.getStoreForStep(index));
+        stores.deleteStore(this.getStoreForStep(index));
       });
     }
   }
@@ -70,7 +71,7 @@ export default class Wizard extends Component {
 
 Wizard.propTypes = {
   steps: PropTypes.array,
-  store: PropTypes.object,
+  store: PropTypes.string,
   goBack: PropTypes.func,
   goNext: PropTypes.func,
 };
