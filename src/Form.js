@@ -25,7 +25,7 @@ class Form extends React.Component {
   componentWillUnmount() {
     if (global.environment !== 'server') {
       if (this.props.wizardStep) {
-        global.NoCMS.unsubscribe(this.props.store, this.handleStoreChange);
+        stores.unsubscribe(this.props.store, this.handleStoreChange);
         return;
       }
       stores.remove(this.props.store, this.handleStoreChange);
@@ -158,13 +158,13 @@ Form.propTypes = {
   onSubmit: React.PropTypes.func,
   submitButton: React.PropTypes.string,
   submitButtonClassName: React.PropTypes.string,
-  noSubmitButton: React.PropTypes.string,
+  noSubmitButton: React.PropTypes.bool,
   children: React.PropTypes.node,
   className: React.PropTypes.string,
   centerSubmitButton: React.PropTypes.bool,
   spinner: React.PropTypes.object,
   submittingText: React.PropTypes.string,
-  wizardStep: React.PropTypes.object,
+  wizardStep: React.PropTypes.bool,
 };
 
 Form.defaultProps = {
