@@ -24,7 +24,7 @@ class Form extends React.Component {
 
   componentWillUnmount() {
     if (global.environment !== 'server') {
-      if(this.props.wizardStep) {
+      if (this.props.wizardStep) {
         global.NoCMS.unsubscribe(this.props.store, this.handleStoreChange);
         return;
       }
@@ -115,6 +115,7 @@ class Form extends React.Component {
       submittingText,
       className,
       centerSubmitButton,
+      noSubmitButton,
     } = this.props;
     let submitInProgress;
     if (spinner) {
@@ -124,9 +125,15 @@ class Form extends React.Component {
     } else {
       submitInProgress = SUBMITTING_DEFAULT;
     }
-    const formClassName = className ? `${className} form` : 'form';
+    let submit = null;
     const buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
-    const buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
+    if (!noSubmitButton) {
+      const buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
+      submit = (<div className={buttonContainerClassName}>
+        <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button_primary'}>{buttonText}</button>
+      </div>);
+    }
+    const formClassName = className ? `${className} form` : 'form';
     return (
       <form
         onSubmit={this.handleSubmit}
@@ -138,9 +145,7 @@ class Form extends React.Component {
         : null}
         {this.props.children}
         {global.environment !== 'server' ?
-          <div className={buttonContainerClassName}>
-            <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button_primary'}>{buttonText}</button>
-          </div>
+          submit
         : spinner }
       </form>
     );
@@ -153,12 +158,13 @@ Form.propTypes = {
   onSubmit: React.PropTypes.func,
   submitButton: React.PropTypes.string,
   submitButtonClassName: React.PropTypes.string,
-  errorText: React.PropTypes.string,
+  noSubmitButton: React.PropTypes.string,
   children: React.PropTypes.node,
   className: React.PropTypes.string,
   centerSubmitButton: React.PropTypes.bool,
   spinner: React.PropTypes.object,
   submittingText: React.PropTypes.string,
+  wizardStep: React.PropTypes.object,
 };
 
 Form.defaultProps = {
