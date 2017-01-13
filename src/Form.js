@@ -24,6 +24,10 @@ class Form extends React.Component {
 
   componentWillUnmount() {
     if (global.environment !== 'server') {
+      if(this.props.wizardStep) {
+        global.NoCMS.unsubscribe(this.props.store, this.handleStoreChange);
+        return;
+      }
       stores.remove(this.props.store, this.handleStoreChange);
     }
   }
