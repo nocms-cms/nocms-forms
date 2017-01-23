@@ -130,7 +130,7 @@ class Form extends React.Component {
     if (!noSubmitButton) {
       const buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
       submit = (<div className={buttonContainerClassName}>
-        <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button_primary'}>{buttonText}</button>
+        <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button__primary'}>{buttonText}</button>
       </div>);
     }
     const formClassName = className ? `${className} form` : 'form';
