@@ -266,7 +266,7 @@
 	        React.createElement(
 	          'div',
 	          null,
-	          React.createElement(_nocmsForms.Wizard, { goNext: this.goNext, goBack: this.goBack, store: wizardStoreName, steps: steps })
+	          React.createElement(_nocmsForms.Wizard, { nextButtonText: 'Hei', className: 'wizard_parent', wizardStepClassName: 'Hu hei', backButtonText: 'Et steg tilbake', nextButtonClassName: 'bling', goNext: this.goNext, goBack: this.goBack, store: wizardStoreName, steps: steps })
 	        )
 	      );
 	    }
@@ -504,7 +504,7 @@
 	          { className: buttonContainerClassName },
 	          React.createElement(
 	            'button',
-	            { disabled: this.state.isDisabled, type: 'submit', className: submitButtonClassName || 'button button_primary' },
+	            { disabled: this.state.isDisabled, type: 'submit', className: submitButtonClassName || 'button button__primary' },
 	            buttonText
 	          )
 	        );
@@ -22413,14 +22413,13 @@
 	          _react2.default.createElement(
 	            'span',
 	            { className: 'form__label' },
-	            this.props.label
+	            this.props.label,
+	            this.props.required ? _react2.default.createElement(
+	              'span',
+	              { className: isRequiredLabelClass },
+	              this.props.requiredMark
+	            ) : null
 	          ),
-	          ' ',
-	          this.props.required ? _react2.default.createElement(
-	            'span',
-	            { className: isRequiredLabelClass },
-	            this.props.requiredMark
-	          ) : null,
 	          _react2.default.createElement('input', {
 	            className: classes,
 	            type: type,
@@ -23174,14 +23173,13 @@
 	          React.createElement(
 	            'span',
 	            { className: 'form__label' },
-	            this.props.label
+	            this.props.label,
+	            this.props.required ? React.createElement(
+	              'span',
+	              { className: isRequiredLabelClass },
+	              this.props.requiredMark
+	            ) : null
 	          ),
-	          ' ',
-	          this.props.required ? React.createElement(
-	            'span',
-	            { className: isRequiredLabelClass },
-	            this.props.requiredMark
-	          ) : null,
 	          React.createElement('textarea', {
 	            name: this.props.name,
 	            'aria-invalid': !this.state.isValid,
@@ -23243,13 +23241,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _WizardStep = __webpack_require__(190);
-	
-	var _WizardStep2 = _interopRequireDefault(_WizardStep);
-	
 	var _nocmsStores = __webpack_require__(180);
 	
 	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
+	
+	var _WizardStep = __webpack_require__(190);
+	
+	var _WizardStep2 = _interopRequireDefault(_WizardStep);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23280,7 +23278,7 @@
 	
 	      if (global.environment !== 'server') {
 	        this.props.steps.forEach(function (step, index) {
-	          _nocmsStores2.default.deleteStore(_this2.getStoreForStep(index));
+	          _nocmsStores2.default.remove(_this2.getStoreForStep(index));
 	        });
 	      }
 	    }
@@ -23323,19 +23321,36 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _props = this.props,
+	          className = _props.className,
+	          wizardStepClassName = _props.wizardStepClassName,
+	          errorText = _props.errorText,
+	          nextButtonText = _props.nextButtonText,
+	          backButtonText = _props.backButtonText,
+	          backButtonClassName = _props.backButtonClassName,
+	          nextButtonClassName = _props.nextButtonClassName,
+	          spinner = _props.spinner;
+	
 	      var step = this.getStep();
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: className },
 	        _react2.default.createElement(
 	          _WizardStep2.default,
 	          {
 	            goNext: this.goNext,
 	            goBack: this.goBack,
+	            className: wizardStepClassName,
 	            store: step.store,
 	            stepState: step.data,
 	            showBackButton: !step.isFirst,
-	            showNextButton: !step.isLast
+	            showNextButton: !step.isLast,
+	            nextButtonText: nextButtonText,
+	            backButtonText: backButtonText,
+	            nextButtonClassName: nextButtonClassName,
+	            backButtonClassName: backButtonClassName,
+	            errorText: errorText,
+	            spinner: spinner
 	          },
 	          this.props.steps[this.state.currentStep]
 	        )
@@ -23353,7 +23368,19 @@
 	  steps: _react.PropTypes.array,
 	  store: _react.PropTypes.string,
 	  goBack: _react.PropTypes.func,
-	  goNext: _react.PropTypes.func
+	  goNext: _react.PropTypes.func,
+	  nextButtonClassName: _react.PropTypes.string,
+	  backButtonClassName: _react.PropTypes.string,
+	  nextButtonText: _react.PropTypes.string,
+	  backButtonText: _react.PropTypes.string,
+	  errorText: _react.PropTypes.string,
+	  className: _react.PropTypes.string,
+	  wizardStepClassName: _react.PropTypes.string,
+	  spinner: _react.PropTypes.object
+	};
+	
+	Wizard.defaultProps = {
+	  className: 'wizard'
 	};
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
@@ -23415,19 +23442,23 @@
 	    value: function render() {
 	      var _props = this.props,
 	          className = _props.className,
+	          nextButtonClassName = _props.nextButtonClassName,
+	          backButtonClassName = _props.backButtonClassName,
+	          nextButtonText = _props.nextButtonText,
+	          backButtonText = _props.backButtonText,
 	          store = _props.store,
 	          stepState = _props.stepState,
 	          errorText = _props.errorText,
 	          spinner = _props.spinner;
 	
-	      var formClassName = className ? className + ' form' : 'form';
 	      return _react2.default.createElement(
 	        _Form2.default,
 	        {
-	          wizardStep: true, key: store,
+	          wizardStep: true,
+	          key: store,
 	          onSubmit: this.handleSubmit,
 	          initialState: stepState,
-	          className: formClassName,
+	          className: className,
 	          store: store,
 	          errorText: errorText,
 	          noSubmitButton: true
@@ -23438,13 +23469,13 @@
 	          { className: 'button-container' },
 	          this.props.showBackButton ? _react2.default.createElement(
 	            'button',
-	            { onClick: this.handleGoBack, className: 'pure-button button-secondary' },
-	            'Tilbake'
+	            { onClick: this.handleGoBack, className: backButtonClassName },
+	            backButtonText
 	          ) : null,
 	          this.props.showNextButton ? _react2.default.createElement(
 	            'button',
-	            { type: 'submit', className: 'pure-button button-primary' },
-	            'Neste'
+	            { type: 'submit', className: nextButtonClassName },
+	            nextButtonText
 	          ) : null
 	        ) : spinner
 	      );
@@ -23461,6 +23492,10 @@
 	  goBack: _react.PropTypes.func,
 	  goNext: _react.PropTypes.func,
 	  className: _react.PropTypes.string,
+	  nextButtonClassName: _react.PropTypes.string,
+	  backButtonClassName: _react.PropTypes.string,
+	  nextButtonText: _react.PropTypes.string,
+	  backButtonText: _react.PropTypes.string,
 	  store: _react.PropTypes.string,
 	  stepState: _react.PropTypes.object,
 	  errorText: _react.PropTypes.string,
@@ -23468,7 +23503,14 @@
 	  showNextButton: _react.PropTypes.bool,
 	  children: _react2.default.PropTypes.node,
 	  spinner: _react2.default.PropTypes.object
+	};
 	
+	WizardStep.defaultProps = {
+	  nextButtonText: 'Neste',
+	  backButtonText: 'Tilbake',
+	  className: 'wizard__step',
+	  backButtonClassName: 'button button__back',
+	  nextButtonClassName: 'button button__next'
 	};
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
@@ -23523,7 +23565,8 @@
 	      label: 'F\xF8rste',
 	      name: 'firsttext',
 	      errorText: 'Oisann',
-	      validate: 'notEmpty' })
+	      validate: 'notEmpty'
+	    })
 	  );
 	};
 	

@@ -10,7 +10,8 @@ const One = (props) => {
                label="Første"
                name="firsttext"
                errorText="Oisann"
-               validate="notEmpty" />
+               validate="notEmpty"
+             />
     </div>
   );
 }

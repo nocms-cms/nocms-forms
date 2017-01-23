@@ -28,13 +28,13 @@ export default class WizardStep extends Component {
       errorText,
       spinner,
     } = this.props;
-    const formClassName = className ? `${className} form` : 'form';
     return (
       <Form
-        wizardStep key={store}
+        wizardStep
+        key={store}
         onSubmit={this.handleSubmit}
         initialState={stepState}
-        className={formClassName}
+        className={className}
         store={store}
         errorText={errorText}
         noSubmitButton
@@ -42,8 +42,8 @@ export default class WizardStep extends Component {
         {this.props.children}
         { global.environment !== 'server' ?
           <div className="button-container">
-            {this.props.showBackButton ? <button onClick={this.handleGoBack} className={backButtonClassName || 'button button__back'}>{backButtonText}</button> : null}
-            {this.props.showNextButton ? <button type="submit" className={nextButtonClassName || 'button button__next'}>{nextButtonText}</button> : null}
+            {this.props.showBackButton ? <button onClick={this.handleGoBack} className={backButtonClassName}>{backButtonText}</button> : null}
+            {this.props.showNextButton ? <button type="submit" className={nextButtonClassName}>{nextButtonText}</button> : null}
           </div>
         : spinner }
       </Form>
@@ -68,7 +68,10 @@ WizardStep.propTypes = {
   spinner: React.PropTypes.object,
 };
 
-WizardStep.propTypes = {
+WizardStep.defaultProps = {
   nextButtonText: 'Neste',
   backButtonText: 'Tilbake',
+  className: 'wizard__step',
+  backButtonClassName: 'button button__back',
+  nextButtonClassName: 'button button__next',
 };

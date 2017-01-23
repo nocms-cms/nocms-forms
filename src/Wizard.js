@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import WizardStep from './WizardStep';
 import stores from 'nocms-stores';
+import WizardStep from './WizardStep';
 
 export default class Wizard extends Component {
 
@@ -52,15 +52,23 @@ export default class Wizard extends Component {
   }
 
   render() {
+    const { className, wizardStepClassName, errorText, nextButtonText, backButtonText, backButtonClassName, nextButtonClassName, spinner } = this.props;
     const step = this.getStep();
-    return (<div>
+    return (<div className={className}>
       <WizardStep
         goNext={this.goNext}
         goBack={this.goBack}
+        className={wizardStepClassName}
         store={step.store}
         stepState={step.data}
         showBackButton={!step.isFirst}
         showNextButton={!step.isLast}
+        nextButtonText={nextButtonText}
+        backButtonText={backButtonText}
+        nextButtonClassName={nextButtonClassName}
+        backButtonClassName={backButtonClassName}
+        errorText={errorText}
+        spinner={spinner}
       >
         {this.props.steps[this.state.currentStep]}
       </WizardStep>
@@ -74,4 +82,16 @@ Wizard.propTypes = {
   store: PropTypes.string,
   goBack: PropTypes.func,
   goNext: PropTypes.func,
+  nextButtonClassName: PropTypes.string,
+  backButtonClassName: PropTypes.string,
+  nextButtonText: PropTypes.string,
+  backButtonText: PropTypes.string,
+  errorText: PropTypes.string,
+  className: PropTypes.string,
+  wizardStepClassName: PropTypes.string,
+  spinner: PropTypes.object,
+};
+
+Wizard.defaultProps = {
+  className: 'wizard',
 };

@@ -132,7 +132,7 @@ class App extends React.Component {
          < hr />
          <h2>Wizard form example</h2>
          <div>
-         <Wizard goNext={this.goNext} goBack={this.goBack} store={wizardStoreName} steps={steps} />
+         <Wizard nextButtonText="Hei" className="wizard_parent" wizardStepClassName="Hu hei" backButtonText="Et steg tilbake" nextButtonClassName="bling" goNext={this.goNext} goBack={this.goBack} store={wizardStoreName} steps={steps} />
          </div>
       </div>
 		);
