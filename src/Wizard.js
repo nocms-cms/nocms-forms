@@ -14,7 +14,7 @@ export default class Wizard extends Component {
   componentWillUnmount() {
     if (global.environment !== 'server') {
       this.props.steps.forEach((step, index) => {
-        stores.deleteStore(this.getStoreForStep(index));
+        stores.remove(this.getStoreForStep(index));
       });
     }
   }
