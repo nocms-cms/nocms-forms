@@ -88,7 +88,7 @@ export default class RadioButtons extends React.Component {
         option = { label: option, value: option };
       }
       return (
-        <label key={`${this.props.name}_${index}`} className={'form__radio-label' + (option.disabled ? ' disabled' : '')}>
+        <label key={`${this.props.name}_${index}`} className={option.disabled ? ' disabled' : ''}>
           <input
             checked={this.state.value === option.value}
             type="radio"
@@ -99,7 +99,7 @@ export default class RadioButtons extends React.Component {
             onClick={this.handleChange}
             onKeyDown={this.handleEnterKey}
           />
-          {option.label}
+          <span className="form__radio-label">{option.label}</span>
         </label>);
     });
     return (
