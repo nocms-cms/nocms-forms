@@ -291,6 +291,8 @@
 	    'div',
 	    null,
 	    'Header steg ',
+	    props.currentStep + 1,
+	    ' av ',
 	    React.createElement(
 	      'span',
 	      null,
@@ -23370,6 +23372,12 @@
 	          wizardFooter = _props.wizardFooter;
 	
 	      var step = this.getStep();
+	      var wizardHeaderWithCurrent = void 0;
+	      if (wizardHeader) {
+	        wizardHeaderWithCurrent = _react2.default.cloneElement(wizardHeader, {
+	          currentStep: this.state.currentStep
+	        });
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        { className: className },
@@ -23390,7 +23398,7 @@
 	            errorText: errorText,
 	            spinner: spinner,
 	            noOfSteps: steps.length,
-	            wizardHeader: wizardHeader,
+	            wizardHeader: wizardHeader ? wizardHeaderWithCurrent : null,
 	            wizardFooter: wizardFooter
 	          },
 	          this.props.steps[this.state.currentStep]

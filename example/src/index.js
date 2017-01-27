@@ -152,7 +152,7 @@ class App extends React.Component {
 
 const WizardHeader = (props) => {
   return (
-    <div>Header steg <span>{props.steps.length}</span></div>
+    <div>Header steg {props.currentStep+1} av <span>{props.steps.length}</span></div>
   );
 };
 
