@@ -132,11 +132,28 @@ class App extends React.Component {
          < hr />
          <h2>Wizard form example</h2>
          <div>
-         <Wizard nextButtonText="Hei" className="wizard_parent" wizardStepClassName="Hu hei" backButtonText="Et steg tilbake" nextButtonClassName="bling" goNext={this.goNext} goBack={this.goBack} store={wizardStoreName} steps={steps} />
+         <Wizard
+          nextButtonText="Hei"
+          className="wizard_parent"
+          wizardStepClassName="Hu hei"
+          backButtonText="Et steg tilbake"
+          nextButtonClassName="bling"
+          goNext={this.goNext}
+          goBack={this.goBack}
+          store={wizardStoreName}
+          steps={steps}
+          wizardHeader={<WizardHeader steps={steps} />}
+        />
          </div>
       </div>
 		);
   }
 }
+
+const WizardHeader = (props) => {
+  return (
+    <div>Header steg <span>{props.steps.length}</span></div>
+  );
+};
 
 ReactDOM.render(<App />, document.getElementById('app'));

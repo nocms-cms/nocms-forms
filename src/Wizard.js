@@ -52,7 +52,19 @@ export default class Wizard extends Component {
   }
 
   render() {
-    const { className, wizardStepClassName, errorText, nextButtonText, backButtonText, backButtonClassName, nextButtonClassName, spinner } = this.props;
+    const {
+      className,
+      wizardStepClassName,
+      errorText,
+      nextButtonText,
+      backButtonText,
+      backButtonClassName,
+      nextButtonClassName,
+      spinner,
+      steps,
+      wizardHeader,
+      wizardFooter,
+    } = this.props;
     const step = this.getStep();
     return (<div className={className}>
       <WizardStep
@@ -69,10 +81,12 @@ export default class Wizard extends Component {
         backButtonClassName={backButtonClassName}
         errorText={errorText}
         spinner={spinner}
+        noOfSteps={steps.length}
+        wizardHeader={wizardHeader}
+        wizardFooter={wizardFooter}
       >
         {this.props.steps[this.state.currentStep]}
       </WizardStep>
-
     </div>);
   }
 }
@@ -90,6 +104,8 @@ Wizard.propTypes = {
   className: PropTypes.string,
   wizardStepClassName: PropTypes.string,
   spinner: PropTypes.object,
+  wizardHeader: PropTypes.object,
+  wizardFooter: PropTypes.object,
 };
 
 Wizard.defaultProps = {

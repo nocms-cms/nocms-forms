@@ -59,9 +59,9 @@
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(34);
 	
-	var Spinner = __webpack_require__(191);
-	var One = __webpack_require__(192);
-	var Two = __webpack_require__(193);
+	var Spinner = __webpack_require__(192);
+	var One = __webpack_require__(193);
+	var Two = __webpack_require__(194);
 	
 	var storeName = 'test-form';
 	var wizardStoreName = 'test-form-wizard';
@@ -266,7 +266,18 @@
 	        React.createElement(
 	          'div',
 	          null,
-	          React.createElement(_nocmsForms.Wizard, { nextButtonText: 'Hei', className: 'wizard_parent', wizardStepClassName: 'Hu hei', backButtonText: 'Et steg tilbake', nextButtonClassName: 'bling', goNext: this.goNext, goBack: this.goBack, store: wizardStoreName, steps: steps })
+	          React.createElement(_nocmsForms.Wizard, {
+	            nextButtonText: 'Hei',
+	            className: 'wizard_parent',
+	            wizardStepClassName: 'Hu hei',
+	            backButtonText: 'Et steg tilbake',
+	            nextButtonClassName: 'bling',
+	            goNext: this.goNext,
+	            goBack: this.goBack,
+	            store: wizardStoreName,
+	            steps: steps,
+	            wizardHeader: React.createElement(WizardHeader, { steps: steps })
+	          })
 	        )
 	      );
 	    }
@@ -274,6 +285,19 @@
 	
 	  return App;
 	}(React.Component);
+	
+	var WizardHeader = function WizardHeader(props) {
+	  return React.createElement(
+	    'div',
+	    null,
+	    'Header steg ',
+	    React.createElement(
+	      'span',
+	      null,
+	      props.steps.length
+	    )
+	  );
+	};
 	
 	ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
@@ -286,7 +310,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.WizardStep = exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
+	exports.WizardFooter = exports.WizardStep = exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
 	
 	var _Form2 = __webpack_require__(2);
 	
@@ -316,6 +340,10 @@
 	
 	var _WizardStep3 = _interopRequireDefault(_WizardStep2);
 	
+	var _WizardFooter2 = __webpack_require__(191);
+	
+	var _WizardFooter3 = _interopRequireDefault(_WizardFooter2);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.Form = _Form3.default;
@@ -325,6 +353,7 @@
 	exports.TextArea = _TextArea3.default;
 	exports.Wizard = _Wizard3.default;
 	exports.WizardStep = _WizardStep3.default;
+	exports.WizardFooter = _WizardFooter3.default;
 
 /***/ },
 /* 2 */
@@ -22397,7 +22426,7 @@
 	    value: function render() {
 	      var type = this.props.type || 'text';
 	      var classes = this.state.isValid ? '' : 'form__error';
-	      var containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '');
+	      var containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '') + (this.props.inlineLabel ? ' inline-label' : '') + (this.props.type === 'checkbox' ? ' form__control-group--checkbox' : '');
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
 	      return _react2.default.createElement(
 	        'div',
@@ -22786,7 +22815,7 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '');
+	      var containerClasses = 'form__control-group form__control-group--radio ' + this.props.className + (!this.state.isValid ? ' form__error' : '');
 	      var radios = this.props.options.map(function (o, index) {
 	        var option = o;
 	        if (typeof option === 'string') {
@@ -22794,7 +22823,7 @@
 	        }
 	        return React.createElement(
 	          'label',
-	          { key: _this2.props.name + '_' + index, className: 'form__radio-label' + (option.disabled ? ' disabled' : '') },
+	          { key: _this2.props.name + '_' + index, className: option.disabled ? ' disabled' : '' },
 	          React.createElement('input', {
 	            checked: _this2.state.value === option.value,
 	            type: 'radio',
@@ -22805,7 +22834,11 @@
 	            onClick: _this2.handleChange,
 	            onKeyDown: _this2.handleEnterKey
 	          }),
-	          option.label
+	          React.createElement(
+	            'span',
+	            { className: 'form__radio-label' },
+	            option.label
+	          )
 	        );
 	      });
 	      return React.createElement(
@@ -22838,6 +22871,7 @@
 	
 	RadioButtons.propTypes = {
 	  name: React.PropTypes.string.isRequired,
+	  className: React.PropTypes.string,
 	  value: React.PropTypes.string,
 	  errorText: React.PropTypes.string,
 	  store: React.PropTypes.string.isRequired,
@@ -22849,7 +22883,8 @@
 	};
 	
 	RadioButtons.defaultProps = {
-	  required: false
+	  required: false,
+	  className: ''
 	};
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
@@ -23329,7 +23364,10 @@
 	          backButtonText = _props.backButtonText,
 	          backButtonClassName = _props.backButtonClassName,
 	          nextButtonClassName = _props.nextButtonClassName,
-	          spinner = _props.spinner;
+	          spinner = _props.spinner,
+	          steps = _props.steps,
+	          wizardHeader = _props.wizardHeader,
+	          wizardFooter = _props.wizardFooter;
 	
 	      var step = this.getStep();
 	      return _react2.default.createElement(
@@ -23350,7 +23388,10 @@
 	            nextButtonClassName: nextButtonClassName,
 	            backButtonClassName: backButtonClassName,
 	            errorText: errorText,
-	            spinner: spinner
+	            spinner: spinner,
+	            noOfSteps: steps.length,
+	            wizardHeader: wizardHeader,
+	            wizardFooter: wizardFooter
 	          },
 	          this.props.steps[this.state.currentStep]
 	        )
@@ -23376,7 +23417,9 @@
 	  errorText: _react.PropTypes.string,
 	  className: _react.PropTypes.string,
 	  wizardStepClassName: _react.PropTypes.string,
-	  spinner: _react.PropTypes.object
+	  spinner: _react.PropTypes.object,
+	  wizardHeader: _react.PropTypes.object,
+	  wizardFooter: _react.PropTypes.object
 	};
 	
 	Wizard.defaultProps = {
@@ -23389,7 +23432,7 @@
 /* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23404,6 +23447,10 @@
 	var _Form = __webpack_require__(2);
 	
 	var _Form2 = _interopRequireDefault(_Form);
+	
+	var _WizardFooter = __webpack_require__(191);
+	
+	var _WizardFooter2 = _interopRequireDefault(_WizardFooter);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23442,14 +23489,15 @@
 	    value: function render() {
 	      var _props = this.props,
 	          className = _props.className,
-	          nextButtonClassName = _props.nextButtonClassName,
-	          backButtonClassName = _props.backButtonClassName,
 	          nextButtonText = _props.nextButtonText,
 	          backButtonText = _props.backButtonText,
+	          showBackButton = _props.showBackButton,
+	          showNextButton = _props.showNextButton,
 	          store = _props.store,
 	          stepState = _props.stepState,
 	          errorText = _props.errorText,
-	          spinner = _props.spinner;
+	          wizardFooter = _props.wizardFooter,
+	          wizardHeader = _props.wizardHeader;
 	
 	      return _react2.default.createElement(
 	        _Form2.default,
@@ -23463,21 +23511,15 @@
 	          errorText: errorText,
 	          noSubmitButton: true
 	        },
+	        wizardHeader ? wizardHeader : null,
 	        this.props.children,
-	        global.environment !== 'server' ? _react2.default.createElement(
-	          'div',
-	          { className: 'button-container' },
-	          this.props.showBackButton ? _react2.default.createElement(
-	            'button',
-	            { onClick: this.handleGoBack, className: backButtonClassName },
-	            backButtonText
-	          ) : null,
-	          this.props.showNextButton ? _react2.default.createElement(
-	            'button',
-	            { type: 'submit', className: nextButtonClassName },
-	            nextButtonText
-	          ) : null
-	        ) : spinner
+	        wizardFooter ? wizardFooter : _react2.default.createElement(_WizardFooter2.default, {
+	          nextButtonText: nextButtonText,
+	          backButtonText: backButtonText,
+	          showNextButton: showNextButton,
+	          showBackButton: showBackButton,
+	          handleGoBack: this.handleGoBack
+	        })
 	      );
 	    }
 	  }]);
@@ -23492,8 +23534,6 @@
 	  goBack: _react.PropTypes.func,
 	  goNext: _react.PropTypes.func,
 	  className: _react.PropTypes.string,
-	  nextButtonClassName: _react.PropTypes.string,
-	  backButtonClassName: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
 	  backButtonText: _react.PropTypes.string,
 	  store: _react.PropTypes.string,
@@ -23502,7 +23542,8 @@
 	  showBackButton: _react.PropTypes.bool,
 	  showNextButton: _react.PropTypes.bool,
 	  children: _react2.default.PropTypes.node,
-	  spinner: _react2.default.PropTypes.object
+	  wizardHeader: _react2.default.PropTypes.object,
+	  wizardFooter: _react2.default.PropTypes.object
 	};
 	
 	WizardStep.defaultProps = {
@@ -23513,10 +23554,58 @@
 	  nextButtonClassName: 'button button__next'
 	};
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var backButtonClassName = 'button__back';
+	var nextButtonClassName = 'button__next';
+	var containerClassName = 'button-container';
+	// @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
+	var WizardFooter = function WizardFooter(props) {
+	  var showBackButton = props.showBackButton,
+	      showNextButton = props.showNextButton,
+	      backButtonText = props.backButtonText,
+	      nextButtonText = props.nextButtonText,
+	      handleGoBack = props.handleGoBack;
+	
+	  return _react2.default.createElement(
+	    'div',
+	    { className: containerClassName },
+	    showBackButton ? _react2.default.createElement(
+	      'button',
+	      { onClick: handleGoBack, className: backButtonClassName },
+	      backButtonText
+	    ) : null,
+	    showNextButton ? _react2.default.createElement(
+	      'button',
+	      { type: 'submit', className: nextButtonClassName },
+	      nextButtonText
+	    ) : null
+	  );
+	};
+	
+	WizardFooter.propTypes = {
+	  showBackButton: _react.PropTypes.bool,
+	  showNextButton: _react.PropTypes.bool,
+	  backButtonText: _react.PropTypes.string,
+	  nextButtonText: _react.PropTypes.string,
+	  handleGoBack: _react.PropTypes.func.isRequired
+	};
+	
+	module.exports = WizardFooter;
+
+/***/ },
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23538,7 +23627,7 @@
 	module.exports = Spinner;
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23573,7 +23662,7 @@
 	module.exports = One;
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

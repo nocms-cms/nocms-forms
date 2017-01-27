@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Form from './Form';
+import DefaultWizardFooter from './WizardFooter';
 
 export default class WizardStep extends Component {
   constructor(props) {
@@ -19,14 +20,15 @@ export default class WizardStep extends Component {
   render() {
     const {
       className,
-      nextButtonClassName,
-      backButtonClassName,
       nextButtonText,
       backButtonText,
+      showBackButton,
+      showNextButton,
       store,
       stepState,
       errorText,
-      spinner,
+      wizardFooter,
+      wizardHeader,
     } = this.props;
     return (
       <Form
@@ -39,13 +41,16 @@ export default class WizardStep extends Component {
         errorText={errorText}
         noSubmitButton
       >
+        {wizardHeader ? wizardHeader : null }
         {this.props.children}
-        { global.environment !== 'server' ?
-          <div className="button-container">
-            {this.props.showBackButton ? <button onClick={this.handleGoBack} className={backButtonClassName}>{backButtonText}</button> : null}
-            {this.props.showNextButton ? <button type="submit" className={nextButtonClassName}>{nextButtonText}</button> : null}
-          </div>
-        : spinner }
+        {wizardFooter ? wizardFooter :
+        <DefaultWizardFooter
+          nextButtonText={nextButtonText}
+          backButtonText={backButtonText}
+          showNextButton={showNextButton}
+          showBackButton={showBackButton}
+          handleGoBack={this.handleGoBack}
+        /> }
       </Form>
     );
   }
@@ -55,8 +60,6 @@ WizardStep.propTypes = {
   goBack: PropTypes.func,
   goNext: PropTypes.func,
   className: PropTypes.string,
-  nextButtonClassName: PropTypes.string,
-  backButtonClassName: PropTypes.string,
   nextButtonText: PropTypes.string,
   backButtonText: PropTypes.string,
   store: PropTypes.string,
@@ -65,7 +68,8 @@ WizardStep.propTypes = {
   showBackButton: PropTypes.bool,
   showNextButton: PropTypes.bool,
   children: React.PropTypes.node,
-  spinner: React.PropTypes.object,
+  wizardHeader: React.PropTypes.object,
+  wizardFooter: React.PropTypes.object,
 };
 
 WizardStep.defaultProps = {
