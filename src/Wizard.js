@@ -51,6 +51,12 @@ export default class Wizard extends Component {
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
   }
 
+  addCurrentStep(component) {
+    return React.cloneElement(component, {
+      currentStep: this.state.currentStep,
+    });
+  }
+
   render() {
     const {
       className,
@@ -66,21 +72,20 @@ export default class Wizard extends Component {
       wizardFooter,
     } = this.props;
     const step = this.getStep();
-    let wizardHeaderWithCurrent;
+    let wizardHeaderWithCurrentStep;
+    let wizardFooterWithCurrentStep;
     if (wizardHeader) {
-      wizardHeaderWithCurrent = React.cloneElement(wizardHeader, {
-        currentStep: this.state.currentStep,
-      });
+      wizardHeaderWithCurrentStep = this.addCurrentStep(wizardHeader);
+    }
+    if (wizardFooter) {
+      wizardFooterWithCurrentStep = this.addCurrentStep(wizardFooter);
     }
     return (<div className={className}>
       <WizardStep
         goNext={this.goNext}
         goBack={this.goBack}
         className={wizardStepClassName}
-        store={step.store}
-        stepState={step.data}
-        showBackButton={!step.isFirst}
-        showNextButton={!step.isLast}
+        {...step}
         nextButtonText={nextButtonText}
         backButtonText={backButtonText}
         nextButtonClassName={nextButtonClassName}
@@ -88,10 +93,10 @@ export default class Wizard extends Component {
         errorText={errorText}
         spinner={spinner}
         noOfSteps={steps.length}
-        wizardHeader={wizardHeader ? wizardHeaderWithCurrent : null}
-        wizardFooter={wizardFooter}
+        wizardHeader={wizardHeader ? wizardHeaderWithCurrentStep : null}
+        wizardFooter={wizardFooter ? wizardFooterWithCurrentStep : null}
       >
-        {this.props.steps[this.state.currentStep]}
+        {this.props.steps[this.state.currentStep].component}
       </WizardStep>
     </div>);
   }

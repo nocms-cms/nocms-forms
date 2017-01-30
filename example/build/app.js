@@ -101,16 +101,6 @@
 	      callback();
 	    }
 	  }, {
-	    key: 'goBack',
-	    value: function goBack(wizardData, currentStep) {
-	      return currentStep - 1;
-	    }
-	  }, {
-	    key: 'goNext',
-	    value: function goNext(wizardData, currentStep) {
-	      return currentStep + 1;
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var radioOptions = [{
@@ -124,7 +114,7 @@
 	      var initialData = {
 	        radio: 'one'
 	      };
-	      var steps = [React.createElement(One, { store: wizardStoreName + '-step-0' }), React.createElement(Two, { store: wizardStoreName + '-step-1' })];
+	      var steps = [{ title: 'Overskrift steg 1', component: React.createElement(One, { store: wizardStoreName + '-step-0' }) }, { title: 'Overskrift steg 2', component: React.createElement(Two, { store: wizardStoreName + '-step-1' }) }];
 	      return React.createElement(
 	        'div',
 	        null,
@@ -261,19 +251,17 @@
 	        React.createElement(
 	          'h2',
 	          null,
-	          'Wizard form example'
+	          'Wizard form example 1'
 	        ),
 	        React.createElement(
 	          'div',
 	          null,
 	          React.createElement(_nocmsForms.Wizard, {
-	            nextButtonText: 'Hei',
+	            nextButtonText: 'Et steg frem',
 	            className: 'wizard_parent',
 	            wizardStepClassName: 'Hu hei',
 	            backButtonText: 'Et steg tilbake',
 	            nextButtonClassName: 'bling',
-	            goNext: this.goNext,
-	            goBack: this.goBack,
 	            store: wizardStoreName,
 	            steps: steps,
 	            wizardHeader: React.createElement(WizardHeader, { steps: steps })
@@ -287,16 +275,20 @@
 	}(React.Component);
 	
 	var WizardHeader = function WizardHeader(props) {
+	  var currentStep = props.currentStep,
+	      steps = props.steps;
+	
 	  return React.createElement(
 	    'div',
 	    null,
-	    'Header steg ',
-	    props.currentStep + 1,
+	    steps[currentStep].title,
+	    ' - steg ',
+	    currentStep + 1,
 	    ' av ',
 	    React.createElement(
 	      'span',
 	      null,
-	      props.steps.length
+	      steps.length
 	    )
 	  );
 	};
@@ -23272,6 +23264,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(3);
@@ -23356,6 +23350,13 @@
 	      this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
 	    }
 	  }, {
+	    key: 'addCurrentStep',
+	    value: function addCurrentStep(component) {
+	      return _react2.default.cloneElement(component, {
+	        currentStep: this.state.currentStep
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
@@ -23372,25 +23373,24 @@
 	          wizardFooter = _props.wizardFooter;
 	
 	      var step = this.getStep();
-	      var wizardHeaderWithCurrent = void 0;
+	      var wizardHeaderWithCurrentStep = void 0;
+	      var wizardFooterWithCurrentStep = void 0;
 	      if (wizardHeader) {
-	        wizardHeaderWithCurrent = _react2.default.cloneElement(wizardHeader, {
-	          currentStep: this.state.currentStep
-	        });
+	        wizardHeaderWithCurrentStep = this.addCurrentStep(wizardHeader);
+	      }
+	      if (wizardFooter) {
+	        wizardFooterWithCurrentStep = this.addCurrentStep(wizardFooter);
 	      }
 	      return _react2.default.createElement(
 	        'div',
 	        { className: className },
 	        _react2.default.createElement(
 	          _WizardStep2.default,
-	          {
+	          _extends({
 	            goNext: this.goNext,
 	            goBack: this.goBack,
-	            className: wizardStepClassName,
-	            store: step.store,
-	            stepState: step.data,
-	            showBackButton: !step.isFirst,
-	            showNextButton: !step.isLast,
+	            className: wizardStepClassName
+	          }, step, {
 	            nextButtonText: nextButtonText,
 	            backButtonText: backButtonText,
 	            nextButtonClassName: nextButtonClassName,
@@ -23398,10 +23398,10 @@
 	            errorText: errorText,
 	            spinner: spinner,
 	            noOfSteps: steps.length,
-	            wizardHeader: wizardHeader ? wizardHeaderWithCurrent : null,
-	            wizardFooter: wizardFooter
-	          },
-	          this.props.steps[this.state.currentStep]
+	            wizardHeader: wizardHeader ? wizardHeaderWithCurrentStep : null,
+	            wizardFooter: wizardFooter ? wizardFooterWithCurrentStep : null
+	          }),
+	          this.props.steps[this.state.currentStep].component
 	        )
 	      );
 	    }
@@ -23499,10 +23499,10 @@
 	          className = _props.className,
 	          nextButtonText = _props.nextButtonText,
 	          backButtonText = _props.backButtonText,
-	          showBackButton = _props.showBackButton,
-	          showNextButton = _props.showNextButton,
-	          store = _props.store,
 	          stepState = _props.stepState,
+	          isFirst = _props.isFirst,
+	          isLast = _props.isLast,
+	          store = _props.store,
 	          errorText = _props.errorText,
 	          wizardFooter = _props.wizardFooter,
 	          wizardHeader = _props.wizardHeader;
@@ -23519,13 +23519,13 @@
 	          errorText: errorText,
 	          noSubmitButton: true
 	        },
-	        wizardHeader ? wizardHeader : null,
+	        wizardHeader,
 	        this.props.children,
 	        wizardFooter ? wizardFooter : _react2.default.createElement(_WizardFooter2.default, {
 	          nextButtonText: nextButtonText,
 	          backButtonText: backButtonText,
-	          showNextButton: showNextButton,
-	          showBackButton: showBackButton,
+	          showBackButton: !isFirst,
+	          showNextButton: !isLast,
 	          handleGoBack: this.handleGoBack
 	        })
 	      );
@@ -23544,14 +23544,14 @@
 	  className: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
 	  backButtonText: _react.PropTypes.string,
+	  isFirst: _react.PropTypes.bool,
+	  isLast: _react.PropTypes.bool,
 	  store: _react.PropTypes.string,
 	  stepState: _react.PropTypes.object,
 	  errorText: _react.PropTypes.string,
-	  showBackButton: _react.PropTypes.bool,
-	  showNextButton: _react.PropTypes.bool,
-	  children: _react2.default.PropTypes.node,
-	  wizardHeader: _react2.default.PropTypes.object,
-	  wizardFooter: _react2.default.PropTypes.object
+	  children: _react.PropTypes.node,
+	  wizardHeader: _react.PropTypes.object,
+	  wizardFooter: _react.PropTypes.object
 	};
 	
 	WizardStep.defaultProps = {

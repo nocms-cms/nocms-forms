@@ -84,8 +84,8 @@ export default class TextArea extends React.Component {
             value={this.state.value}
           />
 
-         {this.props.errorText && !this.state.isValid ?
-           <div className="form__error-text">{this.props.errorText}</div>
+          {this.props.errorText && !this.state.isValid ?
+            <div className="form__error-text">{this.props.errorText}</div>
          : null}
         </label>
       </div>

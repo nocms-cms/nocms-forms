@@ -33,14 +33,6 @@ class App extends React.Component {
     callback();
   }
 
-  goBack(wizardData, currentStep) {
-    return currentStep -1;
-  }
-
-  goNext(wizardData, currentStep) {
-    return currentStep +1;
-  }
-
   render() {
     const radioOptions = [
       {
@@ -59,8 +51,8 @@ class App extends React.Component {
       radio: 'one',
     };
     const steps = [
-      <One store={`${wizardStoreName}-step-0`} />,
-      <Two store={`${wizardStoreName}-step-1`} />
+      {title: 'Overskrift steg 1', component: <One store={`${wizardStoreName}-step-0`} />},
+      {title: 'Overskrift steg 2', component: <Two store={`${wizardStoreName}-step-1`} />}
     ];
     return (
       <div>
@@ -130,16 +122,14 @@ class App extends React.Component {
            />
          </Form>}
          < hr />
-         <h2>Wizard form example</h2>
+         <h2>Wizard form example 1</h2>
          <div>
          <Wizard
-          nextButtonText="Hei"
+          nextButtonText="Et steg frem"
           className="wizard_parent"
           wizardStepClassName="Hu hei"
           backButtonText="Et steg tilbake"
           nextButtonClassName="bling"
-          goNext={this.goNext}
-          goBack={this.goBack}
           store={wizardStoreName}
           steps={steps}
           wizardHeader={<WizardHeader steps={steps} />}
@@ -151,8 +141,9 @@ class App extends React.Component {
 }
 
 const WizardHeader = (props) => {
+  const { currentStep, steps } = props;
   return (
-    <div>Header steg {props.currentStep+1} av <span>{props.steps.length}</span></div>
+    <div>{steps[currentStep].title} - steg {currentStep+1} av <span>{steps.length}</span></div>
   );
 };
 

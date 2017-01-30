@@ -22,10 +22,10 @@ export default class WizardStep extends Component {
       className,
       nextButtonText,
       backButtonText,
-      showBackButton,
-      showNextButton,
-      store,
       stepState,
+      isFirst,
+      isLast,
+      store,
       errorText,
       wizardFooter,
       wizardHeader,
@@ -41,14 +41,14 @@ export default class WizardStep extends Component {
         errorText={errorText}
         noSubmitButton
       >
-        {wizardHeader ? wizardHeader : null }
+        {wizardHeader}
         {this.props.children}
         {wizardFooter ? wizardFooter :
         <DefaultWizardFooter
           nextButtonText={nextButtonText}
           backButtonText={backButtonText}
-          showNextButton={showNextButton}
-          showBackButton={showBackButton}
+          showBackButton={!isFirst}
+          showNextButton={!isLast}
           handleGoBack={this.handleGoBack}
         /> }
       </Form>
@@ -62,14 +62,14 @@ WizardStep.propTypes = {
   className: PropTypes.string,
   nextButtonText: PropTypes.string,
   backButtonText: PropTypes.string,
+  isFirst: PropTypes.bool,
+  isLast: PropTypes.bool,
   store: PropTypes.string,
   stepState: PropTypes.object,
   errorText: PropTypes.string,
-  showBackButton: PropTypes.bool,
-  showNextButton: PropTypes.bool,
-  children: React.PropTypes.node,
-  wizardHeader: React.PropTypes.object,
-  wizardFooter: React.PropTypes.object,
+  children: PropTypes.node,
+  wizardHeader: PropTypes.object,
+  wizardFooter: PropTypes.object,
 };
 
 WizardStep.defaultProps = {
