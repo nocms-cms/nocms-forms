@@ -88,9 +88,9 @@ export default class Select extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = 'form__control-group' + (!this.state.isValid ? ' form__error' : '');
+    const containerClasses = `form__control-group ${!this.state.isValid ? ' form__error' : ''}`;
     const classes = this.state.isValid ? '' : 'form__error';
-    const emptyOption = !!this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
+    const emptyOption = this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
     const options = emptyOption.concat(this.props.options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {

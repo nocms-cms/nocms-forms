@@ -8,8 +8,9 @@ export default class WizardStep extends Component {
     this.handleGoBack = this.handleGoBack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit() {
-    this.props.goNext();
+  handleSubmit(formData, cb) {
+    cb();
+    this.props.goNext(formData);
   }
 
   handleGoBack(e) {
@@ -45,16 +46,16 @@ export default class WizardStep extends Component {
       >
         {wizardHeader}
         {this.props.children}
-        {wizardFooter ||
-        <DefaultWizardFooter
-          nextButtonText={nextButtonText}
-          backButtonText={backButtonText}
-          showBackButton={!isFirst}
-          showNextButton={!isLast}
-          handleGoBack={this.handleGoBack}
-          backButtonClassName={backButtonClassName}
-          nextButtonClassName={nextButtonClassName}
-        /> }
+        { wizardFooter ||
+          <DefaultWizardFooter
+            nextButtonText={nextButtonText}
+            backButtonText={backButtonText}
+            showBackButton={!isFirst}
+            showNextButton={!isLast}
+            handleGoBack={this.handleGoBack}
+            backButtonClassName={backButtonClassName}
+            nextButtonClassName={nextButtonClassName}
+          /> }
       </Form>
     );
   }

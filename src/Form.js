@@ -1,11 +1,21 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
 const stores = require('nocms-stores');
 const utils = require('nocms-utils');
 const events = require('nocms-events');
 
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
+
+const convertDate = (date) => {
+  if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
+    return date;
+  }
+  const dateMatch = date.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+  if (dateMatch) {
+    return `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`;
+  }
+  return date;
+};
 
 class Form extends React.Component {
   constructor(props) {
@@ -30,6 +40,10 @@ class Form extends React.Component {
       }
       stores.remove(this.props.store, this.handleStoreChange);
     }
+  }
+
+  setFormEl(formEl) {
+    this.formEl = formEl;
   }
 
   handleStoreChange(store) {
@@ -61,7 +75,7 @@ class Form extends React.Component {
         isValid = isValid && prop.isValid;
       }
       if (isValid) {
-        formData[field] = prop.convertDate ? this.convertDate(prop.value) : prop.value;
+        formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
       }
     });
 
@@ -80,9 +94,8 @@ class Form extends React.Component {
   }
 
   scrollToError() {
-    const domNode = ReactDOM.findDOMNode(this);
     setTimeout(() => {
-      const target = domNode.querySelector('.form__error');
+      const target = this.formEl.querySelector('.form__error');
       if (target) {
         const targetPos = target.offsetTop;
         const input = target.querySelector('input');
@@ -94,17 +107,6 @@ class Form extends React.Component {
         });
       }
     }, 0);
-  }
-
-  convertDate(date) {
-    if (/^\d{4}\-\d{2}\-\d{2}/.test(date)) {
-      return date;
-    }
-    const dateMatch = date.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-    if (dateMatch) {
-      return `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`;
-    }
-    return date;
   }
 
   render() {
@@ -136,6 +138,7 @@ class Form extends React.Component {
     const formClassName = className ? `${className} form` : 'form';
     return (
       <form
+        ref={node => this.setFormEl(node)}
         onSubmit={this.handleSubmit}
         className={formClassName}
         noValidate

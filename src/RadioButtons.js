@@ -81,7 +81,7 @@ export default class RadioButtons extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = 'form__control-group form__control-group--radio ' + this.props.className + (!this.state.isValid ? ' form__error' : '');
+    const containerClasses = `form__control-group form__control-group--radio ${this.props.className} ${!this.state.isValid ? ' form__error' : ''}`;
     const radios = this.props.options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {

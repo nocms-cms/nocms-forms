@@ -8,7 +8,7 @@ export default class Wizard extends Component {
     super(props);
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
-    this.state = { currentStep: 0, lastStepIndex: props.steps.length - 1, wizardData: [] };
+    this.state = { currentStep: 0, lastStepIndex: props.steps.length - 1, wizardData: {} };
   }
 
   componentWillUnmount() {
@@ -43,9 +43,12 @@ export default class Wizard extends Component {
     this.setState({ currentStep: Math.max(0, this.state.currentStep - 1) });
   }
 
-  goNext(formData, cb) {
+  goNext(formData) {
+    const wizardData = Object.assign(this.state.wizardData, formData);
+    this.setState({ wizardData });
+
     if (this.props.goNext) {
-      this.setState({ currentStep: this.props.goNext(this.state.wizardData, this.state.currentStep) });
+      this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
       return;
     }
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
@@ -81,23 +84,27 @@ export default class Wizard extends Component {
       wizardFooterWithCurrentStep = this.addCurrentStep(wizardFooter);
     }
     return (<div className={className}>
-      <WizardStep
-        goNext={this.goNext}
-        goBack={this.goBack}
-        className={wizardStepClassName}
-        {...step}
-        nextButtonText={nextButtonText}
-        backButtonText={backButtonText}
-        nextButtonClassName={nextButtonClassName}
-        backButtonClassName={backButtonClassName}
-        errorText={errorText}
-        spinner={spinner}
-        noOfSteps={steps.length}
-        wizardHeader={wizardHeader ? wizardHeaderWithCurrentStep : null}
-        wizardFooter={wizardFooter ? wizardFooterWithCurrentStep : null}
-      >
-        {this.props.steps[this.state.currentStep].component}
-      </WizardStep>
+      { this.state.showReceipt ?
+        this.props.receiptStep
+      :
+        <WizardStep
+          goNext={this.goNext}
+          goBack={this.goBack}
+          className={wizardStepClassName}
+          {...step}
+          nextButtonText={nextButtonText}
+          backButtonText={backButtonText}
+          nextButtonClassName={nextButtonClassName}
+          backButtonClassName={backButtonClassName}
+          errorText={errorText}
+          spinner={spinner}
+          noOfSteps={steps.length}
+          wizardHeader={wizardHeader ? wizardHeaderWithCurrentStep : null}
+          wizardFooter={wizardFooter ? wizardFooterWithCurrentStep : null}
+        >
+          {this.props.steps[this.state.currentStep].component}
+        </WizardStep>
+      }
     </div>);
   }
 }
@@ -117,6 +124,7 @@ Wizard.propTypes = {
   spinner: PropTypes.object,
   wizardHeader: PropTypes.object,
   wizardFooter: PropTypes.object,
+  receiptStep: PropTypes.object,
 };
 
 Wizard.defaultProps = {
