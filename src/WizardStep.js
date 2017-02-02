@@ -8,6 +8,13 @@ export default class WizardStep extends Component {
     this.handleGoBack = this.handleGoBack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  getChildContext() {
+    return {
+      store: this.props.store,
+    };
+  }
+
   handleSubmit(formData, cb) {
     cb();
     this.props.goNext(formData);
@@ -83,4 +90,8 @@ WizardStep.defaultProps = {
   nextButtonText: 'Neste',
   backButtonText: 'Tilbake',
   className: 'wizard__step',
+};
+
+WizardStep.childContextTypes = {
+  store: React.PropTypes.string,
 };
