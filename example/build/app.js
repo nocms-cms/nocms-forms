@@ -48,10 +48,6 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _nocmsForms = __webpack_require__(1);
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -60,240 +56,32 @@
 	
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(46);
-	
-	var Spinner = __webpack_require__(192);
-	var One = __webpack_require__(193);
-	var Two = __webpack_require__(194);
-	
-	var storeName = 'test-form';
-	var wizardStoreName = 'test-form-wizard';
+	var FormExample = __webpack_require__(196);
+	var WizardExample = __webpack_require__(197);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 	
-	  function App(props) {
+	  function App() {
 	    _classCallCheck(this, App);
 	
-	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-	
-	    _this.handleSubmit = _this.handleSubmit.bind(_this);
-	    _this.handleReset = _this.handleReset.bind(_this);
-	    _this.state = {
-	      errorText: '',
-	      submitted: false,
-	      formData: null
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 	  }
 	
 	  _createClass(App, [{
-	    key: 'getUppercaseName',
-	    value: function getUppercaseName(dependency) {
-	      return dependency.name.value.toUpperCase();
-	    }
-	  }, {
-	    key: 'handleReset',
-	    value: function handleReset() {
-	      this.setState({ submitted: false, formData: null });
-	    }
-	  }, {
-	    key: 'handleSubmit',
-	    value: function handleSubmit(formData, callback) {
-	      this.setState({ submitted: true, formData: formData });
-	      callback();
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var radioOptions = [{
-	        label: 'Option 1',
-	        value: 'one'
-	      }, {
-	        label: 'Option 2',
-	        value: 'two'
-	      }];
-	      var selectOptions = ['Option 1', 'Option 2'];
-	      var initialData = {
-	        radio: 'one'
-	      };
-	      var steps = [{ title: 'Overskrift steg 1', component: React.createElement(One, { store: wizardStoreName + '-step-0' }) }, { title: 'Overskrift steg 2', component: React.createElement(Two, { store: wizardStoreName + '-step-1' }) }];
 	      return React.createElement(
 	        'div',
 	        null,
-	        this.state.submitted ? React.createElement(
-	          'div',
-	          null,
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Submitted form with following form data'
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Text field:'
-	            ),
-	            this.state.formData.name
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Required text field with e-mail validation:'
-	            ),
-	            this.state.formData.email
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Required text field:'
-	            ),
-	            this.state.formData.required
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Radio buttons:'
-	            ),
-	            this.state.formData.radio
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Select:'
-	            ),
-	            this.state.formData.select
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Text area:'
-	            ),
-	            this.state.formData.textarea
-	          ),
-	          React.createElement(
-	            'button',
-	            { type: 'button', onClick: this.handleReset },
-	            'Reset'
-	          )
-	        ) : React.createElement(
-	          _nocmsForms.Form,
-	          {
-	            submitButton: 'Submit',
-	            store: storeName,
-	            initialState: initialData,
-	            errorText: this.state.errorText,
-	            onSubmit: this.handleSubmit,
-	            spinner: React.createElement(Spinner, null),
-	            submittingText: 'Vent litt'
-	          },
-	          React.createElement(_nocmsForms.Input, {
-	            store: storeName,
-	            label: 'Text field',
-	            name: 'name'
-	          }),
-	          React.createElement(_nocmsForms.Input, {
-	            dependOn: 'name',
-	            dependencyFunc: this.getUppercaseName,
-	            store: storeName,
-	            label: 'Dependent text field',
-	            name: 'aggregatedName'
-	          }),
-	          React.createElement(_nocmsForms.Input, {
-	            required: true,
-	            store: storeName,
-	            label: 'Required text field with e-mail validation',
-	            name: 'email',
-	            errorText: 'Wrong e-mail',
-	            validate: 'email'
-	          }),
-	          React.createElement(_nocmsForms.Input, {
-	            required: true,
-	            store: storeName,
-	            label: 'Required text field',
-	            name: 'required',
-	            errorText: 'Error'
-	          }),
-	          React.createElement(_nocmsForms.RadioButtons, {
-	            store: storeName,
-	            label: 'Radio buttons',
-	            name: 'radio',
-	            options: radioOptions
-	          }),
-	          React.createElement(_nocmsForms.Select, {
-	            store: storeName,
-	            label: 'Select',
-	            options: selectOptions,
-	            name: 'select'
-	          }),
-	          React.createElement(_nocmsForms.TextArea, {
-	            store: storeName,
-	            label: 'Text area',
-	            name: 'textarea'
-	          })
-	        ),
 	        React.createElement('hr', null),
-	        React.createElement(
-	          'h2',
-	          null,
-	          'Wizard form example 1'
-	        ),
-	        React.createElement(
-	          'div',
-	          null,
-	          React.createElement(_nocmsForms.Wizard, _defineProperty({
-	            nextButtonText: 'Et steg frem',
-	            className: 'wizard_parent',
-	            wizardStepClassName: 'Hu hei',
-	            backButtonText: 'Et steg tilbake',
-	            nextButtonClassName: 'bling',
-	            store: wizardStoreName,
-	            steps: steps,
-	            wizardHeader: React.createElement(WizardHeader, { steps: steps })
-	          }, 'nextButtonClassName', 'knapp neste-knapp'))
-	        )
+	        React.createElement(WizardExample, null)
 	      );
 	    }
 	  }]);
 	
 	  return App;
 	}(React.Component);
-	
-	var WizardHeader = function WizardHeader(props) {
-	  var currentStep = props.currentStep,
-	      steps = props.steps;
-	
-	  return React.createElement(
-	    'div',
-	    null,
-	    steps[currentStep].title,
-	    ' - steg ',
-	    currentStep + 1,
-	    ' av ',
-	    React.createElement(
-	      'span',
-	      null,
-	      steps.length
-	    )
-	  );
-	};
 	
 	ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
@@ -448,7 +236,8 @@
 	
 	      Object.keys(this.state.store).forEach(function (field) {
 	        var prop = _this2.state.store[field];
-	        if (prop === null) {
+	        var skipFields = ['isValid', 'isValidated', 'value', 'convertDate'];
+	        if (prop === null || skipFields.indexOf(field) >= 0) {
 	          return;
 	        }
 	        if ((typeof prop === 'undefined' ? 'undefined' : _typeof(prop)) !== 'object') {
@@ -4667,9 +4456,14 @@
 	    cb = initialValue;
 	    initialValue = {};
 	  }
+	
 	  if (!stores[name]) {
 	    stores[name] = initialValue || {};
+	  } else {
+	    stores[name] = Object.assign(stores[name], initialValue);
 	  }
+	
+	
 	  if (typeof cb === 'function') {
 	    subscribe(name, cb);
 	  }
@@ -4708,6 +4502,7 @@
 	  update: update
 	};
 	//# sourceMappingURL=index.js.map
+
 
 /***/ },
 /* 35 */
@@ -5936,7 +5731,14 @@
 	
 	    _this.goBack = _this.goBack.bind(_this);
 	    _this.goNext = _this.goNext.bind(_this);
-	    _this.state = { currentStep: 0, lastStepIndex: props.steps.length - 1, wizardData: {} };
+	    _this.state = {
+	      currentStep: 0,
+	      lastStepIndex: props.steps.length - 1,
+	      wizardData: {},
+	      initialStates: props.steps.map(function (step) {
+	        return step.initialState || {};
+	      })
+	    };
 	    return _this;
 	  }
 	
@@ -5964,9 +5766,9 @@
 	        index: current,
 	        component: this.props.steps[current],
 	        store: this.getStoreForStep(current),
-	        data: this.state.wizardData[current],
 	        isFirst: current === 0,
-	        isLast: current === this.props.steps.length - 1
+	        isLast: current === this.props.steps.length - 1,
+	        initialState: this.state.initialStates[current].initialState
 	      };
 	    }
 	  }, {
@@ -5981,6 +5783,7 @@
 	  }, {
 	    key: 'goNext',
 	    value: function goNext(formData) {
+	      console.log(this.state.wizardData, formData);
 	      var wizardData = Object.assign(this.state.wizardData, formData);
 	      this.setState({ wizardData: wizardData });
 	
@@ -5989,6 +5792,7 @@
 	        return;
 	      }
 	      this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
+	      console.log(wizardData);
 	    }
 	  }, {
 	    key: 'addCurrentStep',
@@ -6124,6 +5928,13 @@
 	  }
 	
 	  _createClass(WizardStep, [{
+	    key: 'getChildContext',
+	    value: function getChildContext() {
+	      return {
+	        store: this.props.store
+	      };
+	    }
+	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(formData, cb) {
 	      cb();
@@ -6207,6 +6018,10 @@
 	  nextButtonText: 'Neste',
 	  backButtonText: 'Tilbake',
 	  className: 'wizard__step'
+	};
+	
+	WizardStep.childContextTypes = {
+	  store: _react2.default.PropTypes.string
 	};
 	module.exports = exports['default'];
 
@@ -23669,7 +23484,9 @@
 	module.exports = Spinner;
 
 /***/ },
-/* 193 */
+/* 193 */,
+/* 194 */,
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23682,7 +23499,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var One = function One(props) {
+	var One = function One(props, context) {
 	  return _react2.default.createElement(
 	    'div',
 	    null,
@@ -23692,19 +23509,240 @@
 	      'F\xF8rste steg'
 	    ),
 	    _react2.default.createElement(_nocmsForms.Input, { required: true,
-	      store: props.store,
-	      label: 'F\xF8rste',
-	      name: 'firsttext',
+	      store: context.store,
+	      label: 'Label',
+	      name: props.name,
 	      errorText: 'Oisann',
 	      validate: 'notEmpty'
 	    })
 	  );
 	};
 	
+	One.contextTypes = {
+	  store: _react2.default.PropTypes.string
+	};
+	
 	module.exports = One;
 
 /***/ },
-/* 194 */
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _nocmsForms = __webpack_require__(1);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(3);
+	
+	var Spinner = __webpack_require__(192);
+	
+	var storeName = 'test-form';
+	
+	var FormExample = function (_React$Component) {
+	  _inherits(FormExample, _React$Component);
+	
+	  function FormExample(props) {
+	    _classCallCheck(this, FormExample);
+	
+	    var _this = _possibleConstructorReturn(this, (FormExample.__proto__ || Object.getPrototypeOf(FormExample)).call(this, props));
+	
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.handleReset = _this.handleReset.bind(_this);
+	    _this.state = {
+	      errorText: '',
+	      submitted: false,
+	      formData: null
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(FormExample, [{
+	    key: 'getUppercaseName',
+	    value: function getUppercaseName(dependency) {
+	      return dependency.name.value.toUpperCase();
+	    }
+	  }, {
+	    key: 'handleReset',
+	    value: function handleReset() {
+	      this.setState({ submitted: false, formData: null });
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(formData, callback) {
+	      this.setState({ submitted: true, formData: formData });
+	      callback();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var radioOptions = [{
+	        label: 'Option 1',
+	        value: 'one'
+	      }, {
+	        label: 'Option 2',
+	        value: 'two'
+	      }];
+	      var selectOptions = ['Option 1', 'Option 2'];
+	      var initialData = {
+	        radio: 'one'
+	      };
+	
+	      return React.createElement(
+	        'div',
+	        null,
+	        this.state.submitted ? React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Submitted form with following form data'
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	              'b',
+	              null,
+	              'Text field:'
+	            ),
+	            this.state.formData.name
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	              'b',
+	              null,
+	              'Required text field with e-mail validation:'
+	            ),
+	            this.state.formData.email
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	              'b',
+	              null,
+	              'Required text field:'
+	            ),
+	            this.state.formData.required
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	              'b',
+	              null,
+	              'Radio buttons:'
+	            ),
+	            this.state.formData.radio
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	              'b',
+	              null,
+	              'Select:'
+	            ),
+	            this.state.formData.select
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement(
+	              'b',
+	              null,
+	              'Text area:'
+	            ),
+	            this.state.formData.textarea
+	          ),
+	          React.createElement(
+	            'button',
+	            { type: 'button', onClick: this.handleReset },
+	            'Reset'
+	          )
+	        ) : React.createElement(
+	          _nocmsForms.Form,
+	          {
+	            submitButton: 'Submit',
+	            store: storeName,
+	            initialState: initialData,
+	            errorText: this.state.errorText,
+	            onSubmit: this.handleSubmit,
+	            spinner: React.createElement(Spinner, null),
+	            submittingText: 'Vent litt'
+	          },
+	          React.createElement(_nocmsForms.Input, {
+	            store: storeName,
+	            label: 'Text field',
+	            name: 'name'
+	          }),
+	          React.createElement(_nocmsForms.Input, {
+	            dependOn: 'name',
+	            dependencyFunc: this.getUppercaseName,
+	            store: storeName,
+	            label: 'Dependent text field',
+	            name: 'aggregatedName'
+	          }),
+	          React.createElement(_nocmsForms.Input, {
+	            required: true,
+	            store: storeName,
+	            label: 'Required text field with e-mail validation',
+	            name: 'email',
+	            errorText: 'Wrong e-mail',
+	            validate: 'email'
+	          }),
+	          React.createElement(_nocmsForms.Input, {
+	            required: true,
+	            store: storeName,
+	            label: 'Required text field',
+	            name: 'required',
+	            errorText: 'Error'
+	          }),
+	          React.createElement(_nocmsForms.RadioButtons, {
+	            store: storeName,
+	            label: 'Radio buttons',
+	            name: 'radio',
+	            options: radioOptions
+	          }),
+	          React.createElement(_nocmsForms.Select, {
+	            store: storeName,
+	            label: 'Select',
+	            options: selectOptions,
+	            name: 'select'
+	          }),
+	          React.createElement(_nocmsForms.TextArea, {
+	            store: storeName,
+	            label: 'Text area',
+	            name: 'textarea'
+	          })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return FormExample;
+	}(React.Component);
+	
+	exports.default = FormExample;
+	module.exports = exports['default'];
+
+/***/ },
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23717,25 +23755,61 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Two = function Two(props) {
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var Step = __webpack_require__(195);
+	
+	var wizardStoreName = 'test-form-wizard';
+	
+	var WizardHeader = function WizardHeader(props) {
+	  var currentStep = props.currentStep,
+	      steps = props.steps;
+	
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    steps[currentStep].title,
+	    ' - steg ',
+	    currentStep + 1,
+	    ' av ',
+	    _react2.default.createElement(
+	      'span',
+	      null,
+	      steps.length
+	    )
+	  );
+	};
+	
+	var WizardExample = function WizardExample(props) {
+	  var steps = [{ title: 'Overskrift steg 1', component: _react2.default.createElement(Step, { name: 'firststep' }) }, { title: 'Overskrift steg 2', component: _react2.default.createElement(Step, { name: 'secondstep', initialState: { secondstep: 't2' } }) }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }) }];
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    _react2.default.createElement(
 	      'h2',
 	      null,
-	      'Andre steg'
+	      'Wizard form example 1'
 	    ),
-	    _react2.default.createElement(_nocmsForms.Input, { required: true,
-	      store: props.store,
-	      label: 'Andre',
-	      name: 'lasttext',
-	      errorText: 'Oisann',
-	      validate: 'notEmpty' })
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(_nocmsForms.Wizard, _defineProperty({
+	        nextButtonText: 'Et steg frem',
+	        className: 'wizard_parent',
+	        wizardStepClassName: 'Hu hei',
+	        backButtonText: 'Et steg tilbake',
+	        nextButtonClassName: 'bling',
+	        store: wizardStoreName,
+	        steps: steps,
+	        wizardHeader: _react2.default.createElement(WizardHeader, { steps: steps })
+	      }, 'nextButtonClassName', 'knapp neste-knapp'))
+	    )
 	  );
 	};
 	
-	module.exports = Two;
+	WizardExample.propTypes = {};
+	
+	module.exports = WizardExample;
 
 /***/ }
 /******/ ]);
