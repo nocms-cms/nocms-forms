@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const containerClassName = 'button-container';
+const containerClassName = 'form__button-container';
 // @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
 const WizardFooter = (props) => {
   const {
