@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 
-const backButtonClassName = 'button__back';
-const nextButtonClassName = 'button__next';
 const containerClassName = 'button-container';
 // @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
 const WizardFooter = (props) => {
@@ -10,6 +8,8 @@ const WizardFooter = (props) => {
     showNextButton,
     backButtonText,
     nextButtonText,
+    backButtonClassName,
+    nextButtonClassName,
     handleGoBack,
   } = props;
   return (
@@ -31,7 +31,14 @@ WizardFooter.propTypes = {
   showNextButton: PropTypes.bool,
   backButtonText: PropTypes.string,
   nextButtonText: PropTypes.string,
+  backButtonClassName: PropTypes.string,
+  nextButtonClassName: PropTypes.string,
   handleGoBack: PropTypes.func.isRequired,
+};
+
+WizardFooter.defaultProps = {
+  backButtonClassName: 'button button__back',
+  nextButtonClassName: 'button button__next',
 };
 
 module.exports = WizardFooter;

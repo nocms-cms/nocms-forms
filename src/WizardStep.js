@@ -29,6 +29,8 @@ export default class WizardStep extends Component {
       errorText,
       wizardFooter,
       wizardHeader,
+      backButtonClassName,
+      nextButtonClassName,
     } = this.props;
     return (
       <Form
@@ -43,13 +45,15 @@ export default class WizardStep extends Component {
       >
         {wizardHeader}
         {this.props.children}
-        {wizardFooter ? wizardFooter :
+        {wizardFooter ||
         <DefaultWizardFooter
           nextButtonText={nextButtonText}
           backButtonText={backButtonText}
           showBackButton={!isFirst}
           showNextButton={!isLast}
           handleGoBack={this.handleGoBack}
+          backButtonClassName={backButtonClassName}
+          nextButtonClassName={nextButtonClassName}
         /> }
       </Form>
     );
@@ -62,6 +66,8 @@ WizardStep.propTypes = {
   className: PropTypes.string,
   nextButtonText: PropTypes.string,
   backButtonText: PropTypes.string,
+  backButtonClassName: PropTypes.string,
+  nextButtonClassName: PropTypes.string,
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,
   store: PropTypes.string,
@@ -76,6 +82,4 @@ WizardStep.defaultProps = {
   nextButtonText: 'Neste',
   backButtonText: 'Tilbake',
   className: 'wizard__step',
-  backButtonClassName: 'button button__back',
-  nextButtonClassName: 'button button__next',
 };

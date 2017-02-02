@@ -133,6 +133,7 @@ class App extends React.Component {
           store={wizardStoreName}
           steps={steps}
           wizardHeader={<WizardHeader steps={steps} />}
+          nextButtonClassName="knapp neste-knapp"
         />
          </div>
       </div>

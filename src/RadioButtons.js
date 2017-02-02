@@ -88,7 +88,7 @@ export default class RadioButtons extends React.Component {
         option = { label: option, value: option };
       }
       return (
-        <label key={`${this.props.name}_${index}`} className={option.disabled ? ' disabled' : ''}>
+        <label key={`${this.props.name}_${index}`} className={option.disabled ? ' disabled' : null}>
           <input
             checked={this.state.value === option.value}
             type="radio"

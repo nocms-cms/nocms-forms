@@ -50,6 +50,8 @@
 	
 	var _nocmsForms = __webpack_require__(1);
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -256,7 +258,7 @@
 	        React.createElement(
 	          'div',
 	          null,
-	          React.createElement(_nocmsForms.Wizard, {
+	          React.createElement(_nocmsForms.Wizard, _defineProperty({
 	            nextButtonText: 'Et steg frem',
 	            className: 'wizard_parent',
 	            wizardStepClassName: 'Hu hei',
@@ -265,7 +267,7 @@
 	            store: wizardStoreName,
 	            steps: steps,
 	            wizardHeader: React.createElement(WizardHeader, { steps: steps })
-	          })
+	          }, 'nextButtonClassName', 'knapp neste-knapp'))
 	        )
 	      );
 	    }
@@ -22817,7 +22819,7 @@
 	        }
 	        return React.createElement(
 	          'label',
-	          { key: _this2.props.name + '_' + index, className: option.disabled ? ' disabled' : '' },
+	          { key: _this2.props.name + '_' + index, className: option.disabled ? ' disabled' : null },
 	          React.createElement('input', {
 	            checked: _this2.state.value === option.value,
 	            type: 'radio',
@@ -23505,7 +23507,9 @@
 	          store = _props.store,
 	          errorText = _props.errorText,
 	          wizardFooter = _props.wizardFooter,
-	          wizardHeader = _props.wizardHeader;
+	          wizardHeader = _props.wizardHeader,
+	          backButtonClassName = _props.backButtonClassName,
+	          nextButtonClassName = _props.nextButtonClassName;
 	
 	      return _react2.default.createElement(
 	        _Form2.default,
@@ -23521,12 +23525,14 @@
 	        },
 	        wizardHeader,
 	        this.props.children,
-	        wizardFooter ? wizardFooter : _react2.default.createElement(_WizardFooter2.default, {
+	        wizardFooter || _react2.default.createElement(_WizardFooter2.default, {
 	          nextButtonText: nextButtonText,
 	          backButtonText: backButtonText,
 	          showBackButton: !isFirst,
 	          showNextButton: !isLast,
-	          handleGoBack: this.handleGoBack
+	          handleGoBack: this.handleGoBack,
+	          backButtonClassName: backButtonClassName,
+	          nextButtonClassName: nextButtonClassName
 	        })
 	      );
 	    }
@@ -23544,6 +23550,8 @@
 	  className: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
 	  backButtonText: _react.PropTypes.string,
+	  backButtonClassName: _react.PropTypes.string,
+	  nextButtonClassName: _react.PropTypes.string,
 	  isFirst: _react.PropTypes.bool,
 	  isLast: _react.PropTypes.bool,
 	  store: _react.PropTypes.string,
@@ -23557,9 +23565,7 @@
 	WizardStep.defaultProps = {
 	  nextButtonText: 'Neste',
 	  backButtonText: 'Tilbake',
-	  className: 'wizard__step',
-	  backButtonClassName: 'button button__back',
-	  nextButtonClassName: 'button button__next'
+	  className: 'wizard__step'
 	};
 	module.exports = exports['default'];
 
@@ -23575,8 +23581,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var backButtonClassName = 'button__back';
-	var nextButtonClassName = 'button__next';
 	var containerClassName = 'button-container';
 	// @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
 	var WizardFooter = function WizardFooter(props) {
@@ -23584,6 +23588,8 @@
 	      showNextButton = props.showNextButton,
 	      backButtonText = props.backButtonText,
 	      nextButtonText = props.nextButtonText,
+	      backButtonClassName = props.backButtonClassName,
+	      nextButtonClassName = props.nextButtonClassName,
 	      handleGoBack = props.handleGoBack;
 	
 	  return _react2.default.createElement(
@@ -23607,7 +23613,14 @@
 	  showNextButton: _react.PropTypes.bool,
 	  backButtonText: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
+	  backButtonClassName: _react.PropTypes.string,
+	  nextButtonClassName: _react.PropTypes.string,
 	  handleGoBack: _react.PropTypes.func.isRequired
+	};
+	
+	WizardFooter.defaultProps = {
+	  backButtonClassName: 'button button__back',
+	  nextButtonClassName: 'button button__next'
 	};
 	
 	module.exports = WizardFooter;
