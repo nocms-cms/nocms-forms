@@ -8,6 +8,7 @@ export default class Wizard extends Component {
     super(props);
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
+    this.handleFinish = this.handleFinish.bind(this);
     this.state = {
       currentStep: 0,
       lastStepIndex: props.steps.length - 1,
@@ -63,6 +64,15 @@ export default class Wizard extends Component {
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
   }
 
+  handleFinish(formData) {
+    const wizardData = Object.assign(this.state.wizardData, formData);
+    this.props.handleFinish(wizardData, (err) => {
+      if (!err) {
+        this.setState({ showReceipt: true });
+      }
+    });
+  }
+
   render() {
     const {
       className,
@@ -72,6 +82,8 @@ export default class Wizard extends Component {
       backButtonText,
       backButtonClassName,
       nextButtonClassName,
+      finishButtonClassName,
+      finishButtonText,
       spinner,
       steps,
     } = this.props;
@@ -88,8 +100,11 @@ export default class Wizard extends Component {
           {...step}
           nextButtonText={nextButtonText}
           backButtonText={backButtonText}
+          finishButtonText={finishButtonText}
+          handleFinish={this.handleFinish}
           nextButtonClassName={nextButtonClassName}
           backButtonClassName={backButtonClassName}
+          finishButtonClassName={finishButtonClassName}
           errorText={errorText}
           spinner={spinner}
           noOfSteps={steps.length}
@@ -107,10 +122,13 @@ Wizard.propTypes = {
   goBack: PropTypes.func,
   goNext: PropTypes.func,
   progressIndicator: PropTypes.func,
+  handleFinish: PropTypes.func.isRequired,
   nextButtonClassName: PropTypes.string,
   backButtonClassName: PropTypes.string,
+  finishButtonClassName: PropTypes.string,
   nextButtonText: PropTypes.string,
   backButtonText: PropTypes.string,
+  finishButtonText: PropTypes.string,
   errorText: PropTypes.string,
   className: PropTypes.string,
   wizardStepClassName: PropTypes.string,

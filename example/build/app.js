@@ -21813,6 +21813,8 @@
 	var SUBMITTING_DEFAULT = '...';
 	var SUBMIT_BUTTON_DEFAULT = 'OK';
 	
+	// TODO: Prevent submit before client side rendering is complete
+	
 	var convertDate = function convertDate(date) {
 	  if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
 	    return date;
@@ -21882,7 +21884,7 @@
 	
 	      Object.keys(this.state.store).forEach(function (field) {
 	        var prop = _this2.state.store[field];
-	        var skipFields = ['isValid', 'isValidated', 'value', 'convertDate'];
+	        var skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
 	        if (prop === null || skipFields.indexOf(field) >= 0) {
 	          return;
 	        }
@@ -23323,6 +23325,7 @@
 	
 	    _this.goBack = _this.goBack.bind(_this);
 	    _this.goNext = _this.goNext.bind(_this);
+	    _this.handleFinish = _this.handleFinish.bind(_this);
 	    _this.state = {
 	      currentStep: 0,
 	      lastStepIndex: props.steps.length - 1,
@@ -23389,6 +23392,18 @@
 	      this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
 	    }
 	  }, {
+	    key: 'handleFinish',
+	    value: function handleFinish(formData) {
+	      var _this3 = this;
+	
+	      var wizardData = Object.assign(this.state.wizardData, formData);
+	      this.props.handleFinish(wizardData, function (err) {
+	        if (!err) {
+	          _this3.setState({ showReceipt: true });
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
@@ -23399,6 +23414,8 @@
 	          backButtonText = _props.backButtonText,
 	          backButtonClassName = _props.backButtonClassName,
 	          nextButtonClassName = _props.nextButtonClassName,
+	          finishButtonClassName = _props.finishButtonClassName,
+	          finishButtonText = _props.finishButtonText,
 	          spinner = _props.spinner,
 	          steps = _props.steps;
 	
@@ -23416,8 +23433,11 @@
 	          }, step, {
 	            nextButtonText: nextButtonText,
 	            backButtonText: backButtonText,
+	            finishButtonText: finishButtonText,
+	            handleFinish: this.handleFinish,
 	            nextButtonClassName: nextButtonClassName,
 	            backButtonClassName: backButtonClassName,
+	            finishButtonClassName: finishButtonClassName,
 	            errorText: errorText,
 	            spinner: spinner,
 	            noOfSteps: steps.length
@@ -23440,10 +23460,13 @@
 	  goBack: _react.PropTypes.func,
 	  goNext: _react.PropTypes.func,
 	  progressIndicator: _react.PropTypes.func,
+	  handleFinish: _react.PropTypes.func.isRequired,
 	  nextButtonClassName: _react.PropTypes.string,
 	  backButtonClassName: _react.PropTypes.string,
+	  finishButtonClassName: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
 	  backButtonText: _react.PropTypes.string,
+	  finishButtonText: _react.PropTypes.string,
 	  errorText: _react.PropTypes.string,
 	  className: _react.PropTypes.string,
 	  wizardStepClassName: _react.PropTypes.string,
@@ -23513,6 +23536,10 @@
 	    key: 'handleSubmit',
 	    value: function handleSubmit(formData, cb) {
 	      cb();
+	      if (this.props.isLast) {
+	        this.props.handleFinish(formData);
+	        return;
+	      }
 	      this.props.goNext(formData);
 	    }
 	  }, {
@@ -23528,6 +23555,7 @@
 	          className = _props.className,
 	          nextButtonText = _props.nextButtonText,
 	          backButtonText = _props.backButtonText,
+	          finishButtonText = _props.finishButtonText,
 	          initialState = _props.initialState,
 	          isFirst = _props.isFirst,
 	          isLast = _props.isLast,
@@ -23537,7 +23565,8 @@
 	          nextButtonClassName = _props.nextButtonClassName,
 	          helpArea = _props.helpArea,
 	          stepHeader = _props.stepHeader,
-	          stepFooter = _props.stepFooter;
+	          stepFooter = _props.stepFooter,
+	          finishButtonClassName = _props.finishButtonClassName;
 	
 	
 	      return _react2.default.createElement(
@@ -23558,13 +23587,16 @@
 	          },
 	          this.props.children,
 	          _react2.default.createElement(_WizardControlButtons2.default, {
+	            showFinishButton: isLast,
 	            nextButtonText: nextButtonText,
+	            finishButtonText: finishButtonText,
 	            backButtonText: backButtonText,
 	            showBackButton: !isFirst,
 	            showNextButton: !isLast,
 	            handleGoBack: this.handleGoBack,
 	            backButtonClassName: backButtonClassName,
-	            nextButtonClassName: nextButtonClassName
+	            nextButtonClassName: nextButtonClassName,
+	            finishButtonClassName: finishButtonClassName
 	          })
 	        ),
 	        stepFooter,
@@ -23582,11 +23614,14 @@
 	WizardStep.propTypes = {
 	  goBack: _react.PropTypes.func,
 	  goNext: _react.PropTypes.func,
+	  handleFinish: _react.PropTypes.func,
 	  className: _react.PropTypes.string,
-	  nextButtonText: _react.PropTypes.string,
-	  backButtonText: _react.PropTypes.string,
+	  nextButtonText: _react.PropTypes.string.isRequired,
+	  backButtonText: _react.PropTypes.string.isRequired,
+	  finishButtonText: _react.PropTypes.string.isRequired,
 	  backButtonClassName: _react.PropTypes.string,
 	  nextButtonClassName: _react.PropTypes.string,
+	  finishButtonClassName: _react.PropTypes.string,
 	  isFirst: _react.PropTypes.bool,
 	  isLast: _react.PropTypes.bool,
 	  store: _react.PropTypes.string,
@@ -23622,12 +23657,15 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var containerClassName = 'form__button-container';
-	// @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
+	
 	var WizardControlButtons = function WizardControlButtons(props) {
 	  var showBackButton = props.showBackButton,
 	      showNextButton = props.showNextButton,
+	      showFinishButton = props.showFinishButton,
 	      backButtonText = props.backButtonText,
 	      nextButtonText = props.nextButtonText,
+	      finishButtonText = props.finishButtonText,
+	      finishButtonClassName = props.finishButtonClassName,
 	      backButtonClassName = props.backButtonClassName,
 	      nextButtonClassName = props.nextButtonClassName,
 	      handleGoBack = props.handleGoBack;
@@ -23644,6 +23682,11 @@
 	      'button',
 	      { type: 'submit', className: nextButtonClassName },
 	      nextButtonText
+	    ) : null,
+	    showFinishButton ? _react2.default.createElement(
+	      'button',
+	      { type: 'submit', className: finishButtonClassName },
+	      finishButtonText
 	    ) : null
 	  );
 	};
@@ -23651,16 +23694,20 @@
 	WizardControlButtons.propTypes = {
 	  showBackButton: _react.PropTypes.bool,
 	  showNextButton: _react.PropTypes.bool,
+	  showFinishButton: _react.PropTypes.bool,
 	  backButtonText: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
 	  backButtonClassName: _react.PropTypes.string,
 	  nextButtonClassName: _react.PropTypes.string,
-	  handleGoBack: _react.PropTypes.func.isRequired
+	  handleGoBack: _react.PropTypes.func.isRequired,
+	  finishButtonText: _react.PropTypes.string.isRequired,
+	  finishButtonClassName: _react.PropTypes.string
 	};
 	
 	WizardControlButtons.defaultProps = {
 	  backButtonClassName: 'button button__back',
-	  nextButtonClassName: 'button button__next'
+	  nextButtonClassName: 'button button__next',
+	  finishButtonClassName: 'button button__finish'
 	};
 	
 	module.exports = WizardControlButtons;
@@ -23743,10 +23790,17 @@
 	        ) }]
 	    };
 	    _this.progressIndicator = _this.progressIndicator.bind(_this);
+	    _this.handleFinish = _this.handleFinish.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(WizardExample, [{
+	    key: 'handleFinish',
+	    value: function handleFinish(wizardData, cb) {
+	      console.log(wizardData);
+	      cb(null);
+	    }
+	  }, {
 	    key: 'progressIndicator',
 	    value: function progressIndicator(current, numberOfSteps) {
 	      return _react2.default.createElement(
@@ -23766,6 +23820,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _React$createElement;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -23777,16 +23833,17 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement(_nocmsForms.Wizard, _defineProperty({
+	          _react2.default.createElement(_nocmsForms.Wizard, (_React$createElement = {
 	            progressIndicator: this.progressIndicator,
 	            nextButtonText: 'Et steg frem',
 	            className: 'wizard_parent',
 	            wizardStepClassName: 'Hu hei',
 	            backButtonText: 'Et steg tilbake',
+	            finishButtonText: 'Fullf\xF8r',
 	            nextButtonClassName: 'bling',
 	            store: wizardStoreName,
 	            steps: this.state.steps
-	          }, 'nextButtonClassName', 'knapp neste-knapp'))
+	          }, _defineProperty(_React$createElement, 'nextButtonClassName', 'knapp neste-knapp'), _defineProperty(_React$createElement, 'handleFinish', this.handleFinish), _React$createElement))
 	        )
 	      );
 	    }

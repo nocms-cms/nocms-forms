@@ -17,6 +17,12 @@ export default class WizardExample extends Component {
       ],
     };
     this.progressIndicator = this.progressIndicator.bind(this);
+    this.handleFinish = this.handleFinish.bind(this);
+  }
+
+  handleFinish(wizardData, cb) {
+    console.log(wizardData);
+    cb(null);
   }
 
   progressIndicator(current, numberOfSteps){
@@ -36,10 +42,12 @@ export default class WizardExample extends Component {
          className="wizard_parent"
          wizardStepClassName="Hu hei"
          backButtonText="Et steg tilbake"
+         finishButtonText="Fullfør"
          nextButtonClassName="bling"
          store={wizardStoreName}
          steps={this.state.steps}
          nextButtonClassName="knapp neste-knapp"
+         handleFinish={this.handleFinish}
         />
         </div>
       </div>

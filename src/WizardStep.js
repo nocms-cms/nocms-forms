@@ -17,6 +17,10 @@ export default class WizardStep extends Component {
 
   handleSubmit(formData, cb) {
     cb();
+    if (this.props.isLast) {
+      this.props.handleFinish(formData);
+      return;
+    }
     this.props.goNext(formData);
   }
 
@@ -30,6 +34,7 @@ export default class WizardStep extends Component {
       className,
       nextButtonText,
       backButtonText,
+      finishButtonText,
       initialState,
       isFirst,
       isLast,
@@ -40,6 +45,7 @@ export default class WizardStep extends Component {
       helpArea,
       stepHeader,
       stepFooter,
+      finishButtonClassName,
     } = this.props;
 
     return (
@@ -57,13 +63,16 @@ export default class WizardStep extends Component {
         >
           {this.props.children}
           <WizardControlButtons
+            showFinishButton={isLast}
             nextButtonText={nextButtonText}
+            finishButtonText={finishButtonText}
             backButtonText={backButtonText}
             showBackButton={!isFirst}
             showNextButton={!isLast}
             handleGoBack={this.handleGoBack}
             backButtonClassName={backButtonClassName}
             nextButtonClassName={nextButtonClassName}
+            finishButtonClassName={finishButtonClassName}
           />
         </Form>
         { stepFooter }
@@ -76,11 +85,14 @@ export default class WizardStep extends Component {
 WizardStep.propTypes = {
   goBack: PropTypes.func,
   goNext: PropTypes.func,
+  handleFinish: PropTypes.func,
   className: PropTypes.string,
-  nextButtonText: PropTypes.string,
-  backButtonText: PropTypes.string,
+  nextButtonText: PropTypes.string.isRequired,
+  backButtonText: PropTypes.string.isRequired,
+  finishButtonText: PropTypes.string.isRequired,
   backButtonClassName: PropTypes.string,
   nextButtonClassName: PropTypes.string,
+  finishButtonClassName: PropTypes.string,
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,
   store: PropTypes.string,
