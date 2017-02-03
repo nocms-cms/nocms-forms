@@ -91,7 +91,7 @@ export default class Wizard extends Component {
     return (<div className={className}>
       { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
       { this.state.showReceipt ?
-        this.props.receiptStep
+        this.props.receipt
       :
         <WizardStep
           goNext={this.goNext}
@@ -133,7 +133,7 @@ Wizard.propTypes = {
   className: PropTypes.string,
   wizardStepClassName: PropTypes.string,
   spinner: PropTypes.object,
-  receiptStep: PropTypes.object,
+  receipt: PropTypes.object,
 };
 
 Wizard.defaultProps = {

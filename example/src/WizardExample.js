@@ -37,6 +37,7 @@ export default class WizardExample extends Component {
         <h2>Wizard form example 1</h2>
         <div>
         <Wizard
+         receipt={<div>Kvittering, yeah!</div>}
          progressIndicator={this.progressIndicator}
          nextButtonText="Et steg frem"
          className="wizard_parent"
