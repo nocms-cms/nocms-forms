@@ -134,7 +134,6 @@ class Input extends Component {
 
   render() {
     const type = this.props.type || 'text';
-    const classes = this.state.isValid ? '' : 'form__error';
     const containerClasses = `form__control-group ${!this.state.isValid ? ' form__error' : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
@@ -148,7 +147,6 @@ class Input extends Component {
             {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
           </span>
           <input
-            className={classes}
             type={type}
             autoComplete="off"
             maxLength={this.props.maxLength}
