@@ -6,6 +6,8 @@ const events = require('nocms-events');
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
 
+// TODO: Prevent submit before client side rendering is complete
+
 const convertDate = (date) => {
   if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
     return date;
@@ -61,7 +63,7 @@ class Form extends React.Component {
 
     Object.keys(this.state.store).forEach((field) => {
       const prop = this.state.store[field];
-      const skipFields = ['isValid', 'isValidated', 'value', 'convertDate'];
+      const skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
       if (prop === null || skipFields.indexOf(field) >= 0) {
         return;
       }
