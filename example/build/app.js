@@ -74,6 +74,7 @@
 	      return React.createElement(
 	        'div',
 	        null,
+	        React.createElement(FormExample, null),
 	        React.createElement('hr', null),
 	        React.createElement(WizardExample, null)
 	      );
@@ -21583,9 +21584,7 @@
 	        value: 'two'
 	      }];
 	      var selectOptions = ['Option 1', 'Option 2'];
-	      var initialData = {
-	        radio: 'one'
-	      };
+	      var initialData = {};
 	
 	      return React.createElement(
 	        'div',
@@ -21702,6 +21701,8 @@
 	            errorText: 'Error'
 	          }),
 	          React.createElement(_nocmsForms.RadioButtons, {
+	            required: true,
+	            errorText: 'Oh no',
 	            store: storeName,
 	            label: 'Radio buttons',
 	            name: 'radio',
@@ -22824,7 +22825,8 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var containerClasses = 'form__control-group form__control-group--radio ' + this.props.className + ' ' + (!this.state.isValid ? ' form__error' : '');
+	      var containerClasses = 'form__control-group form__control-group--radio ' + this.props.className + ' ' + (!this.state.isValid ? 'form__error' : null);
+	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
 	      var radios = this.props.options.map(function (o, index) {
 	        var option = o;
 	        if (typeof option === 'string') {
@@ -22859,7 +22861,12 @@
 	          React.createElement(
 	            'legend',
 	            null,
-	            this.props.label
+	            this.props.label,
+	            this.props.required ? React.createElement(
+	              'span',
+	              { className: isRequiredLabelClass },
+	              this.props.requiredMark
+	            ) : null
 	          ),
 	          radios,
 	          this.props.errorText && !this.state.isValid ? React.createElement(
@@ -22888,11 +22895,13 @@
 	  required: React.PropTypes.bool,
 	  validate: React.PropTypes.string,
 	  options: React.PropTypes.array,
-	  label: React.PropTypes.string
+	  label: React.PropTypes.string,
+	  requiredMark: React.PropTypes.string
 	};
 	
 	RadioButtons.defaultProps = {
 	  required: false,
+	  requiredMark: '*',
 	  className: ''
 	};
 	module.exports = exports['default'];

@@ -44,7 +44,7 @@ export default class FormExample extends React.Component {
       'Option 1', 'Option 2',
     ];
     const initialData = {
-      radio: 'one',
+
     };
 
     return (
@@ -97,6 +97,8 @@ export default class FormExample extends React.Component {
             errorText="Error"
           />
           <RadioButtons
+            required
+            errorText="Oh no"
             store={storeName}
             label="Radio buttons"
             name="radio"
