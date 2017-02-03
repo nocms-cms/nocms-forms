@@ -30,13 +30,17 @@ export default class Wizard extends Component {
 
   getStep() {
     const current = this.state.currentStep;
+    const step = this.props.steps[current];
     return {
       index: current,
-      component: this.props.steps[current],
+      component: this.props.steps[current].component,
       store: this.getStoreForStep(current),
       isFirst: current === 0,
       isLast: current === this.props.steps.length - 1,
       initialState: this.state.initialStates[current],
+      stepHeader: step.stepHeader,
+      stepFooter: step.stepFooter,
+      helpArea: step.helpArea,
     };
   }
 
@@ -90,7 +94,7 @@ export default class Wizard extends Component {
           spinner={spinner}
           noOfSteps={steps.length}
         >
-          {this.props.steps[this.state.currentStep].component}
+          {step.component}
         </WizardStep>
       }
     </div>);

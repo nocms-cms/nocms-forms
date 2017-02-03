@@ -23354,13 +23354,17 @@
 	    key: 'getStep',
 	    value: function getStep() {
 	      var current = this.state.currentStep;
+	      var step = this.props.steps[current];
 	      return {
 	        index: current,
-	        component: this.props.steps[current],
+	        component: this.props.steps[current].component,
 	        store: this.getStoreForStep(current),
 	        isFirst: current === 0,
 	        isLast: current === this.props.steps.length - 1,
-	        initialState: this.state.initialStates[current]
+	        initialState: this.state.initialStates[current],
+	        stepHeader: step.stepHeader,
+	        stepFooter: step.stepFooter,
+	        helpArea: step.helpArea
 	      };
 	    }
 	  }, {
@@ -23418,7 +23422,7 @@
 	            spinner: spinner,
 	            noOfSteps: steps.length
 	          }),
-	          this.props.steps[this.state.currentStep].component
+	          step.component
 	        )
 	      );
 	    }
@@ -23529,15 +23533,17 @@
 	          isLast = _props.isLast,
 	          store = _props.store,
 	          errorText = _props.errorText,
-	          wizardHeader = _props.wizardHeader,
 	          backButtonClassName = _props.backButtonClassName,
 	          nextButtonClassName = _props.nextButtonClassName,
-	          helpArea = _props.helpArea;
+	          helpArea = _props.helpArea,
+	          stepHeader = _props.stepHeader,
+	          stepFooter = _props.stepFooter;
 	
 	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        stepHeader,
 	        _react2.default.createElement(
 	          _Form2.default,
 	          {
@@ -23550,7 +23556,6 @@
 	            errorText: errorText,
 	            noSubmitButton: true
 	          },
-	          wizardHeader,
 	          this.props.children,
 	          _react2.default.createElement(_WizardControlButtons2.default, {
 	            nextButtonText: nextButtonText,
@@ -23562,6 +23567,7 @@
 	            nextButtonClassName: nextButtonClassName
 	          })
 	        ),
+	        stepFooter,
 	        helpArea
 	      );
 	    }
@@ -23587,8 +23593,9 @@
 	  initialState: _react.PropTypes.object,
 	  errorText: _react.PropTypes.string,
 	  children: _react.PropTypes.node,
-	  wizardHeader: _react.PropTypes.object,
-	  helpArea: _react.PropTypes.object
+	  helpArea: _react.PropTypes.object,
+	  stepHeader: _react.PropTypes.object,
+	  stepFooter: _react.PropTypes.object
 	};
 	
 	WizardStep.defaultProps = {
@@ -23721,7 +23728,19 @@
 	    var _this = _possibleConstructorReturn(this, (WizardExample.__proto__ || Object.getPrototypeOf(WizardExample)).call(this));
 	
 	    _this.state = {
-	      steps: [{ title: 'Overskrift steg 1', component: _react2.default.createElement(Step, { name: 'firststep' }) }, { title: 'Overskrift steg 2', component: _react2.default.createElement(Step, { name: 'secondstep' }), initialState: { secondstep: 't2' } }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }) }]
+	      steps: [{ title: 'Overskrift steg 1', component: _react2.default.createElement(Step, { name: 'firststep' }), stepFooter: _react2.default.createElement(
+	          'div',
+	          null,
+	          'Jeg er en step footer'
+	        ) }, { title: 'Overskrift steg 2', component: _react2.default.createElement(Step, { name: 'secondstep' }), initialState: { secondstep: 't2' }, stepHeader: _react2.default.createElement(
+	          'div',
+	          null,
+	          'Jeg er en step header'
+	        ) }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }), helpArea: _react2.default.createElement(
+	          'div',
+	          null,
+	          'Jeg er et hjelpeomr\xE5de'
+	        ) }]
 	    };
 	    _this.progressIndicator = _this.progressIndicator.bind(_this);
 	    return _this;

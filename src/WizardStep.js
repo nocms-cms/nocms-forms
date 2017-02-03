@@ -35,14 +35,16 @@ export default class WizardStep extends Component {
       isLast,
       store,
       errorText,
-      wizardHeader,
       backButtonClassName,
       nextButtonClassName,
       helpArea,
+      stepHeader,
+      stepFooter,
     } = this.props;
 
     return (
       <div>
+        { stepHeader }
         <Form
           wizardStep
           key={store}
@@ -53,7 +55,6 @@ export default class WizardStep extends Component {
           errorText={errorText}
           noSubmitButton
         >
-          {wizardHeader}
           {this.props.children}
           <WizardControlButtons
             nextButtonText={nextButtonText}
@@ -65,6 +66,7 @@ export default class WizardStep extends Component {
             nextButtonClassName={nextButtonClassName}
           />
         </Form>
+        { stepFooter }
         { helpArea }
       </div>
     );
@@ -85,8 +87,9 @@ WizardStep.propTypes = {
   initialState: PropTypes.object,
   errorText: PropTypes.string,
   children: PropTypes.node,
-  wizardHeader: PropTypes.object,
   helpArea: PropTypes.object,
+  stepHeader: PropTypes.object,
+  stepFooter: PropTypes.object,
 };
 
 WizardStep.defaultProps = {
