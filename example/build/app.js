@@ -124,7 +124,7 @@
 	
 	var _WizardStep3 = _interopRequireDefault(_WizardStep2);
 	
-	var _WizardFooter2 = __webpack_require__(45);
+	var _WizardFooter2 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./WizardFooter\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var _WizardFooter3 = _interopRequireDefault(_WizardFooter2);
 	
@@ -5906,9 +5906,9 @@
 	
 	var _Form2 = _interopRequireDefault(_Form);
 	
-	var _WizardFooter = __webpack_require__(45);
+	var _WizardControlButtons = __webpack_require__(198);
 	
-	var _WizardFooter2 = _interopRequireDefault(_WizardFooter);
+	var _WizardControlButtons2 = _interopRequireDefault(_WizardControlButtons);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -5962,35 +5962,40 @@
 	          isLast = _props.isLast,
 	          store = _props.store,
 	          errorText = _props.errorText,
-	          wizardFooter = _props.wizardFooter,
 	          wizardHeader = _props.wizardHeader,
 	          backButtonClassName = _props.backButtonClassName,
-	          nextButtonClassName = _props.nextButtonClassName;
+	          nextButtonClassName = _props.nextButtonClassName,
+	          helpArea = _props.helpArea;
 	
 	
 	      return _react2.default.createElement(
-	        _Form2.default,
-	        {
-	          wizardStep: true,
-	          key: store,
-	          onSubmit: this.handleSubmit,
-	          initialState: initialState,
-	          className: className,
-	          store: store,
-	          errorText: errorText,
-	          noSubmitButton: true
-	        },
-	        wizardHeader,
-	        this.props.children,
-	        wizardFooter || _react2.default.createElement(_WizardFooter2.default, {
-	          nextButtonText: nextButtonText,
-	          backButtonText: backButtonText,
-	          showBackButton: !isFirst,
-	          showNextButton: !isLast,
-	          handleGoBack: this.handleGoBack,
-	          backButtonClassName: backButtonClassName,
-	          nextButtonClassName: nextButtonClassName
-	        })
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _Form2.default,
+	          {
+	            wizardStep: true,
+	            key: store,
+	            onSubmit: this.handleSubmit,
+	            initialState: initialState,
+	            className: className,
+	            store: store,
+	            errorText: errorText,
+	            noSubmitButton: true
+	          },
+	          wizardHeader,
+	          this.props.children,
+	          _react2.default.createElement(_WizardControlButtons2.default, {
+	            nextButtonText: nextButtonText,
+	            backButtonText: backButtonText,
+	            showBackButton: !isFirst,
+	            showNextButton: !isLast,
+	            handleGoBack: this.handleGoBack,
+	            backButtonClassName: backButtonClassName,
+	            nextButtonClassName: nextButtonClassName
+	          })
+	        ),
+	        helpArea
 	      );
 	    }
 	  }]);
@@ -6016,7 +6021,7 @@
 	  errorText: _react.PropTypes.string,
 	  children: _react.PropTypes.node,
 	  wizardHeader: _react.PropTypes.object,
-	  wizardFooter: _react.PropTypes.object
+	  helpArea: _react.PropTypes.object
 	};
 	
 	WizardStep.defaultProps = {
@@ -6031,62 +6036,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _react = __webpack_require__(3);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var containerClassName = 'form__button-container';
-	// @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
-	var WizardFooter = function WizardFooter(props) {
-	  var showBackButton = props.showBackButton,
-	      showNextButton = props.showNextButton,
-	      backButtonText = props.backButtonText,
-	      nextButtonText = props.nextButtonText,
-	      backButtonClassName = props.backButtonClassName,
-	      nextButtonClassName = props.nextButtonClassName,
-	      handleGoBack = props.handleGoBack;
-	
-	  return _react2.default.createElement(
-	    'div',
-	    { className: containerClassName },
-	    showBackButton ? _react2.default.createElement(
-	      'button',
-	      { onClick: handleGoBack, className: backButtonClassName },
-	      backButtonText
-	    ) : null,
-	    showNextButton ? _react2.default.createElement(
-	      'button',
-	      { type: 'submit', className: nextButtonClassName },
-	      nextButtonText
-	    ) : null
-	  );
-	};
-	
-	WizardFooter.propTypes = {
-	  showBackButton: _react.PropTypes.bool,
-	  showNextButton: _react.PropTypes.bool,
-	  backButtonText: _react.PropTypes.string,
-	  nextButtonText: _react.PropTypes.string,
-	  backButtonClassName: _react.PropTypes.string,
-	  nextButtonClassName: _react.PropTypes.string,
-	  handleGoBack: _react.PropTypes.func.isRequired
-	};
-	
-	WizardFooter.defaultProps = {
-	  backButtonClassName: 'button button__back',
-	  nextButtonClassName: 'button button__next'
-	};
-	
-	module.exports = WizardFooter;
-
-/***/ },
+/* 45 */,
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23815,6 +23765,62 @@
 	WizardExample.propTypes = {};
 	
 	module.exports = WizardExample;
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _react = __webpack_require__(3);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var containerClassName = 'form__button-container';
+	// @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
+	var WizardControlButtons = function WizardControlButtons(props) {
+	  var showBackButton = props.showBackButton,
+	      showNextButton = props.showNextButton,
+	      backButtonText = props.backButtonText,
+	      nextButtonText = props.nextButtonText,
+	      backButtonClassName = props.backButtonClassName,
+	      nextButtonClassName = props.nextButtonClassName,
+	      handleGoBack = props.handleGoBack;
+	
+	  return _react2.default.createElement(
+	    'div',
+	    { className: containerClassName },
+	    showBackButton ? _react2.default.createElement(
+	      'button',
+	      { onClick: handleGoBack, className: backButtonClassName },
+	      backButtonText
+	    ) : null,
+	    showNextButton ? _react2.default.createElement(
+	      'button',
+	      { type: 'submit', className: nextButtonClassName },
+	      nextButtonText
+	    ) : null
+	  );
+	};
+	
+	WizardControlButtons.propTypes = {
+	  showBackButton: _react.PropTypes.bool,
+	  showNextButton: _react.PropTypes.bool,
+	  backButtonText: _react.PropTypes.string,
+	  nextButtonText: _react.PropTypes.string,
+	  backButtonClassName: _react.PropTypes.string,
+	  nextButtonClassName: _react.PropTypes.string,
+	  handleGoBack: _react.PropTypes.func.isRequired
+	};
+	
+	WizardControlButtons.defaultProps = {
+	  backButtonClassName: 'button button__back',
+	  nextButtonClassName: 'button button__next'
+	};
+	
+	module.exports = WizardControlButtons;
 
 /***/ }
 /******/ ]);

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Form from './Form';
-import DefaultWizardFooter from './WizardFooter';
+import WizardControlButtons from './WizardControlButtons';
 
 export default class WizardStep extends Component {
   constructor(props) {
@@ -35,27 +35,27 @@ export default class WizardStep extends Component {
       isLast,
       store,
       errorText,
-      wizardFooter,
       wizardHeader,
       backButtonClassName,
       nextButtonClassName,
+      helpArea,
     } = this.props;
 
     return (
-      <Form
-        wizardStep
-        key={store}
-        onSubmit={this.handleSubmit}
-        initialState={initialState}
-        className={className}
-        store={store}
-        errorText={errorText}
-        noSubmitButton
-      >
-        {wizardHeader}
-        {this.props.children}
-        { wizardFooter ||
-          <DefaultWizardFooter
+      <div>
+        <Form
+          wizardStep
+          key={store}
+          onSubmit={this.handleSubmit}
+          initialState={initialState}
+          className={className}
+          store={store}
+          errorText={errorText}
+          noSubmitButton
+        >
+          {wizardHeader}
+          {this.props.children}
+          <WizardControlButtons
             nextButtonText={nextButtonText}
             backButtonText={backButtonText}
             showBackButton={!isFirst}
@@ -63,8 +63,10 @@ export default class WizardStep extends Component {
             handleGoBack={this.handleGoBack}
             backButtonClassName={backButtonClassName}
             nextButtonClassName={nextButtonClassName}
-          /> }
-      </Form>
+          />
+        </Form>
+        { helpArea }
+      </div>
     );
   }
 }
@@ -84,7 +86,7 @@ WizardStep.propTypes = {
   errorText: PropTypes.string,
   children: PropTypes.node,
   wizardHeader: PropTypes.object,
-  wizardFooter: PropTypes.object,
+  helpArea: PropTypes.object,
 };
 
 WizardStep.defaultProps = {

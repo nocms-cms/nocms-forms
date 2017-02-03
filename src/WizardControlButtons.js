@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const containerClassName = 'form__button-container';
 // @TODO: Prevent submitting before scripts are loaded, aka global.environment !==server
-const WizardFooter = (props) => {
+const WizardControlButtons = (props) => {
   const {
     showBackButton,
     showNextButton,
@@ -26,7 +26,7 @@ const WizardFooter = (props) => {
   );
 };
 
-WizardFooter.propTypes = {
+WizardControlButtons.propTypes = {
   showBackButton: PropTypes.bool,
   showNextButton: PropTypes.bool,
   backButtonText: PropTypes.string,
@@ -36,9 +36,9 @@ WizardFooter.propTypes = {
   handleGoBack: PropTypes.func.isRequired,
 };
 
-WizardFooter.defaultProps = {
+WizardControlButtons.defaultProps = {
   backButtonClassName: 'button button__back',
   nextButtonClassName: 'button button__next',
 };
 
-module.exports = WizardFooter;
+module.exports = WizardControlButtons;
