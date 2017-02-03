@@ -36,7 +36,7 @@ export default class Wizard extends Component {
       store: this.getStoreForStep(current),
       isFirst: current === 0,
       isLast: current === this.props.steps.length - 1,
-      initialState: this.state.initialStates[current].initialState,
+      initialState: this.state.initialStates[current],
     };
   }
 
@@ -49,7 +49,6 @@ export default class Wizard extends Component {
   }
 
   goNext(formData) {
-    console.log(this.state.wizardData, formData);
     const wizardData = Object.assign(this.state.wizardData, formData);
     this.setState({ wizardData });
 
@@ -58,7 +57,6 @@ export default class Wizard extends Component {
       return;
     }
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
-    console.log(wizardData);
   }
 
   addCurrentStep(component) {

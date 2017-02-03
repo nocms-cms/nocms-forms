@@ -23359,7 +23359,7 @@
 	        store: this.getStoreForStep(current),
 	        isFirst: current === 0,
 	        isLast: current === this.props.steps.length - 1,
-	        initialState: this.state.initialStates[current].initialState
+	        initialState: this.state.initialStates[current]
 	      };
 	    }
 	  }, {
@@ -23374,7 +23374,6 @@
 	  }, {
 	    key: 'goNext',
 	    value: function goNext(formData) {
-	      console.log(this.state.wizardData, formData);
 	      var wizardData = Object.assign(this.state.wizardData, formData);
 	      this.setState({ wizardData: wizardData });
 	
@@ -23383,7 +23382,6 @@
 	        return;
 	      }
 	      this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
-	      console.log(wizardData);
 	    }
 	  }, {
 	    key: 'addCurrentStep',
@@ -23544,7 +23542,7 @@
 	          className = _props.className,
 	          nextButtonText = _props.nextButtonText,
 	          backButtonText = _props.backButtonText,
-	          stepState = _props.stepState,
+	          initialState = _props.initialState,
 	          isFirst = _props.isFirst,
 	          isLast = _props.isLast,
 	          store = _props.store,
@@ -23554,13 +23552,14 @@
 	          backButtonClassName = _props.backButtonClassName,
 	          nextButtonClassName = _props.nextButtonClassName;
 	
+	
 	      return _react2.default.createElement(
 	        _Form2.default,
 	        {
 	          wizardStep: true,
 	          key: store,
 	          onSubmit: this.handleSubmit,
-	          initialState: stepState,
+	          initialState: initialState,
 	          className: className,
 	          store: store,
 	          errorText: errorText,
@@ -23598,7 +23597,7 @@
 	  isFirst: _react.PropTypes.bool,
 	  isLast: _react.PropTypes.bool,
 	  store: _react.PropTypes.string,
-	  stepState: _react.PropTypes.object,
+	  initialState: _react.PropTypes.object,
 	  errorText: _react.PropTypes.string,
 	  children: _react.PropTypes.node,
 	  wizardHeader: _react.PropTypes.object,
@@ -23734,7 +23733,7 @@
 	};
 	
 	var WizardExample = function WizardExample(props) {
-	  var steps = [{ title: 'Overskrift steg 1', component: _react2.default.createElement(Step, { name: 'firststep' }) }, { title: 'Overskrift steg 2', component: _react2.default.createElement(Step, { name: 'secondstep', initialState: { secondstep: 't2' } }) }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }) }];
+	  var steps = [{ title: 'Overskrift steg 1', component: _react2.default.createElement(Step, { name: 'firststep' }) }, { title: 'Overskrift steg 2', component: _react2.default.createElement(Step, { name: 'secondstep' }), initialState: { secondstep: 't2' } }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }) }];
 	  return _react2.default.createElement(
 	    'div',
 	    null,

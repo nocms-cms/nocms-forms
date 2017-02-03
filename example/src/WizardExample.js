@@ -15,7 +15,7 @@ const WizardHeader = (props) => {
 const WizardExample = (props) => {
   const steps = [
     {title: 'Overskrift steg 1', component: <Step name="firststep" />},
-    {title: 'Overskrift steg 2', component: <Step name="secondstep" initialState={{ secondstep: 't2' }} />},
+    {title: 'Overskrift steg 2', component: <Step name="secondstep" />, initialState: { secondstep: 't2' }},
     {title: 'Overskrift steg 3', component: <Step name="thirdstep" />},
   ];
   return (
