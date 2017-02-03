@@ -59,12 +59,6 @@ export default class Wizard extends Component {
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
   }
 
-  addCurrentStep(component) {
-    return React.cloneElement(component, {
-      currentStep: this.state.currentStep,
-    });
-  }
-
   render() {
     const {
       className,
@@ -76,19 +70,10 @@ export default class Wizard extends Component {
       nextButtonClassName,
       spinner,
       steps,
-      wizardHeader,
-      wizardFooter,
     } = this.props;
     const step = this.getStep();
-    let wizardHeaderWithCurrentStep;
-    let wizardFooterWithCurrentStep;
-    if (wizardHeader) {
-      wizardHeaderWithCurrentStep = this.addCurrentStep(wizardHeader);
-    }
-    if (wizardFooter) {
-      wizardFooterWithCurrentStep = this.addCurrentStep(wizardFooter);
-    }
     return (<div className={className}>
+      { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
       { this.state.showReceipt ?
         this.props.receiptStep
       :
@@ -104,8 +89,6 @@ export default class Wizard extends Component {
           errorText={errorText}
           spinner={spinner}
           noOfSteps={steps.length}
-          wizardHeader={wizardHeader ? wizardHeaderWithCurrentStep : null}
-          wizardFooter={wizardFooter ? wizardFooterWithCurrentStep : null}
         >
           {this.props.steps[this.state.currentStep].component}
         </WizardStep>
@@ -119,6 +102,7 @@ Wizard.propTypes = {
   store: PropTypes.string,
   goBack: PropTypes.func,
   goNext: PropTypes.func,
+  progressIndicator: PropTypes.func,
   nextButtonClassName: PropTypes.string,
   backButtonClassName: PropTypes.string,
   nextButtonText: PropTypes.string,
@@ -127,8 +111,6 @@ Wizard.propTypes = {
   className: PropTypes.string,
   wizardStepClassName: PropTypes.string,
   spinner: PropTypes.object,
-  wizardHeader: PropTypes.object,
-  wizardFooter: PropTypes.object,
   receiptStep: PropTypes.object,
 };
 

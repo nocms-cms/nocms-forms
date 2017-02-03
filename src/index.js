@@ -5,4 +5,3 @@ export Select from './Select';
 export TextArea from './TextArea';
 export Wizard from './Wizard';
 export WizardStep from './WizardStep';
-export WizardFooter from './WizardFooter';
