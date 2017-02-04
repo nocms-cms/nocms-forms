@@ -6,8 +6,6 @@ const events = require('nocms-events');
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
 
-// TODO: Prevent submit before client side rendering is complete
-
 const convertDate = (date) => {
   if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
     return date;
@@ -29,13 +27,13 @@ class Form extends React.Component {
     this.state.isDisabled = false;
     this.state.isSubmitting = false;
     this.state.errorText = null;
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       stores.createStore(props.store, props.initialState, this.handleStoreChange);
     }
   }
 
   componentWillUnmount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       if (this.props.wizardStep) {
         stores.unsubscribe(this.props.store, this.handleStoreChange);
         return;
@@ -150,7 +148,7 @@ class Form extends React.Component {
           <div className="form__error form__error-summary visible">{this.state.errorText}</div>
         : null}
         {this.props.children}
-        {global.environment !== 'server' ?
+        {utils.isBrowser() ?
           submit
         : spinner }
       </form>

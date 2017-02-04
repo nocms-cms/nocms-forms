@@ -133,7 +133,7 @@ Wizard.propTypes = {
   className: PropTypes.string,
   wizardStepClassName: PropTypes.string,
   spinner: PropTypes.object,
-  receipt: PropTypes.object,
+  receipt: PropTypes.func,
 };
 
 Wizard.defaultProps = {

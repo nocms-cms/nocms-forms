@@ -21789,7 +21789,7 @@
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21812,8 +21812,6 @@
 	
 	var SUBMITTING_DEFAULT = '...';
 	var SUBMIT_BUTTON_DEFAULT = 'OK';
-	
-	// TODO: Prevent submit before client side rendering is complete
 	
 	var convertDate = function convertDate(date) {
 	  if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
@@ -21841,7 +21839,7 @@
 	    _this.state.isDisabled = false;
 	    _this.state.isSubmitting = false;
 	    _this.state.errorText = null;
-	    if (global.environment !== 'server') {
+	    if (utils.isBrowser()) {
 	      stores.createStore(props.store, props.initialState, _this.handleStoreChange);
 	    }
 	    return _this;
@@ -21850,7 +21848,7 @@
 	  _createClass(Form, [{
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        if (this.props.wizardStep) {
 	          stores.unsubscribe(this.props.store, this.handleStoreChange);
 	          return;
@@ -21994,7 +21992,7 @@
 	          this.state.errorText
 	        ) : null,
 	        this.props.children,
-	        global.environment !== 'server' ? submit : spinner
+	        utils.isBrowser() ? submit : spinner
 	      );
 	    }
 	  }]);
@@ -22023,7 +22021,6 @@
 	
 	exports.default = Form;
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 181 */
@@ -22237,8 +22234,13 @@
 		  animateScroll(0);
 		};
 	
+		var isBrowser = function isBrowser() {
+		  return typeof window !== 'undefined' && window.document && window.document.createElement;
+		};
+	
 		module.exports = {
-		  scrollTo: scrollTo
+		  scrollTo: scrollTo,
+		  isBrowser: isBrowser
 		};
 	
 	/***/ }
@@ -23471,7 +23473,7 @@
 	  className: _react.PropTypes.string,
 	  wizardStepClassName: _react.PropTypes.string,
 	  spinner: _react.PropTypes.object,
-	  receipt: _react.PropTypes.object
+	  receipt: _react.PropTypes.func
 	};
 	
 	Wizard.defaultProps = {
