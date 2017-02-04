@@ -23424,7 +23424,7 @@
 	        'div',
 	        { className: className },
 	        this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1),
-	        this.state.showReceipt ? this.props.receipt : _react2.default.createElement(
+	        this.state.showReceipt ? this.props.receipt(this.state.wizardData) : _react2.default.createElement(
 	          _WizardStep2.default,
 	          _extends({
 	            goNext: this.goNext,
@@ -23801,6 +23801,16 @@
 	      cb(null);
 	    }
 	  }, {
+	    key: 'renderReceipt',
+	    value: function renderReceipt(data) {
+	      console.log(data);
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Kvittering'
+	      );
+	    }
+	  }, {
 	    key: 'progressIndicator',
 	    value: function progressIndicator(current, numberOfSteps) {
 	      return _react2.default.createElement(
@@ -23834,11 +23844,7 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(_nocmsForms.Wizard, (_React$createElement = {
-	            receipt: _react2.default.createElement(
-	              'div',
-	              null,
-	              'Kvittering, yeah!'
-	            ),
+	            receipt: this.renderReceipt,
 	            progressIndicator: this.progressIndicator,
 	            nextButtonText: 'Et steg frem',
 	            className: 'wizard_parent',

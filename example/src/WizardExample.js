@@ -25,6 +25,11 @@ export default class WizardExample extends Component {
     cb(null);
   }
 
+  renderReceipt(data){
+    console.log(data);
+    return <div>Kvittering</div>;
+  }
+
   progressIndicator(current, numberOfSteps){
     return (
       <div>{this.state.steps[current -1].title} - steg {current} av <span>{numberOfSteps}</span></div>
@@ -37,7 +42,7 @@ export default class WizardExample extends Component {
         <h2>Wizard form example 1</h2>
         <div>
         <Wizard
-         receipt={<div>Kvittering, yeah!</div>}
+         receipt={this.renderReceipt}
          progressIndicator={this.progressIndicator}
          nextButtonText="Et steg frem"
          className="wizard_parent"

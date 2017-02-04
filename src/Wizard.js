@@ -91,7 +91,7 @@ export default class Wizard extends Component {
     return (<div className={className}>
       { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
       { this.state.showReceipt ?
-        this.props.receipt
+        this.props.receipt(this.state.wizardData)
       :
         <WizardStep
           goNext={this.goNext}
