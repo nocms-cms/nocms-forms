@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import stores from 'nocms-stores';
+import utils from 'nocms-utils';
 import WizardStep from './WizardStep';
 
 export default class Wizard extends Component {
@@ -18,7 +19,7 @@ export default class Wizard extends Component {
   }
 
   componentWillUnmount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       this.props.steps.forEach((step, index) => {
         stores.remove(this.getStoreForStep(index));
       });

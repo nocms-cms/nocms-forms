@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Validator from 'nocms-validation';
-
-const stores = require('nocms-stores');
+import utils from 'nocms-utils';
+import stores from 'nocms-stores';
 
 class Input extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class Input extends Component {
   }
 
   componentWillMount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       stores.subscribe(this.props.store, this.handleStoreChange);
       const store = stores.getStore(this.props.store);
       const initialState = store[this.props.name];

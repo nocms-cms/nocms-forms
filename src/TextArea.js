@@ -1,5 +1,6 @@
 const React = require('react');
 const stores = require('nocms-stores');
+const utils = require('nocms-utils');
 const Validator = require('nocms-validation');
 
 export default class TextArea extends React.Component {
@@ -16,7 +17,7 @@ export default class TextArea extends React.Component {
   }
 
   componentWillMount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       stores.subscribe(this.props.store, this.handleStoreChange);
       const initialState = {};
       initialState[this.props.name] = {
@@ -29,7 +30,7 @@ export default class TextArea extends React.Component {
     }
   }
   componentWillUnmount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       stores.unsubscribe(this.props.store, this.handleStoreChange);
     }
   }

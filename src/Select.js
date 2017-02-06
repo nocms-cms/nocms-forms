@@ -1,5 +1,6 @@
 const React = require('react');
 const stores = require('nocms-stores');
+const utils = require('nocms-utils');
 const Validator = require('nocms-validation');
 
 export default class Select extends React.Component {
@@ -20,7 +21,7 @@ export default class Select extends React.Component {
   }
 
   componentWillMount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       stores.subscribe(this.props.store, this.handleStoreChange);
       const store = stores.getStore(this.props.store);
       const initialState = store[this.props.name];
@@ -38,7 +39,7 @@ export default class Select extends React.Component {
   }
 
   componentWillUnmount() {
-    if (global.environment !== 'server') {
+    if (utils.isBrowser()) {
       stores.unsubscribe(this.props.store, this.handleStoreChange);
     }
   }
