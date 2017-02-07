@@ -1,6 +1,6 @@
 {
   "name": "nocms-forms",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "React forms for NoCMS",
   "main": "lib/index.js",
   "author": "Miles",
@@ -22,7 +22,8 @@
     "nocms-events": "git+https://github.com/miles-no/nocms-events.git",
     "nocms-stores": "git+https://github.com/miles-no/nocms-stores.git",
     "nocms-utils": "git+https://github.com/miles-no/nocms-utils.git",
-    "nocms-validation": "git+https://github.com/miles-no/nocms-validation.git"
+    "nocms-validation": "git+https://github.com/miles-no/nocms-validation.git",
+    "npm-bump": "0.0.20"
   },
   "devDependencies": {
     "babel": "^6.5.2",
