@@ -42,3 +42,5 @@ node_modules
 
 # Source maps
 **/*.map
+
+.circle_secrets
