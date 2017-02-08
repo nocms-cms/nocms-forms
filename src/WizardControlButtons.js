@@ -52,4 +52,4 @@ WizardControlButtons.defaultProps = {
   finishButtonClassName: 'button button__finish',
 };
 
-module.exports = WizardControlButtons;
+export default WizardControlButtons;
