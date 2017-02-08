@@ -4,9 +4,9 @@ machine:
 dependencies:
   pre:
     - openssl aes-256-cbc -d -in .circle_secrets_cipher -k $KEY >> ~/.circlerc
+    - curl -u$NPM_USER:$NPM_PASS https://miles.jfrog.io/miles/api/npm/auth > ~/.npmrc
     - npm config set registry https://miles.jfrog.io/miles/api/npm/npm-virtual
-    - curl -u$NPM_USER:$NPM_PASS https://miles.jfrog.io/miles/api/npm/auth >> ~/.npmrc
-    - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
+    - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login --registry https://miles.jfrog.io/miles/api/npm/npm-virtual --always-auth
 test:
   override:
     - echo "TESTS ARE MANULLAY OVERRIDEN IN circle.yml. REMOVE SECTION TO ENABLE TESTS"
