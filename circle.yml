@@ -4,6 +4,7 @@ machine:
 dependencies:
   pre:
     - openssl aes-256-cbc -d -in .circle_secrets_cipher -k $KEY >> ~/.circlerc
+    - npm config set registry https://miles.jfrog.io/miles/api/npm/npm-virtual
     - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login --registry https://miles.jfrog.io/miles/api/npm/npm-virtual --always-auth
 test:
   override:
