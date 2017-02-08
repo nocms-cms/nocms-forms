@@ -4,7 +4,7 @@ machine:
 dependencies:
   pre:
     - openssl aes-256-cbc -d -in .circle_secrets_cipher -k $KEY >> ~/.circlerc
-    - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login --registry https://miles.jfrog.io/miles/api/npm/npm
+    - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login --registry https://miles.jfrog.io/miles/api/npm/npm-virtual
 test:
   override:
     - echo "TESTS ARE MANULLAY OVERRIDEN IN circle.yml. REMOVE SECTION TO ENABLE TESTS"
@@ -14,5 +14,5 @@ deployment:
     commands:
       - npm run bump-version
       - git commit -am "Bumped version to $PACKAGE_VERSION [skip ci]"
-      - npm publish --registry https://miles.jfrog.io/miles/api/npm/npm
+      - npm publish --registry https://miles.jfrog.io/miles/api/npm/npm-virtual
       - git push origin master
