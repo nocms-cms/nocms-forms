@@ -6,6 +6,8 @@ dependencies:
     - openssl aes-256-cbc -d -in .circle_secrets_cipher -k $KEY >> ~/.circlerc
     - curl -u$NPM_USER:$NPM_PASS https://miles.jfrog.io/miles/api/npm/auth > ~/.npmrc
     - npm config set registry https://miles.jfrog.io/miles/api/npm/npm-virtual
+    - git config --global user.email "webteam@miles.no"
+    - git config --global user.name "NoCMS"
 test:
   override:
     - echo "TESTS ARE MANULLAY OVERRIDEN IN circle.yml. REMOVE SECTION TO ENABLE TESTS"
