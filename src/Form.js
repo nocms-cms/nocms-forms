@@ -136,7 +136,7 @@ class Form extends React.Component {
         <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button__primary'}>{buttonText}</button>
       </div>);
     }
-    const formClassName = className ? `${className} form` : 'form';
+    const formClassName = `${className} form`.trim();
     return (
       <form
         ref={node => this.setFormEl(node)}

@@ -76,7 +76,6 @@ export default class Wizard extends Component {
 
   render() {
     const {
-      className,
       wizardStepClassName,
       errorText,
       nextButtonText,
@@ -87,6 +86,7 @@ export default class Wizard extends Component {
       finishButtonText,
       spinner,
       steps,
+      className,
     } = this.props;
     const step = this.getStep();
     return (<div className={className}>
@@ -96,6 +96,7 @@ export default class Wizard extends Component {
         <div>
           { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
           <WizardStep
+            formClass={this.props.formClass}
             goNext={this.goNext}
             goBack={this.goBack}
             className={wizardStepClassName}
@@ -129,6 +130,7 @@ Wizard.propTypes = {
   nextButtonClassName: PropTypes.string,
   backButtonClassName: PropTypes.string,
   finishButtonClassName: PropTypes.string,
+  formClass: PropTypes.string,
   nextButtonText: PropTypes.string,
   backButtonText: PropTypes.string,
   finishButtonText: PropTypes.string,

@@ -45,6 +45,7 @@ export default class WizardExample extends Component {
          receipt={this.renderReceipt}
          progressIndicator={this.progressIndicator}
          nextButtonText="Et steg frem"
+         formClass="custom-form-class"
          className="wizard_parent"
          wizardStepClassName="Hu hei"
          backButtonText="Et steg tilbake"

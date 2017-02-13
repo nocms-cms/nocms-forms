@@ -47,6 +47,12 @@ export default class FormExample extends React.Component {
 
     };
 
+    const inputClasses = {
+      controlGroupClass: 'custom-control-group',
+      errorClass: 'custom-error',
+      labelClass: 'custom-label',
+    }
+
     return (
       <div>
       {this.state.submitted ?
@@ -62,6 +68,7 @@ export default class FormExample extends React.Component {
         </div> :
         <Form
           submitButton="Submit"
+          className="custom-forms-class"
           store={storeName}
           initialState={initialData}
           errorText={this.state.errorText}
@@ -70,11 +77,13 @@ export default class FormExample extends React.Component {
           submittingText='Vent litt'
         >
           <Input
+            {...inputClasses}
             store={storeName}
             label="Text field"
             name="name"
           />
           <Input
+            {...inputClasses}
             dependOn="name"
             dependencyFunc={this.getUppercaseName}
             store={storeName}
@@ -97,6 +106,7 @@ export default class FormExample extends React.Component {
             errorText="Error"
           />
           <RadioButtons
+            {...inputClasses}
             required
             errorText="Oh no"
             store={storeName}
@@ -105,12 +115,14 @@ export default class FormExample extends React.Component {
             options={radioOptions}
           />
           <Select
+            {...inputClasses}
             store={storeName}
             label="Select"
             options={selectOptions}
             name="select"
           />
           <TextArea
+            {...inputClasses}
             store={storeName}
             label="Text area"
             name="textarea"

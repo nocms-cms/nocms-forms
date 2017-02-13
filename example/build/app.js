@@ -74,6 +74,7 @@
 	      return React.createElement(
 	        'div',
 	        null,
+	        React.createElement(FormExample, null),
 	        React.createElement('hr', null),
 	        React.createElement(WizardExample, null)
 	      );
@@ -21529,6 +21530,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _nocmsForms = __webpack_require__(179);
@@ -21591,6 +21594,12 @@
 	      }];
 	      var selectOptions = ['Option 1', 'Option 2'];
 	      var initialData = {};
+	
+	      var inputClasses = {
+	        controlGroupClass: 'custom-control-group',
+	        errorClass: 'custom-error',
+	        labelClass: 'custom-label'
+	      };
 	
 	      return React.createElement(
 	        'div',
@@ -21672,6 +21681,7 @@
 	          _nocmsForms.Form,
 	          {
 	            submitButton: 'Submit',
+	            className: 'custom-forms-class',
 	            store: storeName,
 	            initialState: initialData,
 	            errorText: this.state.errorText,
@@ -21679,18 +21689,18 @@
 	            spinner: React.createElement(Spinner, null),
 	            submittingText: 'Vent litt'
 	          },
-	          React.createElement(_nocmsForms.Input, {
+	          React.createElement(_nocmsForms.Input, _extends({}, inputClasses, {
 	            store: storeName,
 	            label: 'Text field',
 	            name: 'name'
-	          }),
-	          React.createElement(_nocmsForms.Input, {
+	          })),
+	          React.createElement(_nocmsForms.Input, _extends({}, inputClasses, {
 	            dependOn: 'name',
 	            dependencyFunc: this.getUppercaseName,
 	            store: storeName,
 	            label: 'Dependent text field',
 	            name: 'aggregatedName'
-	          }),
+	          })),
 	          React.createElement(_nocmsForms.Input, {
 	            required: true,
 	            store: storeName,
@@ -21706,25 +21716,25 @@
 	            name: 'required',
 	            errorText: 'Error'
 	          }),
-	          React.createElement(_nocmsForms.RadioButtons, {
+	          React.createElement(_nocmsForms.RadioButtons, _extends({}, inputClasses, {
 	            required: true,
 	            errorText: 'Oh no',
 	            store: storeName,
 	            label: 'Radio buttons',
 	            name: 'radio',
 	            options: radioOptions
-	          }),
-	          React.createElement(_nocmsForms.Select, {
+	          })),
+	          React.createElement(_nocmsForms.Select, _extends({}, inputClasses, {
 	            store: storeName,
 	            label: 'Select',
 	            options: selectOptions,
 	            name: 'select'
-	          }),
-	          React.createElement(_nocmsForms.TextArea, {
+	          })),
+	          React.createElement(_nocmsForms.TextArea, _extends({}, inputClasses, {
 	            store: storeName,
 	            label: 'Text area',
 	            name: 'textarea'
-	          })
+	          }))
 	        )
 	      );
 	    }
@@ -21975,7 +21985,7 @@
 	          )
 	        );
 	      }
-	      var formClassName = className ? className + ' form' : 'form';
+	      var formClassName = (className + ' form').trim();
 	      return React.createElement(
 	        'form',
 	        {
@@ -22270,6 +22280,14 @@
 	
 	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
 	
+	var _nocmsUtils = __webpack_require__(183);
+	
+	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
+	
+	var _nocmsStores = __webpack_require__(181);
+	
+	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22277,8 +22295,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var stores = __webpack_require__(181);
 	
 	var Input = function (_Component) {
 	  _inherits(Input, _Component);
@@ -22305,9 +22321,9 @@
 	  _createClass(Input, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      if (global.environment !== 'server') {
-	        stores.subscribe(this.props.store, this.handleStoreChange);
-	        var store = stores.getStore(this.props.store);
+	      if (_nocmsUtils2.default.isBrowser()) {
+	        _nocmsStores2.default.subscribe(this.props.store, this.handleStoreChange);
+	        var store = _nocmsStores2.default.getStore(this.props.store);
 	        var initialState = store[this.props.name];
 	        var inputState = {};
 	        inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
@@ -22320,18 +22336,18 @@
 	          inputState = initialState;
 	        }
 	
-	        stores.update(this.props.store, inputState);
+	        _nocmsStores2.default.update(this.props.store, inputState);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (global.environment !== 'server') {
-	        stores.unsubscribe(this.props.store, this.handleStoreChange);
+	        _nocmsStores2.default.unsubscribe(this.props.store, this.handleStoreChange);
 	        if (this.props.deleteOnUnmount) {
 	          var inputState = {};
 	          inputState[this.props.name] = undefined;
-	          stores.update(this.props.store, inputState);
+	          _nocmsStores2.default.update(this.props.store, inputState);
 	        }
 	      }
 	    }
@@ -22425,7 +22441,7 @@
 	        convertDate: this.props.type === 'date'
 	      };
 	
-	      stores.update(this.props.store, state);
+	      _nocmsStores2.default.update(this.props.store, state);
 	    }
 	  }, {
 	    key: 'validate',
@@ -22442,14 +22458,14 @@
 	    key: 'render',
 	    value: function render() {
 	      var type = this.props.type || 'text';
-	      var containerClasses = 'form__control-group ' + (!this.state.isValid ? ' form__error' : '') + ' ' + (this.props.inlineLabel ? ' inline-label' : '') + ' ' + (this.props.type === 'checkbox' ? ' form__control-group--checkbox' : '');
+	      var containerClasses = this.props.controlGroupClass + ' form__control-group ' + (!this.state.isValid ? ' form__error' : '') + ' ' + (this.props.inlineLabel ? ' inline-label' : '') + ' ' + (this.props.type === 'checkbox' ? ' form__control-group--checkbox' : '');
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
 	      return _react2.default.createElement(
 	        'div',
 	        { className: containerClasses },
 	        this.props.inlineLabel && this.props.errorText && !this.state.isValid ? _react2.default.createElement(
 	          'div',
-	          { className: 'form__error-text' },
+	          { className: (this.props.errorClass || '') + ' form__error-text' },
 	          this.props.errorText
 	        ) : null,
 	        _react2.default.createElement(
@@ -22457,7 +22473,7 @@
 	          { id: this.props.labelId },
 	          _react2.default.createElement(
 	            'span',
-	            { className: 'form__label' },
+	            { className: (this.props.labelClass || '') + ' form__label' },
 	            this.props.label,
 	            this.props.required ? _react2.default.createElement(
 	              'span',
@@ -22482,7 +22498,7 @@
 	          }),
 	          !this.props.inlineLabel && this.props.errorText && !this.state.isValid ? _react2.default.createElement(
 	            'div',
-	            { className: 'form__error-text' },
+	            { className: (this.props.errorClass || '') + ' form__error-text' },
 	            this.props.errorText
 	          ) : null
 	        )
@@ -22495,6 +22511,9 @@
 	
 	Input.propTypes = {
 	  value: _react2.default.PropTypes.string,
+	  errorClass: _react2.default.PropTypes.string,
+	  labelClass: _react2.default.PropTypes.string,
+	  controlGroupClass: _react2.default.PropTypes.string,
 	  type: _react2.default.PropTypes.string,
 	  name: _react2.default.PropTypes.string.isRequired,
 	  store: _react2.default.PropTypes.string.isRequired,
@@ -22516,6 +22535,9 @@
 	Input.defaultProps = {
 	  requiredMark: '*',
 	  type: 'text',
+	  errorClass: '',
+	  labelClass: '',
+	  controlGroupClass: '',
 	  required: false,
 	  disabled: false
 	};
@@ -22711,7 +22733,7 @@
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22729,6 +22751,7 @@
 	
 	var React = __webpack_require__(1);
 	var stores = __webpack_require__(181);
+	var utils = __webpack_require__(183);
 	var Validator = __webpack_require__(185);
 	
 	var RadioButtons = function (_React$Component) {
@@ -22756,7 +22779,7 @@
 	  _createClass(RadioButtons, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        stores.subscribe(this.props.store, this.handleStoreChange);
 	        var store = stores.getStore(this.props.store);
 	        var initialState = store[this.props.name];
@@ -22776,7 +22799,7 @@
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        stores.unsubscribe(this.props.store, this.handleStoreChange);
 	      }
 	    }
@@ -22830,7 +22853,7 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var containerClasses = 'form__control-group form__control-group--radio ' + this.props.className + ' ' + (!this.state.isValid ? 'form__error' : null);
+	      var containerClasses = this.props.controlGroupClass + ' form__control-group form__control-group--radio ' + (!this.state.isValid ? 'form__error' : null);
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
 	      var radios = this.props.options.map(function (o, index) {
 	        var option = o;
@@ -22839,7 +22862,7 @@
 	        }
 	        return React.createElement(
 	          'label',
-	          { key: _this2.props.name + '_' + index, className: option.disabled ? ' disabled' : null },
+	          { key: _this2.props.name + '_' + index, className: _this2.props.labelClass + ' ' + (option.disabled ? ' disabled' : null) },
 	          React.createElement('input', {
 	            checked: _this2.state.value === option.value,
 	            type: 'radio',
@@ -22876,7 +22899,7 @@
 	          radios,
 	          this.props.errorText && !this.state.isValid ? React.createElement(
 	            'div',
-	            { className: 'form__error-text' },
+	            { className: this.props.errorClass + ' form__error-text' },
 	            this.props.errorText
 	          ) : null
 	        )
@@ -22892,7 +22915,9 @@
 	
 	RadioButtons.propTypes = {
 	  name: React.PropTypes.string.isRequired,
-	  className: React.PropTypes.string,
+	  errorClass: React.PropTypes.string,
+	  labelClass: React.PropTypes.string,
+	  controlGroupClass: React.PropTypes.string,
 	  value: React.PropTypes.string,
 	  errorText: React.PropTypes.string,
 	  store: React.PropTypes.string.isRequired,
@@ -22907,16 +22932,17 @@
 	RadioButtons.defaultProps = {
 	  required: false,
 	  requiredMark: '*',
-	  className: ''
+	  errorClass: '',
+	  labelClass: '',
+	  controlGroupClass: ''
 	};
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22934,6 +22960,7 @@
 	
 	var React = __webpack_require__(1);
 	var stores = __webpack_require__(181);
+	var utils = __webpack_require__(183);
 	var Validator = __webpack_require__(185);
 	
 	var Select = function (_React$Component) {
@@ -22962,7 +22989,7 @@
 	  _createClass(Select, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        stores.subscribe(this.props.store, this.handleStoreChange);
 	        var store = stores.getStore(this.props.store);
 	        var initialState = store[this.props.name];
@@ -22981,7 +23008,7 @@
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        stores.unsubscribe(this.props.store, this.handleStoreChange);
 	      }
 	    }
@@ -23039,8 +23066,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var containerClasses = 'form__control-group ' + (!this.state.isValid ? ' form__error' : '');
-	      var classes = this.state.isValid ? '' : 'form__error';
+	      var containerClasses = this.props.controlGroupClass + ' form__control-group ' + (!this.state.isValid ? ' form__error' : '');
 	      var emptyOption = this.props.emptyLabel ? [React.createElement(
 	        'option',
 	        { key: 'empty', value: '' },
@@ -23066,13 +23092,12 @@
 	          null,
 	          React.createElement(
 	            'span',
-	            { className: 'form__label' },
+	            { className: this.props.labelClass + ' form__label' },
 	            this.props.label
 	          ),
 	          React.createElement(
 	            'select',
 	            {
-	              className: classes,
 	              name: this.props.name,
 	              value: this.state.value,
 	              'aria-invalid': !this.state.isValid,
@@ -23085,7 +23110,7 @@
 	          ),
 	          this.props.errorText && !this.state.isValid ? React.createElement(
 	            'div',
-	            { className: 'form__error-text' },
+	            { className: this.props.errorClass + ' form__error-text' },
 	            this.props.errorText
 	          ) : null
 	        )
@@ -23101,6 +23126,9 @@
 	
 	Select.propTypes = {
 	  value: React.PropTypes.string,
+	  errorClass: React.PropTypes.string,
+	  labelClass: React.PropTypes.string,
+	  controlGroupClass: React.PropTypes.string,
 	  name: React.PropTypes.string.isRequired,
 	  emptyLabel: React.PropTypes.string,
 	  store: React.PropTypes.string,
@@ -23113,17 +23141,18 @@
 	};
 	
 	Select.defaultProps = {
-	  value: ''
-	
+	  value: '',
+	  errorClass: '',
+	  labelClass: '',
+	  controlGroupClass: ''
 	};
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23139,6 +23168,7 @@
 	
 	var React = __webpack_require__(1);
 	var stores = __webpack_require__(181);
+	var utils = __webpack_require__(183);
 	var Validator = __webpack_require__(185);
 	
 	var TextArea = function (_React$Component) {
@@ -23163,7 +23193,7 @@
 	  _createClass(TextArea, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        stores.subscribe(this.props.store, this.handleStoreChange);
 	        var initialState = {};
 	        initialState[this.props.name] = {
@@ -23178,7 +23208,7 @@
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      if (global.environment !== 'server') {
+	      if (utils.isBrowser()) {
 	        stores.unsubscribe(this.props.store, this.handleStoreChange);
 	      }
 	    }
@@ -23220,7 +23250,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var containerClasses = 'form__control-group ' + (!this.state.isValid ? ' form__error' : '') + ' ' + this.props.customClasses;
+	      var containerClasses = (this.props.controlGroupClass || '') + ' form__control-group ' + (!this.state.isValid ? ' form__error' : '');
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
 	      return React.createElement(
 	        'div',
@@ -23230,7 +23260,7 @@
 	          { id: this.props.labelId },
 	          React.createElement(
 	            'span',
-	            { className: 'form__label' },
+	            { className: this.props.labelClass + ' form__label' },
 	            this.props.label,
 	            this.props.required ? React.createElement(
 	              'span',
@@ -23249,7 +23279,7 @@
 	          }),
 	          this.props.errorText && !this.state.isValid ? React.createElement(
 	            'div',
-	            { className: 'form__error-text' },
+	            { className: this.props.errorClass + ' form__error-text' },
 	            this.props.errorText
 	          ) : null
 	        )
@@ -23264,6 +23294,9 @@
 	
 	
 	TextArea.propTypes = {
+	  errorClass: React.PropTypes.string,
+	  labelClass: React.PropTypes.string,
+	  controlGroupClass: React.PropTypes.string,
 	  validate: React.PropTypes.string,
 	  required: React.PropTypes.bool,
 	  store: React.PropTypes.string.isRequired,
@@ -23271,23 +23304,24 @@
 	  errorText: React.PropTypes.string,
 	  name: React.PropTypes.string.isRequired,
 	  label: React.PropTypes.string,
-	  customClasses: React.PropTypes.string,
 	  labelId: React.PropTypes.string,
 	  maxLength: React.PropTypes.number,
 	  requiredMark: React.PropTypes.string
 	};
 	
 	TextArea.defaultProps = {
-	  requiredMark: '*'
+	  requiredMark: '*',
+	  errorClass: '',
+	  labelClass: '',
+	  controlGroupClass: ''
 	};
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23304,6 +23338,10 @@
 	var _nocmsStores = __webpack_require__(181);
 	
 	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
+	
+	var _nocmsUtils = __webpack_require__(183);
+	
+	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
 	
 	var _WizardStep = __webpack_require__(191);
 	
@@ -23344,7 +23382,7 @@
 	    value: function componentWillUnmount() {
 	      var _this2 = this;
 	
-	      if (global.environment !== 'server') {
+	      if (_nocmsUtils2.default.isBrowser()) {
 	        this.props.steps.forEach(function (step, index) {
 	          _nocmsStores2.default.remove(_this2.getStoreForStep(index));
 	        });
@@ -23409,7 +23447,6 @@
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
-	          className = _props.className,
 	          wizardStepClassName = _props.wizardStepClassName,
 	          errorText = _props.errorText,
 	          nextButtonText = _props.nextButtonText,
@@ -23419,32 +23456,38 @@
 	          finishButtonClassName = _props.finishButtonClassName,
 	          finishButtonText = _props.finishButtonText,
 	          spinner = _props.spinner,
-	          steps = _props.steps;
+	          steps = _props.steps,
+	          className = _props.className;
 	
 	      var step = this.getStep();
 	      return _react2.default.createElement(
 	        'div',
 	        { className: className },
-	        this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1),
 	        this.state.showReceipt ? this.props.receipt(this.state.wizardData) : _react2.default.createElement(
-	          _WizardStep2.default,
-	          _extends({
-	            goNext: this.goNext,
-	            goBack: this.goBack,
-	            className: wizardStepClassName
-	          }, step, {
-	            nextButtonText: nextButtonText,
-	            backButtonText: backButtonText,
-	            finishButtonText: finishButtonText,
-	            handleFinish: this.handleFinish,
-	            nextButtonClassName: nextButtonClassName,
-	            backButtonClassName: backButtonClassName,
-	            finishButtonClassName: finishButtonClassName,
-	            errorText: errorText,
-	            spinner: spinner,
-	            noOfSteps: steps.length
-	          }),
-	          step.component
+	          'div',
+	          null,
+	          this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1),
+	          _react2.default.createElement(
+	            _WizardStep2.default,
+	            _extends({
+	              formClass: this.props.formClass,
+	              goNext: this.goNext,
+	              goBack: this.goBack,
+	              className: wizardStepClassName
+	            }, step, {
+	              nextButtonText: nextButtonText,
+	              backButtonText: backButtonText,
+	              finishButtonText: finishButtonText,
+	              handleFinish: this.handleFinish,
+	              nextButtonClassName: nextButtonClassName,
+	              backButtonClassName: backButtonClassName,
+	              finishButtonClassName: finishButtonClassName,
+	              errorText: errorText,
+	              spinner: spinner,
+	              noOfSteps: steps.length
+	            }),
+	            step.component
+	          )
 	        )
 	      );
 	    }
@@ -23466,6 +23509,7 @@
 	  nextButtonClassName: _react.PropTypes.string,
 	  backButtonClassName: _react.PropTypes.string,
 	  finishButtonClassName: _react.PropTypes.string,
+	  formClass: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string,
 	  backButtonText: _react.PropTypes.string,
 	  finishButtonText: _react.PropTypes.string,
@@ -23480,7 +23524,6 @@
 	  className: 'wizard'
 	};
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 191 */
@@ -23568,12 +23611,13 @@
 	          helpArea = _props.helpArea,
 	          stepHeader = _props.stepHeader,
 	          stepFooter = _props.stepFooter,
-	          finishButtonClassName = _props.finishButtonClassName;
+	          finishButtonClassName = _props.finishButtonClassName,
+	          formClass = _props.formClass;
 	
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: className },
 	        stepHeader,
 	        _react2.default.createElement(
 	          _Form2.default,
@@ -23582,7 +23626,7 @@
 	            key: store,
 	            onSubmit: this.handleSubmit,
 	            initialState: initialState,
-	            className: className,
+	            className: formClass,
 	            store: store,
 	            errorText: errorText,
 	            noSubmitButton: true
@@ -23618,6 +23662,7 @@
 	  goNext: _react.PropTypes.func,
 	  handleFinish: _react.PropTypes.func,
 	  className: _react.PropTypes.string,
+	  formClass: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string.isRequired,
 	  backButtonText: _react.PropTypes.string.isRequired,
 	  finishButtonText: _react.PropTypes.string.isRequired,
@@ -23651,6 +23696,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
 	var _react = __webpack_require__(1);
 	
@@ -23712,7 +23761,8 @@
 	  finishButtonClassName: 'button button__finish'
 	};
 	
-	module.exports = WizardControlButtons;
+	exports.default = WizardControlButtons;
+	module.exports = exports['default'];
 
 /***/ },
 /* 193 */
@@ -23849,6 +23899,7 @@
 	            receipt: this.renderReceipt,
 	            progressIndicator: this.progressIndicator,
 	            nextButtonText: 'Et steg frem',
+	            formClass: 'custom-form-class',
 	            className: 'wizard_parent',
 	            wizardStepClassName: 'Hu hei',
 	            backButtonText: 'Et steg tilbake',

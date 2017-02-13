@@ -82,7 +82,7 @@ export default class RadioButtons extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = `form__control-group form__control-group--radio ${this.props.className} ${!this.state.isValid ? 'form__error' : null}`;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group form__control-group--radio ${!this.state.isValid ? 'form__error' : null}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
     const radios = this.props.options.map((o, index) => {
       let option = o;
@@ -90,7 +90,7 @@ export default class RadioButtons extends React.Component {
         option = { label: option, value: option };
       }
       return (
-        <label key={`${this.props.name}_${index}`} className={option.disabled ? ' disabled' : null}>
+        <label key={`${this.props.name}_${index}`} className={`${this.props.labelClass} ${option.disabled ? ' disabled' : null}`}>
           <input
             checked={this.state.value === option.value}
             type="radio"
@@ -113,7 +113,7 @@ export default class RadioButtons extends React.Component {
           </legend>
           {radios}
           {this.props.errorText && !this.state.isValid ?
-            <div className="form__error-text">{this.props.errorText}</div>
+            <div className={`${this.props.errorClass} form__error-text`}>{this.props.errorText}</div>
           : null}
         </fieldset>
       </div>
@@ -123,7 +123,9 @@ export default class RadioButtons extends React.Component {
 
 RadioButtons.propTypes = {
   name: React.PropTypes.string.isRequired,
-  className: React.PropTypes.string,
+  errorClass: React.PropTypes.string,
+  labelClass: React.PropTypes.string,
+  controlGroupClass: React.PropTypes.string,
   value: React.PropTypes.string,
   errorText: React.PropTypes.string,
   store: React.PropTypes.string.isRequired,
@@ -138,5 +140,7 @@ RadioButtons.propTypes = {
 RadioButtons.defaultProps = {
   required: false,
   requiredMark: '*',
-  className: '',
+  errorClass: '',
+  labelClass: '',
+  controlGroupClass: '',
 };

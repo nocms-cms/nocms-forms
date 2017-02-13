@@ -134,15 +134,15 @@ class Input extends Component {
 
   render() {
     const type = this.props.type || 'text';
-    const containerClasses = `form__control-group ${!this.state.isValid ? ' form__error' : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group ${!this.state.isValid ? ' form__error' : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
         {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-          <div className="form__error-text">{this.props.errorText}</div>
+          <div className={`${this.props.errorClass || ''} form__error-text`}>{this.props.errorText}</div>
         : null}
         <label id={this.props.labelId}>
-          <span className="form__label">
+          <span className={`${this.props.labelClass || ''} form__label`}>
             {this.props.label}
             {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
           </span>
@@ -163,7 +163,7 @@ class Input extends Component {
           />
 
           {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-            <div className="form__error-text">{this.props.errorText}</div>
+            <div className={`${this.props.errorClass || ''} form__error-text`}>{this.props.errorText}</div>
          : null}
         </label>
       </div>
@@ -173,6 +173,9 @@ class Input extends Component {
 
 Input.propTypes = {
   value: React.PropTypes.string,
+  errorClass: React.PropTypes.string,
+  labelClass: React.PropTypes.string,
+  controlGroupClass: React.PropTypes.string,
   type: React.PropTypes.string,
   name: React.PropTypes.string.isRequired,
   store: React.PropTypes.string.isRequired,
@@ -195,6 +198,9 @@ Input.propTypes = {
 Input.defaultProps = {
   requiredMark: '*',
   type: 'text',
+  errorClass: '',
+  labelClass: '',
+  controlGroupClass: '',
   required: false,
   disabled: false,
 };

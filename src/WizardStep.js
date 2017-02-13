@@ -46,17 +46,18 @@ export default class WizardStep extends Component {
       stepHeader,
       stepFooter,
       finishButtonClassName,
+      formClass,
     } = this.props;
 
     return (
-      <div>
+      <div className={className}>
         { stepHeader }
         <Form
           wizardStep
           key={store}
           onSubmit={this.handleSubmit}
           initialState={initialState}
-          className={className}
+          className={formClass}
           store={store}
           errorText={errorText}
           noSubmitButton
@@ -87,6 +88,7 @@ WizardStep.propTypes = {
   goNext: PropTypes.func,
   handleFinish: PropTypes.func,
   className: PropTypes.string,
+  formClass: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
   backButtonText: PropTypes.string.isRequired,
   finishButtonText: PropTypes.string.isRequired,
