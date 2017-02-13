@@ -90,28 +90,30 @@ export default class Wizard extends Component {
     } = this.props;
     const step = this.getStep();
     return (<div className={className}>
-      { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
       { this.state.showReceipt ?
         this.props.receipt(this.state.wizardData)
       :
-        <WizardStep
-          goNext={this.goNext}
-          goBack={this.goBack}
-          className={wizardStepClassName}
-          {...step}
-          nextButtonText={nextButtonText}
-          backButtonText={backButtonText}
-          finishButtonText={finishButtonText}
-          handleFinish={this.handleFinish}
-          nextButtonClassName={nextButtonClassName}
-          backButtonClassName={backButtonClassName}
-          finishButtonClassName={finishButtonClassName}
-          errorText={errorText}
-          spinner={spinner}
-          noOfSteps={steps.length}
-        >
-          {step.component}
-        </WizardStep>
+        <div>
+          { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
+          <WizardStep
+            goNext={this.goNext}
+            goBack={this.goBack}
+            className={wizardStepClassName}
+            {...step}
+            nextButtonText={nextButtonText}
+            backButtonText={backButtonText}
+            finishButtonText={finishButtonText}
+            handleFinish={this.handleFinish}
+            nextButtonClassName={nextButtonClassName}
+            backButtonClassName={backButtonClassName}
+            finishButtonClassName={finishButtonClassName}
+            errorText={errorText}
+            spinner={spinner}
+            noOfSteps={steps.length}
+          >
+            {step.component}
+          </WizardStep>
+        </div>
       }
     </div>);
   }
