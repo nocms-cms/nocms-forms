@@ -22461,7 +22461,7 @@
 	    key: 'render',
 	    value: function render() {
 	      var type = this.props.type || 'text';
-	      var containerClasses = this.props.controlGroupClass + ' form__control-group ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '') + ' ' + (this.props.inlineLabel ? ' inline-label' : '') + ' ' + (this.props.type === 'checkbox' ? ' form__control-group--checkbox' : '');
+	      var containerClasses = this.props.controlGroupClass + ' form__control-group ' + (this.state.isValid && this.state.isValidated ? 'form__success ' + this.props.successWrapperClass + ' ' : '') + ' ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '') + ' ' + (this.props.inlineLabel ? ' inline-label' : '') + ' ' + (this.props.type === 'checkbox' ? ' form__control-group--checkbox' : '');
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
 	      return _react2.default.createElement(
 	        'div',
@@ -22514,6 +22514,7 @@
 	
 	Input.propTypes = {
 	  value: _react2.default.PropTypes.string,
+	  successWrapperClass: _react2.default.PropTypes.string,
 	  errorTextClass: _react2.default.PropTypes.string,
 	  errorWrapperClass: _react2.default.PropTypes.string,
 	  labelClass: _react2.default.PropTypes.string,
@@ -22537,6 +22538,7 @@
 	};
 	
 	Input.defaultProps = {
+	  successWrapperClass: '',
 	  requiredMark: '*',
 	  type: 'text',
 	  errorTextClass: '',
@@ -22858,7 +22860,7 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var containerClasses = this.props.controlGroupClass + ' form__control-group form__control-group--radio ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '');
+	      var containerClasses = this.props.controlGroupClass + ' form__control-group form__control-group--radio ' + (this.state.isValid && this.state.isValidated ? 'form__success ' + this.props.successWrapperClass + ' ' : '') + ' ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '');
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
 	      var radios = this.props.options.map(function (o, index) {
 	        var option = o;
@@ -22920,6 +22922,7 @@
 	
 	RadioButtons.propTypes = {
 	  name: React.PropTypes.string.isRequired,
+	  successWrapperClass: React.PropTypes.string,
 	  errorTextClass: React.PropTypes.string,
 	  errorWrapperClass: React.PropTypes.string,
 	  labelClass: React.PropTypes.string,
@@ -22939,6 +22942,7 @@
 	  required: false,
 	  requiredMark: '*',
 	  errorTextClass: '',
+	  successWrapperClass: '',
 	  errorWrapperClass: '',
 	  labelClass: '',
 	  controlGroupClass: ''
@@ -23073,7 +23077,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var containerClasses = this.props.controlGroupClass + ' form__control-group ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '') + ' ';
+	      var containerClasses = this.props.controlGroupClass + ' form__control-group ' + (this.state.isValid && this.state.isValidated ? 'form__success ' + this.props.successWrapperClass + ' ' : '') + ' ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '') + ' ';
 	      var emptyOption = this.props.emptyLabel ? [React.createElement(
 	        'option',
 	        { key: 'empty', value: '' },
@@ -23135,6 +23139,7 @@
 	  value: React.PropTypes.string,
 	  errorTextClass: React.PropTypes.string,
 	  errorWrapperClass: React.PropTypes.string,
+	  successWrapperClass: React.PropTypes.string,
 	  labelClass: React.PropTypes.string,
 	  controlGroupClass: React.PropTypes.string,
 	  name: React.PropTypes.string.isRequired,
@@ -23151,6 +23156,7 @@
 	Select.defaultProps = {
 	  value: '',
 	  errorWrapperClass: '',
+	  successWrapperClass: '',
 	  errorTextClass: '',
 	  labelClass: '',
 	  controlGroupClass: ''
@@ -23259,7 +23265,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var containerClasses = (this.props.controlGroupClass || '') + ' form__control-group ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '') + ' ';
+	      var containerClasses = (this.props.controlGroupClass || '') + ' form__control-group ' + (this.state.isValid && this.state.isValidated ? 'form__success ' + this.props.successWrapperClass + ' ' : '') + ' ' + (!this.state.isValid ? ' form__error ' + (this.props.errorWrapperClass || '') : '') + ' ';
 	      var isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
 	      return React.createElement(
 	        'div',
@@ -23305,6 +23311,7 @@
 	TextArea.propTypes = {
 	  errorTextClass: React.PropTypes.string,
 	  labelClass: React.PropTypes.string,
+	  successWrapperClass: React.PropTypes.string,
 	  errorWrapperClass: React.PropTypes.string,
 	  controlGroupClass: React.PropTypes.string,
 	  validate: React.PropTypes.string,
@@ -23322,6 +23329,7 @@
 	TextArea.defaultProps = {
 	  requiredMark: '*',
 	  errorTextClass: '',
+	  successWrapperClass: '',
 	  errorWrapperClass: '',
 	  labelClass: '',
 	  controlGroupClass: ''

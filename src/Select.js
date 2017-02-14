@@ -89,7 +89,7 @@ export default class Select extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = `${this.props.controlGroupClass} form__control-group ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} `;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} `;
     const emptyOption = this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
     const options = emptyOption.concat(this.props.options.map((o, index) => {
       let option = o;
@@ -126,6 +126,7 @@ Select.propTypes = {
   value: React.PropTypes.string,
   errorTextClass: React.PropTypes.string,
   errorWrapperClass: React.PropTypes.string,
+  successWrapperClass: React.PropTypes.string,
   labelClass: React.PropTypes.string,
   controlGroupClass: React.PropTypes.string,
   name: React.PropTypes.string.isRequired,
@@ -142,6 +143,7 @@ Select.propTypes = {
 Select.defaultProps = {
   value: '',
   errorWrapperClass: '',
+  successWrapperClass: '',
   errorTextClass: '',
   labelClass: '',
   controlGroupClass: '',

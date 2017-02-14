@@ -134,7 +134,7 @@ class Input extends Component {
 
   render() {
     const type = this.props.type || 'text';
-    const containerClasses = `${this.props.controlGroupClass} form__control-group ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
@@ -173,6 +173,7 @@ class Input extends Component {
 
 Input.propTypes = {
   value: React.PropTypes.string,
+  successWrapperClass: React.PropTypes.string,
   errorTextClass: React.PropTypes.string,
   errorWrapperClass: React.PropTypes.string,
   labelClass: React.PropTypes.string,
@@ -197,6 +198,7 @@ Input.propTypes = {
 
 
 Input.defaultProps = {
+  successWrapperClass: '',
   requiredMark: '*',
   type: 'text',
   errorTextClass: '',

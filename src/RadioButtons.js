@@ -82,7 +82,7 @@ export default class RadioButtons extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = `${this.props.controlGroupClass} form__control-group form__control-group--radio ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''}`;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group form__control-group--radio ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
     const radios = this.props.options.map((o, index) => {
       let option = o;
@@ -123,6 +123,7 @@ export default class RadioButtons extends React.Component {
 
 RadioButtons.propTypes = {
   name: React.PropTypes.string.isRequired,
+  successWrapperClass: React.PropTypes.string,
   errorTextClass: React.PropTypes.string,
   errorWrapperClass: React.PropTypes.string,
   labelClass: React.PropTypes.string,
@@ -142,6 +143,7 @@ RadioButtons.defaultProps = {
   required: false,
   requiredMark: '*',
   errorTextClass: '',
+  successWrapperClass: '',
   errorWrapperClass: '',
   labelClass: '',
   controlGroupClass: '',
