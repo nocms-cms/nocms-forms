@@ -134,12 +134,12 @@ class Input extends Component {
 
   render() {
     const type = this.props.type || 'text';
-    const containerClasses = `${this.props.controlGroupClass} form__control-group ${!this.state.isValid ? ' form__error' : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
         {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-          <div className={`${this.props.errorClass || ''} form__error-text`}>{this.props.errorText}</div>
+          <div className={`${this.props.errorTextClass || ''} form__error-text`}>{this.props.errorText}</div>
         : null}
         <label id={this.props.labelId}>
           <span className={`${this.props.labelClass || ''} form__label`}>
@@ -163,7 +163,7 @@ class Input extends Component {
           />
 
           {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorClass || ''} form__error-text`}>{this.props.errorText}</div>
+            <div className={`${this.props.errorTextClass || ''} form__error-text`}>{this.props.errorText}</div>
          : null}
         </label>
       </div>
@@ -173,7 +173,8 @@ class Input extends Component {
 
 Input.propTypes = {
   value: React.PropTypes.string,
-  errorClass: React.PropTypes.string,
+  errorTextClass: React.PropTypes.string,
+  errorWrapperClass: React.PropTypes.string,
   labelClass: React.PropTypes.string,
   controlGroupClass: React.PropTypes.string,
   type: React.PropTypes.string,
@@ -198,9 +199,10 @@ Input.propTypes = {
 Input.defaultProps = {
   requiredMark: '*',
   type: 'text',
-  errorClass: '',
+  errorTextClass: '',
   labelClass: '',
   controlGroupClass: '',
+  errorWrapperClass: '',
   required: false,
   disabled: false,
 };

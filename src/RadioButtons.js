@@ -82,7 +82,7 @@ export default class RadioButtons extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = `${this.props.controlGroupClass} form__control-group form__control-group--radio ${!this.state.isValid ? 'form__error' : null}`;
+    const containerClasses = `${this.props.controlGroupClass} form__control-group form__control-group--radio ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''}`;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
     const radios = this.props.options.map((o, index) => {
       let option = o;
@@ -113,7 +113,7 @@ export default class RadioButtons extends React.Component {
           </legend>
           {radios}
           {this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorClass} form__error-text`}>{this.props.errorText}</div>
+            <div className={`${this.props.errorTextClass} form__error-text`}>{this.props.errorText}</div>
           : null}
         </fieldset>
       </div>
@@ -123,7 +123,8 @@ export default class RadioButtons extends React.Component {
 
 RadioButtons.propTypes = {
   name: React.PropTypes.string.isRequired,
-  errorClass: React.PropTypes.string,
+  errorTextClass: React.PropTypes.string,
+  errorWrapperClass: React.PropTypes.string,
   labelClass: React.PropTypes.string,
   controlGroupClass: React.PropTypes.string,
   value: React.PropTypes.string,
@@ -140,7 +141,8 @@ RadioButtons.propTypes = {
 RadioButtons.defaultProps = {
   required: false,
   requiredMark: '*',
-  errorClass: '',
+  errorTextClass: '',
+  errorWrapperClass: '',
   labelClass: '',
   controlGroupClass: '',
 };

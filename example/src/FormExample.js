@@ -49,7 +49,9 @@ export default class FormExample extends React.Component {
 
     const inputClasses = {
       controlGroupClass: 'custom-control-group',
-      errorClass: 'custom-error',
+      successWrapperClass: 'custom-success',
+      errorWrapperClass: 'error',
+      errorTextClass: 'custom-error',
       labelClass: 'custom-label',
     }
 
@@ -92,6 +94,7 @@ export default class FormExample extends React.Component {
           />
           <Input
             required
+            {...inputClasses}
             store={storeName}
             label="Required text field with e-mail validation"
             name="email"

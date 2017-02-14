@@ -66,7 +66,7 @@ export default class TextArea extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = `${this.props.controlGroupClass || ''} form__control-group ${!this.state.isValid ? ' form__error' : ''}`;
+    const containerClasses = `${this.props.controlGroupClass || ''} form__control-group ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} `;
     const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
     return (
       <div className={containerClasses}>
@@ -86,7 +86,7 @@ export default class TextArea extends React.Component {
           />
 
           {this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorClass} form__error-text`}>{this.props.errorText}</div>
+            <div className={`${this.props.errorTextClass} form__error-text`}>{this.props.errorText}</div>
          : null}
         </label>
       </div>
@@ -95,8 +95,9 @@ export default class TextArea extends React.Component {
 }
 
 TextArea.propTypes = {
-  errorClass: React.PropTypes.string,
+  errorTextClass: React.PropTypes.string,
   labelClass: React.PropTypes.string,
+  errorWrapperClass: React.PropTypes.string,
   controlGroupClass: React.PropTypes.string,
   validate: React.PropTypes.string,
   required: React.PropTypes.bool,
@@ -112,7 +113,8 @@ TextArea.propTypes = {
 
 TextArea.defaultProps = {
   requiredMark: '*',
-  errorClass: '',
+  errorTextClass: '',
+  errorWrapperClass: '',
   labelClass: '',
   controlGroupClass: '',
 };
