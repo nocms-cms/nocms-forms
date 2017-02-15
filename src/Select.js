@@ -21,20 +21,21 @@ export default class Select extends React.Component {
   }
 
   componentWillMount() {
+    const { store, name, value, required } = this.props;
     if (utils.isBrowser()) {
-      stores.subscribe(this.props.store, this.handleStoreChange);
-      const store = stores.getStore(this.props.store);
-      const initialState = store[this.props.name];
+      stores.subscribe(store, this.handleStoreChange);
+      const storeObj = stores.getStore(store);
+      const initialState = storeObj[name];
       let inputState = {};
-      inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
+      inputState[name] = { isValid: true, isValidated: !required, validate: this.validate };
       if (typeof initialState === 'undefined') {
-        inputState[this.props.name].value = this.props.value;
+        inputState[name].value = value;
       } else if (typeof initialState !== 'object') {
-        inputState[this.props.name].value = initialState;
+        inputState[name].value = initialState;
       } else {
         inputState = initialState;
       }
-      stores.update(this.props.store, inputState);
+      stores.update(store, inputState);
     }
   }
 
@@ -88,10 +89,34 @@ export default class Select extends React.Component {
     }
     return true;
   }
+
   render() {
-    const containerClasses = `${this.props.controlGroupClass} form__control-group ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} `;
-    const emptyOption = this.props.emptyLabel ? [<option key="empty" value="">{this.props.emptyLabel}</option>] : [];
-    const options = emptyOption.concat(this.props.options.map((o, index) => {
+    const {
+      controlGroupClass,
+      successWrapperClass,
+      errorText,
+      errorTextClass,
+      errorWrapperClass,
+      labelClass,
+      label,
+      name,
+      options,
+      required,
+      requiredClass,
+      requiredMark,
+      emptyLabel,
+    } = this.props;
+
+    let containerClasses = controlGroupClass;
+    if (this.state.isValid && this.state.isValidated) {
+      containerClasses += ` ${successWrapperClass}`;
+    }
+    if (!this.state.isValid) {
+      containerClasses += ` ${errorWrapperClass}`;
+    }
+
+    const emptyOption = emptyLabel ? [<option key="empty" value="">{emptyLabel}</option>] : [];
+    const optionsList = emptyOption.concat(options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {
         option = { label: option, value: option };
@@ -101,20 +126,24 @@ export default class Select extends React.Component {
 
     return (
       <div className={containerClasses}>
-        <label><span className={`${this.props.labelClass} form__label`}>{this.props.label}</span>
+        <label>
+          <span className={labelClass}>
+            {label}
+            {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+          </span>
           <select
-            name={this.props.name}
+            name={name}
             value={this.state.value}
             aria-invalid={!this.state.isValid}
-            aria-required={this.props.required}
+            aria-required={required}
             onChange={this.handleChange}
             onKeyDown={this.handleEnterKey}
             onBlur={this.handleBlur}
           >
-            {options}
+            {optionsList}
           </select>
-          {this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorTextClass} form__error-text`}>{this.props.errorText}</div>
+          {errorText && !this.state.isValid ?
+            <div className={errorTextClass}>{errorText}</div>
           : null}
         </label>
       </div>
@@ -123,6 +152,7 @@ export default class Select extends React.Component {
 }
 
 Select.propTypes = {
+  requiredMark: React.PropTypes.string,
   value: React.PropTypes.string,
   errorTextClass: React.PropTypes.string,
   errorWrapperClass: React.PropTypes.string,
@@ -136,11 +166,13 @@ Select.propTypes = {
   errorText: React.PropTypes.string,
   onChange: React.PropTypes.func,
   required: React.PropTypes.bool,
+  requiredClass: React.PropTypes.string,
   validate: React.PropTypes.string,
   label: React.PropTypes.string,
 };
 
 Select.defaultProps = {
+  requiredMark: '*',
   value: '',
   errorWrapperClass: '',
   successWrapperClass: '',
