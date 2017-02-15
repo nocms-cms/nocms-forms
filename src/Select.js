@@ -174,9 +174,9 @@ Select.propTypes = {
 Select.defaultProps = {
   requiredMark: '*',
   value: '',
-  errorWrapperClass: '',
-  successWrapperClass: '',
-  errorTextClass: '',
-  labelClass: '',
-  controlGroupClass: '',
+  errorWrapperClass: 'form__control-group--error',
+  successWrapperClass: 'form__control-group--success',
+  errorTextClass: 'form__error-text',
+  labelClass: 'form__label',
+  controlGroupClass: 'form__control-group',
 };
