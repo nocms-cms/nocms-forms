@@ -57,17 +57,6 @@ export default class FormExample extends React.Component {
 
     return (
       <div>
-      {this.state.submitted ?
-        <div>
-          <h2>Submitted form with following form data</h2>
-          <div><b>Text field:</b>{this.state.formData.name}</div>
-          <div><b>Required text field with e-mail validation:</b>{this.state.formData.email}</div>
-          <div><b>Required text field:</b>{this.state.formData.required}</div>
-          <div><b>Radio buttons:</b>{this.state.formData.radio}</div>
-          <div><b>Select:</b>{this.state.formData.select}</div>
-          <div><b>Text area:</b>{this.state.formData.textarea}</div>
-          <button type="button" onClick={this.handleReset}>Reset</button>
-        </div> :
         <Form
           submitButton="Submit"
           className="custom-forms-class"
@@ -130,7 +119,24 @@ export default class FormExample extends React.Component {
             label="Text area"
             name="textarea"
           />
-        </Form>}
+          <Input
+            type="hidden"
+            name="hiddenName"
+            dependOn="name"
+            dependencyFunc={this.getUppercaseName}
+            store={storeName}
+          />
+        </Form>
+        { this.state.formData ?
+          <div>
+            <h2>Form result</h2>
+            <ul>
+              { Object.keys(this.state.formData).map((field) => {
+                return <li key={field}>{field} : {this.state.formData[field]}</li>;
+              })}
+            </ul>
+          </div>
+        : null }
       </div>
     );
   }

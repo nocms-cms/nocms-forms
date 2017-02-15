@@ -152,6 +152,10 @@ class Input extends Component {
       placeholder,
     } = this.props;
 
+    if (type === 'hidden') {
+      return <input type="hidden" value={this.state.value} name={name} />;
+    }
+
     let containerClasses = controlGroupClass;
     if (this.state.isValid && this.state.isValidated) {
       containerClasses += ` ${successWrapperClass}`;
@@ -201,15 +205,15 @@ class Input extends Component {
 }
 
 Input.propTypes = {
+  name: PropTypes.string.isRequired,
+  store: PropTypes.string.isRequired,
+  type: PropTypes.string,
   value: PropTypes.string,
   successWrapperClass: PropTypes.string,
   errorTextClass: PropTypes.string,
   errorWrapperClass: PropTypes.string,
   labelClass: PropTypes.string,
   controlGroupClass: PropTypes.string,
-  type: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  store: PropTypes.string.isRequired,
   required: PropTypes.bool,
   requiredClass: PropTypes.string,
   deleteOnUnmount: PropTypes.bool,
@@ -227,7 +231,6 @@ Input.propTypes = {
   dependOn: PropTypes.string,
   dependencyFunc: PropTypes.func,
 };
-
 
 Input.defaultProps = {
   successWrapperClass: 'form__success',
