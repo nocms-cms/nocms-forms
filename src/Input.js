@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Validator from 'nocms-validation';
 import utils from 'nocms-utils';
 import stores from 'nocms-stores';
@@ -133,37 +133,66 @@ class Input extends Component {
   }
 
   render() {
-    const type = this.props.type || 'text';
-    const containerClasses = `${this.props.controlGroupClass} form__control-group ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} ${this.props.inlineLabel ? ' inline-label' : ''} ${this.props.type === 'checkbox' ? ' form__control-group--checkbox' : ''}`;
-    const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
+    const {
+      controlGroupClass,
+      successWrapperClass,
+      inlineLabel,
+      type,
+      errorText,
+      errorTextClass,
+      labelId,
+      labelClass,
+      label,
+      required,
+      requiredClass,
+      requiredMark,
+      maxLength,
+      name,
+      disabled,
+      placeholder,
+    } = this.props;
+
+    let containerClasses = controlGroupClass;
+    if (this.state.isValid && this.state.isValidated) {
+      containerClasses += ` ${successWrapperClass}`;
+    }
+    if (!this.state.isValid) {
+      containerClasses += ` ${this.props.errorWrapperClass}`;
+    }
+    if (inlineLabel) {
+      containerClasses += ` ${this.props.inlineLabelClass}`;
+    }
+    if (type === 'checkbox') {
+      containerClasses += ` ${this.props.checkboxClass}`;
+    }
     return (
       <div className={containerClasses}>
-        {this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-          <div className={`${this.props.errorTextClass || ''} form__error-text`}>{this.props.errorText}</div>
+        {inlineLabel && errorText && !this.state.isValid ?
+          <div className={errorTextClass}>{errorText}</div>
         : null}
-        <label id={this.props.labelId}>
-          <span className={`${this.props.labelClass || ''} form__label`}>
-            {this.props.label}
-            {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
+        <label id={labelId}>
+          <span className={labelClass}>
+            {label}
+            {required ? <span className={requiredClass}>{requiredMark}</span> : null}
           </span>
           <input
             type={type}
             autoComplete="off"
-            maxLength={this.props.maxLength}
-            name={this.props.name}
+            maxLength={maxLength}
+            name={name}
             value={this.state.value}
-            disabled={this.props.disabled}
-            placeholder={this.props.placeholder ? this.props.placeholder : ''}
+            disabled={disabled}
+            placeholder={placeholder}
             aria-invalid={!this.state.isValid}
-            aria-required={this.props.required}
+            aria-required={required}
             onChange={this.handleChange}
-            onClick={this.props.type === 'checkbox' ? this.handleChange : null}
+            onClick={type === 'checkbox' ? this.handleChange : null}
             onKeyDown={this.handleEnterKey}
             onBlur={this.handleBlur}
           />
 
-          {!this.props.inlineLabel && this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorTextClass || ''} form__error-text`}>{this.props.errorText}</div>
+          {!inlineLabel && errorText && !this.state.isValid ?
+            <div className={` ${errorTextClass}`}>{errorText}</div>
          : null}
         </label>
       </div>
@@ -172,41 +201,47 @@ class Input extends Component {
 }
 
 Input.propTypes = {
-  value: React.PropTypes.string,
-  successWrapperClass: React.PropTypes.string,
-  errorTextClass: React.PropTypes.string,
-  errorWrapperClass: React.PropTypes.string,
-  labelClass: React.PropTypes.string,
-  controlGroupClass: React.PropTypes.string,
-  type: React.PropTypes.string,
-  name: React.PropTypes.string.isRequired,
-  store: React.PropTypes.string.isRequired,
-  required: React.PropTypes.bool,
-  deleteOnUnmount: React.PropTypes.bool,
-  validate: React.PropTypes.string,
-  inlineLabel: React.PropTypes.bool,
-  errorText: React.PropTypes.string,
-  label: React.PropTypes.string,
-  requiredMark: React.PropTypes.string,
-  maxLength: React.PropTypes.number,
-  disabled: React.PropTypes.bool,
-  placeholder: React.PropTypes.string,
-  labelId: React.PropTypes.string,
-  dependOn: React.PropTypes.string,
-  dependencyFunc: React.PropTypes.func,
+  value: PropTypes.string,
+  successWrapperClass: PropTypes.string,
+  errorTextClass: PropTypes.string,
+  errorWrapperClass: PropTypes.string,
+  labelClass: PropTypes.string,
+  controlGroupClass: PropTypes.string,
+  type: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  store: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  requiredClass: PropTypes.string,
+  deleteOnUnmount: PropTypes.bool,
+  validate: PropTypes.string,
+  inlineLabel: PropTypes.bool,
+  inlineLabelClass: PropTypes.string,
+  checkboxClass: PropTypes.string,
+  errorText: PropTypes.string,
+  label: PropTypes.string,
+  requiredMark: PropTypes.string,
+  maxLength: PropTypes.number,
+  disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
+  labelId: PropTypes.string,
+  dependOn: PropTypes.string,
+  dependencyFunc: PropTypes.func,
 };
 
 
 Input.defaultProps = {
-  successWrapperClass: '',
+  successWrapperClass: 'form__success',
   requiredMark: '*',
   type: 'text',
-  errorTextClass: '',
-  labelClass: '',
-  controlGroupClass: '',
-  errorWrapperClass: '',
+  errorTextClass: 'form__error-text',
+  labelClass: 'form__label',
+  controlGroupClass: 'form__control-group',
+  errorWrapperClass: 'form__error',
+  inlineLabelClass: '',
+  requiredClass: 'form__label--required',
   required: false,
   disabled: false,
+  placeholder: '',
 };
 
 export default Input;
