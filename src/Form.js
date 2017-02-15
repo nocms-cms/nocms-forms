@@ -59,26 +59,28 @@ class Form extends React.Component {
     const formData = {};
     let isValid = true;
 
-    Object.keys(this.state.store).forEach((field) => {
-      const prop = this.state.store[field];
-      const skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
-      if (prop === null || skipFields.indexOf(field) >= 0) {
-        return;
-      }
-      if (typeof prop !== 'object') {
-        formData[field] = prop;
-        return;
-      }
-      if (!prop.isValidated) {
-        isValid = isValid && prop.validate();
-      }
-      if (prop.isValidated) {
-        isValid = isValid && prop.isValid;
-      }
-      if (isValid) {
-        formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
-      }
-    });
+    if (this.state.store) {
+      Object.keys(this.state.store).forEach((field) => {
+        const prop = this.state.store[field];
+        const skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
+        if (prop === null || skipFields.indexOf(field) >= 0) {
+          return;
+        }
+        if (typeof prop !== 'object') {
+          formData[field] = prop;
+          return;
+        }
+        if (!prop.isValidated) {
+          isValid = isValid && prop.validate();
+        }
+        if (prop.isValidated) {
+          isValid = isValid && prop.isValid;
+        }
+        if (isValid) {
+          formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
+        }
+      });
+    }
 
     this.setState({ isValid });
 
