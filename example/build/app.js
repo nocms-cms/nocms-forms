@@ -23995,13 +23995,13 @@
 	  _createClass(WizardExample, [{
 	    key: 'handleFinish',
 	    value: function handleFinish(wizardData, cb) {
-	      console.log(wizardData);
+	      console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
 	      cb(null);
 	    }
 	  }, {
 	    key: 'renderReceipt',
 	    value: function renderReceipt(data) {
-	      console.log(data);
+	      console.log('Receipt data', data);
 	      return _react2.default.createElement(
 	        'div',
 	        null,

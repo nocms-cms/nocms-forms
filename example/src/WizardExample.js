@@ -22,12 +22,12 @@ export default class WizardExample extends Component {
   }
 
   handleFinish(wizardData, cb) {
-    console.log(wizardData);
+    console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
     cb(null);
   }
 
   renderReceipt(data){
-    console.log(data);
+    console.log('Receipt data', data);
     return <div>Kvittering</div>;
   }
 
