@@ -1,9 +1,9 @@
-const React = require('react');
-const stores = require('nocms-stores');
-const utils = require('nocms-utils');
-const Validator = require('nocms-validation');
+import React, { Component, PropTypes } from 'react';
+import Validator from 'nocms-validation';
+import utils from 'nocms-utils';
+import stores from 'nocms-stores';
 
-export default class RadioButtons extends React.Component {
+export default class RadioButtons extends Component {
   constructor(props) {
     super(props);
     this.handleStoreChange = this.handleStoreChange.bind(this);
@@ -82,38 +82,60 @@ export default class RadioButtons extends React.Component {
     return true;
   }
   render() {
-    const containerClasses = `${this.props.controlGroupClass} form__control-group form__control-group--radio ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''}`;
-    const isRequiredLabelClass = this.props.required ? 'form__label-required' : null;
-    const radios = this.props.options.map((o, index) => {
+    const {
+      controlGroupClass,
+      successWrapperClass,
+      errorText,
+      errorTextClass,
+      errorWrapperClass,
+      labelClass,
+      label,
+      required,
+      requiredMark,
+      name,
+      options,
+      radioClass,
+      requiredClass,
+      radioLabelClass,
+    } = this.props;
+
+    let containerClasses = ` ${controlGroupClass} ${radioClass}`;
+    if (this.state.isValid && this.state.isValidated) {
+      containerClasses += ` ${successWrapperClass}`;
+    }
+    if (!this.state.isValid) {
+      containerClasses += ` ${errorWrapperClass}`;
+    }
+    const radios = options.map((o, index) => {
       let option = o;
       if (typeof option === 'string') {
         option = { label: option, value: option };
       }
       return (
-        <label key={`${this.props.name}_${index}`} className={`${this.props.labelClass} ${option.disabled ? ' disabled' : null}`}>
+        <label key={`${name}_${index}`} className={`${labelClass} ${option.disabled ? ' disabled' : null}`}>
           <input
             checked={this.state.value === option.value}
             type="radio"
             value={option.value}
-            name={this.props.name}
+            name={name}
             disabled={option.disabled}
             onChange={this.handleChange}
             onClick={this.handleChange}
             onKeyDown={this.handleEnterKey}
           />
-          <span className="form__radio-label">{option.label}</span>
+          <span className={radioLabelClass}>{option.label}</span>
         </label>);
     });
     return (
       <div className={containerClasses}>
         <fieldset>
           <legend>
-            {this.props.label}
-            {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
+            {label}
+            {required ? <span className={requiredClass}>{requiredMark}</span> : null}
           </legend>
           {radios}
-          {this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorTextClass} form__error-text`}>{this.props.errorText}</div>
+          {errorText && !this.state.isValid ?
+            <div className={errorTextClass}>{this.props.errorText}</div>
           : null}
         </fieldset>
       </div>
@@ -122,29 +144,35 @@ export default class RadioButtons extends React.Component {
 }
 
 RadioButtons.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  successWrapperClass: React.PropTypes.string,
-  errorTextClass: React.PropTypes.string,
-  errorWrapperClass: React.PropTypes.string,
-  labelClass: React.PropTypes.string,
-  controlGroupClass: React.PropTypes.string,
-  value: React.PropTypes.string,
-  errorText: React.PropTypes.string,
-  store: React.PropTypes.string.isRequired,
-  onChange: React.PropTypes.func,
-  required: React.PropTypes.bool,
-  validate: React.PropTypes.string,
-  options: React.PropTypes.array,
-  label: React.PropTypes.string,
-  requiredMark: React.PropTypes.string,
+  name: PropTypes.string.isRequired,
+  successWrapperClass: PropTypes.string,
+  errorTextClass: PropTypes.string,
+  errorWrapperClass: PropTypes.string,
+  labelClass: PropTypes.string,
+  controlGroupClass: PropTypes.string,
+  requiredClass: PropTypes.string,
+  value: PropTypes.string,
+  errorText: PropTypes.string,
+  store: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
+  required: PropTypes.bool,
+  validate: PropTypes.string,
+  options: PropTypes.array,
+  label: PropTypes.string,
+  requiredMark: PropTypes.string,
+  radioClass: PropTypes.string,
+  radioLabelClass: PropTypes.string,
 };
 
 RadioButtons.defaultProps = {
   required: false,
   requiredMark: '*',
-  errorTextClass: '',
-  successWrapperClass: '',
-  errorWrapperClass: '',
-  labelClass: '',
-  controlGroupClass: '',
+  errorTextClass: 'form__error-text',
+  controlGroupClass: 'form__control-group',
+  successWrapperClass: 'form__control-group--success',
+  errorWrapperClass: 'form__control-group--error',
+  radioClass: 'form__control-group--radio',
+  labelClass: 'form__label',
+  radioLabelClass: 'form__radio-label',
+  requiredClass: 'form__label--required',
 };
