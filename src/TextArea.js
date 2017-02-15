@@ -65,28 +65,60 @@ export default class TextArea extends React.Component {
     }
     return true;
   }
+
   render() {
-    const containerClasses = `${this.props.controlGroupClass || ''} form__control-group ${this.state.isValid && this.state.isValidated ? `form__success ${this.props.successWrapperClass} ` : ''} ${!this.state.isValid ? ` form__error ${this.props.errorWrapperClass || ''}` : ''} `;
-    const isRequiredLabelClass = this.props.required ? 'form__label-required' : '';
+    const {
+      controlGroupClass,
+      successWrapperClass,
+      inlineLabel,
+      errorText,
+      errorTextClass,
+      errorWrapperClass,
+      inlineLabelClass,
+      labelId,
+      labelClass,
+      label,
+      required,
+      requiredClass,
+      requiredMark,
+      maxLength,
+      name,
+      disabled,
+      placeholder,
+    } = this.props;
+
+    let containerClasses = controlGroupClass;
+    if (this.state.isValid && this.state.isValidated) {
+      containerClasses += ` ${successWrapperClass}`;
+    }
+    if (!this.state.isValid) {
+      containerClasses += ` ${errorWrapperClass}`;
+    }
+    if (inlineLabel) {
+      containerClasses += ` ${inlineLabelClass}`;
+    }
+
     return (
       <div className={containerClasses}>
-        <label id={this.props.labelId}>
-          <span className={`${this.props.labelClass} form__label`}>
-            {this.props.label}
-            {this.props.required ? <span className={isRequiredLabelClass}>{this.props.requiredMark}</span> : null}
+        <label id={labelId}>
+          <span className={labelClass}>
+            {label}
+            {required ? <span className={requiredClass}>{requiredMark}</span> : null}
           </span>
           <textarea
-            name={this.props.name}
+            name={name}
             aria-invalid={!this.state.isValid}
-            aria-required={this.props.required}
+            aria-required={required}
             onChange={this.handleChange}
             onBlur={this.validate}
-            maxLength={this.props.maxLength ? this.props.maxLength : ''}
+            maxLength={maxLength}
             value={this.state.value}
+            disabled={disabled}
+            placeholder={placeholder}
           />
 
-          {this.props.errorText && !this.state.isValid ?
-            <div className={`${this.props.errorTextClass} form__error-text`}>{this.props.errorText}</div>
+          {errorText && !this.state.isValid ?
+            <div className={errorTextClass}>{errorText}</div>
          : null}
         </label>
       </div>
@@ -102,6 +134,7 @@ TextArea.propTypes = {
   controlGroupClass: React.PropTypes.string,
   validate: React.PropTypes.string,
   required: React.PropTypes.bool,
+  requiredClass: React.PropTypes.string,
   store: React.PropTypes.string.isRequired,
   value: React.PropTypes.string,
   errorText: React.PropTypes.string,
@@ -110,13 +143,20 @@ TextArea.propTypes = {
   labelId: React.PropTypes.string,
   maxLength: React.PropTypes.number,
   requiredMark: React.PropTypes.string,
+  inlineLabel: React.PropTypes.string,
+  inlineLabelClass: React.PropTypes.string,
+  disabled: React.PropTypes.bool,
+  placeholder: React.PropTypes.string,
 };
 
 TextArea.defaultProps = {
   requiredMark: '*',
-  errorTextClass: '',
-  successWrapperClass: '',
-  errorWrapperClass: '',
-  labelClass: '',
-  controlGroupClass: '',
+  successWrapperClass: 'form__control-group--success',
+  errorWrapperClass: 'form__control-group--error',
+  errorTextClass: 'form__error-text',
+  labelClass: 'form__label',
+  controlGroupClass: 'form__control-group',
+  requiredClass: 'form__label--required',
+  inlineLabelClass: '',
+  maxLength: '',
 };
