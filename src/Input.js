@@ -140,6 +140,9 @@ class Input extends Component {
       type,
       errorText,
       errorTextClass,
+      errorWrapperClass,
+      inlineLabelClass,
+      checkboxClass,
       labelId,
       labelClass,
       label,
@@ -161,13 +164,13 @@ class Input extends Component {
       containerClasses += ` ${successWrapperClass}`;
     }
     if (!this.state.isValid) {
-      containerClasses += ` ${this.props.errorWrapperClass}`;
+      containerClasses += ` ${errorWrapperClass}`;
     }
     if (inlineLabel) {
-      containerClasses += ` ${this.props.inlineLabelClass}`;
+      containerClasses += ` ${inlineLabelClass}`;
     }
     if (type === 'checkbox') {
-      containerClasses += ` ${this.props.checkboxClass}`;
+      containerClasses += ` ${checkboxClass}`;
     }
     return (
       <div className={containerClasses}>
@@ -233,13 +236,13 @@ Input.propTypes = {
 };
 
 Input.defaultProps = {
-  successWrapperClass: 'form__success',
+  successWrapperClass: 'form__control-group--success',
+  errorWrapperClass: 'form__control-group--error',
   requiredMark: '*',
   type: 'text',
   errorTextClass: 'form__error-text',
   labelClass: 'form__label',
   controlGroupClass: 'form__control-group',
-  errorWrapperClass: 'form__error',
   inlineLabelClass: '',
   requiredClass: 'form__label--required',
   required: false,
