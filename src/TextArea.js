@@ -1,9 +1,9 @@
-const React = require('react');
-const stores = require('nocms-stores');
-const utils = require('nocms-utils');
-const Validator = require('nocms-validation');
+import React, { Component, PropTypes } from 'react';
+import Validator from 'nocms-validation';
+import utils from 'nocms-utils';
+import stores from 'nocms-stores';
 
-export default class TextArea extends React.Component {
+export default class TextArea extends Component {
   constructor(props) {
     super(props);
     this.handleStoreChange = this.handleStoreChange.bind(this);
@@ -127,26 +127,26 @@ export default class TextArea extends React.Component {
 }
 
 TextArea.propTypes = {
-  errorTextClass: React.PropTypes.string,
-  labelClass: React.PropTypes.string,
-  successWrapperClass: React.PropTypes.string,
-  errorWrapperClass: React.PropTypes.string,
-  controlGroupClass: React.PropTypes.string,
-  validate: React.PropTypes.string,
-  required: React.PropTypes.bool,
-  requiredClass: React.PropTypes.string,
-  store: React.PropTypes.string.isRequired,
-  value: React.PropTypes.string,
-  errorText: React.PropTypes.string,
-  name: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string,
-  labelId: React.PropTypes.string,
-  maxLength: React.PropTypes.number,
-  requiredMark: React.PropTypes.string,
-  inlineLabel: React.PropTypes.string,
-  inlineLabelClass: React.PropTypes.string,
-  disabled: React.PropTypes.bool,
-  placeholder: React.PropTypes.string,
+  errorTextClass: PropTypes.string,
+  labelClass: PropTypes.string,
+  successWrapperClass: PropTypes.string,
+  errorWrapperClass: PropTypes.string,
+  controlGroupClass: PropTypes.string,
+  validate: PropTypes.string,
+  required: PropTypes.bool,
+  requiredClass: PropTypes.string,
+  store: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  errorText: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  labelId: PropTypes.string,
+  maxLength: PropTypes.number,
+  requiredMark: PropTypes.string,
+  inlineLabel: PropTypes.string,
+  inlineLabelClass: PropTypes.string,
+  disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
 };
 
 TextArea.defaultProps = {
@@ -158,5 +158,4 @@ TextArea.defaultProps = {
   controlGroupClass: 'form__control-group',
   requiredClass: 'form__label--required',
   inlineLabelClass: '',
-  maxLength: '',
 };
