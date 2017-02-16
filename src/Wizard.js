@@ -43,6 +43,7 @@ export default class Wizard extends Component {
       stepHeader: step.stepHeader,
       stepFooter: step.stepFooter,
       helpArea: step.helpArea,
+      overrideSubmit: step.overrideSubmit,
     };
   }
 

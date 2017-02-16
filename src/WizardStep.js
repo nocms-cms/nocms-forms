@@ -5,6 +5,9 @@ import WizardControlButtons from './WizardControlButtons';
 export default class WizardStep extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      errorText: props.errorText,
+    };
     this.handleGoBack = this.handleGoBack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -16,12 +19,21 @@ export default class WizardStep extends Component {
   }
 
   handleSubmit(formData, cb) {
-    cb();
-    if (this.props.isLast) {
-      this.props.handleFinish(formData);
+    const callback = this.props.isLast ? this.props.handleFinish : this.props.goNext;
+    if (this.props.overrideGoNext) {
+      this.props.overrideGoNext(formData, (err) => {
+        if (err) {
+          cb(err);
+          this.setState({ errorText: err });
+          return;
+        }
+        cb();
+        callback(formData);
+      });
       return;
     }
-    this.props.goNext(formData);
+    cb();
+    callback(formData);
   }
 
   handleGoBack(e) {
@@ -39,7 +51,6 @@ export default class WizardStep extends Component {
       isFirst,
       isLast,
       store,
-      errorText,
       backButtonClassName,
       nextButtonClassName,
       helpArea,
@@ -59,7 +70,7 @@ export default class WizardStep extends Component {
           initialState={initialState}
           className={formClass}
           store={store}
-          errorText={errorText}
+          errorText={this.state.errorText}
           noSubmitButton
         >
           {this.props.children}
@@ -87,6 +98,7 @@ WizardStep.propTypes = {
   goBack: PropTypes.func,
   goNext: PropTypes.func,
   handleFinish: PropTypes.func,
+  overrideGoNext: PropTypes.func,
   className: PropTypes.string,
   formClass: PropTypes.string,
   nextButtonText: PropTypes.string.isRequired,
