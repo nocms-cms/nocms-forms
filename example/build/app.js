@@ -23255,19 +23255,32 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsValidation = __webpack_require__(185);
+	
+	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
+	
+	var _nocmsUtils = __webpack_require__(183);
+	
+	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
+	
+	var _nocmsStores = __webpack_require__(181);
+	
+	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var React = __webpack_require__(1);
-	var stores = __webpack_require__(181);
-	var utils = __webpack_require__(183);
-	var Validator = __webpack_require__(185);
-	
-	var TextArea = function (_React$Component) {
-	  _inherits(TextArea, _React$Component);
+	var TextArea = function (_Component) {
+	  _inherits(TextArea, _Component);
 	
 	  function TextArea(props) {
 	    _classCallCheck(this, TextArea);
@@ -23288,8 +23301,8 @@
 	  _createClass(TextArea, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      if (utils.isBrowser()) {
-	        stores.subscribe(this.props.store, this.handleStoreChange);
+	      if (_nocmsUtils2.default.isBrowser()) {
+	        _nocmsStores2.default.subscribe(this.props.store, this.handleStoreChange);
 	        var initialState = {};
 	        initialState[this.props.name] = {
 	          value: this.props.value,
@@ -23297,14 +23310,14 @@
 	          isValidated: !this.props.required,
 	          validate: this.validate
 	        };
-	        stores.update(this.props.store, initialState);
+	        _nocmsStores2.default.update(this.props.store, initialState);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      if (utils.isBrowser()) {
-	        stores.unsubscribe(this.props.store, this.handleStoreChange);
+	      if (_nocmsUtils2.default.isBrowser()) {
+	        _nocmsStores2.default.unsubscribe(this.props.store, this.handleStoreChange);
 	      }
 	    }
 	  }, {
@@ -23324,20 +23337,20 @@
 	        isValidated: this.state.isValidated,
 	        validate: this.validate
 	      };
-	      stores.update(this.props.store, state);
+	      _nocmsStores2.default.update(this.props.store, state);
 	    }
 	  }, {
 	    key: 'validate',
 	    value: function validate() {
 	      if (this.props.validate || this.props.required) {
-	        var isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
+	        var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
 	        var state = {};
 	        state[this.props.name] = {
 	          value: this.state.value,
 	          isValid: isValid,
 	          isValidated: true
 	        };
-	        stores.update(this.props.store, state);
+	        _nocmsStores2.default.update(this.props.store, state);
 	        return isValid;
 	      }
 	      return true;
@@ -23376,23 +23389,23 @@
 	        containerClasses += ' ' + inlineLabelClass;
 	      }
 	
-	      return React.createElement(
+	      return _react2.default.createElement(
 	        'div',
 	        { className: containerClasses },
-	        React.createElement(
+	        _react2.default.createElement(
 	          'label',
 	          { id: labelId },
-	          React.createElement(
+	          _react2.default.createElement(
 	            'span',
 	            { className: labelClass },
 	            label,
-	            required ? React.createElement(
+	            required ? _react2.default.createElement(
 	              'span',
 	              { className: requiredClass },
 	              requiredMark
 	            ) : null
 	          ),
-	          React.createElement('textarea', {
+	          _react2.default.createElement('textarea', {
 	            name: name,
 	            'aria-invalid': !this.state.isValid,
 	            'aria-required': required,
@@ -23403,7 +23416,7 @@
 	            disabled: disabled,
 	            placeholder: placeholder
 	          }),
-	          errorText && !this.state.isValid ? React.createElement(
+	          errorText && !this.state.isValid ? _react2.default.createElement(
 	            'div',
 	            { className: errorTextClass },
 	            errorText
@@ -23414,32 +23427,32 @@
 	  }]);
 	
 	  return TextArea;
-	}(React.Component);
+	}(_react.Component);
 	
 	exports.default = TextArea;
 	
 	
 	TextArea.propTypes = {
-	  errorTextClass: React.PropTypes.string,
-	  labelClass: React.PropTypes.string,
-	  successWrapperClass: React.PropTypes.string,
-	  errorWrapperClass: React.PropTypes.string,
-	  controlGroupClass: React.PropTypes.string,
-	  validate: React.PropTypes.string,
-	  required: React.PropTypes.bool,
-	  requiredClass: React.PropTypes.string,
-	  store: React.PropTypes.string.isRequired,
-	  value: React.PropTypes.string,
-	  errorText: React.PropTypes.string,
-	  name: React.PropTypes.string.isRequired,
-	  label: React.PropTypes.string,
-	  labelId: React.PropTypes.string,
-	  maxLength: React.PropTypes.number,
-	  requiredMark: React.PropTypes.string,
-	  inlineLabel: React.PropTypes.string,
-	  inlineLabelClass: React.PropTypes.string,
-	  disabled: React.PropTypes.bool,
-	  placeholder: React.PropTypes.string
+	  errorTextClass: _react.PropTypes.string,
+	  labelClass: _react.PropTypes.string,
+	  successWrapperClass: _react.PropTypes.string,
+	  errorWrapperClass: _react.PropTypes.string,
+	  controlGroupClass: _react.PropTypes.string,
+	  validate: _react.PropTypes.string,
+	  required: _react.PropTypes.bool,
+	  requiredClass: _react.PropTypes.string,
+	  store: _react.PropTypes.string.isRequired,
+	  value: _react.PropTypes.string,
+	  errorText: _react.PropTypes.string,
+	  name: _react.PropTypes.string.isRequired,
+	  label: _react.PropTypes.string,
+	  labelId: _react.PropTypes.string,
+	  maxLength: _react.PropTypes.number,
+	  requiredMark: _react.PropTypes.string,
+	  inlineLabel: _react.PropTypes.string,
+	  inlineLabelClass: _react.PropTypes.string,
+	  disabled: _react.PropTypes.bool,
+	  placeholder: _react.PropTypes.string
 	};
 	
 	TextArea.defaultProps = {
@@ -23450,8 +23463,7 @@
 	  labelClass: 'form__label',
 	  controlGroupClass: 'form__control-group',
 	  requiredClass: 'form__label--required',
-	  inlineLabelClass: '',
-	  maxLength: ''
+	  inlineLabelClass: ''
 	};
 	module.exports = exports['default'];
 
@@ -23545,7 +23557,8 @@
 	        initialState: this.state.initialStates[current],
 	        stepHeader: step.stepHeader,
 	        stepFooter: step.stepFooter,
-	        helpArea: step.helpArea
+	        helpArea: step.helpArea,
+	        overrideSubmit: step.overrideSubmit
 	      };
 	    }
 	  }, {
@@ -23703,6 +23716,9 @@
 	
 	    var _this = _possibleConstructorReturn(this, (WizardStep.__proto__ || Object.getPrototypeOf(WizardStep)).call(this, props));
 	
+	    _this.state = {
+	      errorText: props.errorText
+	    };
 	    _this.handleGoBack = _this.handleGoBack.bind(_this);
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    return _this;
@@ -23718,12 +23734,23 @@
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(formData, cb) {
-	      cb();
-	      if (this.props.isLast) {
-	        this.props.handleFinish(formData);
+	      var _this2 = this;
+	
+	      var callback = this.props.isLast ? this.props.handleFinish : this.props.goNext;
+	      if (this.props.overrideGoNext) {
+	        this.props.overrideGoNext(formData, function (err) {
+	          if (err) {
+	            cb(err);
+	            _this2.setState({ errorText: err });
+	            return;
+	          }
+	          cb();
+	          callback(formData);
+	        });
 	        return;
 	      }
-	      this.props.goNext(formData);
+	      cb();
+	      callback(formData);
 	    }
 	  }, {
 	    key: 'handleGoBack',
@@ -23743,7 +23770,6 @@
 	          isFirst = _props.isFirst,
 	          isLast = _props.isLast,
 	          store = _props.store,
-	          errorText = _props.errorText,
 	          backButtonClassName = _props.backButtonClassName,
 	          nextButtonClassName = _props.nextButtonClassName,
 	          helpArea = _props.helpArea,
@@ -23766,7 +23792,7 @@
 	            initialState: initialState,
 	            className: formClass,
 	            store: store,
-	            errorText: errorText,
+	            errorText: this.state.errorText,
 	            noSubmitButton: true
 	          },
 	          this.props.children,
@@ -23799,6 +23825,7 @@
 	  goBack: _react.PropTypes.func,
 	  goNext: _react.PropTypes.func,
 	  handleFinish: _react.PropTypes.func,
+	  overrideGoNext: _react.PropTypes.func,
 	  className: _react.PropTypes.string,
 	  formClass: _react.PropTypes.string,
 	  nextButtonText: _react.PropTypes.string.isRequired,
@@ -23969,11 +23996,15 @@
 	          'div',
 	          null,
 	          'Jeg er en step footer'
-	        ) }, { title: 'Overskrift steg 2', component: _react2.default.createElement(Step, { name: 'secondstep' }), initialState: { secondstep: 't2' }, stepHeader: _react2.default.createElement(
+	        ) }, { title: 'Overskrift steg 2', overrideGoNext: _this.overrideGoNext, component: _react2.default.createElement(Step, { name: 'secondstep' }), initialState: { secondstep: 't2' }, stepHeader: _react2.default.createElement(
 	          'div',
 	          null,
 	          'Jeg er en step header'
-	        ) }, { title: 'Overskrift steg 3', component: _react2.default.createElement(
+	        ) }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }), initialState: { secondstep: 't3' }, stepHeader: _react2.default.createElement(
+	          'div',
+	          null,
+	          'Jeg har custom submit funksjon.'
+	        ) }, { title: 'Overskrift steg 4', component: _react2.default.createElement(
 	          'div',
 	          null,
 	          'Empty step'
@@ -23981,7 +24012,7 @@
 	          'div',
 	          null,
 	          'Jeg er et hjelpeomr\xE5de'
-	        ) }, { title: 'Overskrift steg 4', component: _react2.default.createElement(Step, { name: 'thirdstep' }), helpArea: _react2.default.createElement(
+	        ) }, { title: 'Overskrift steg 5', component: _react2.default.createElement(Step, { name: 'thirdstep' }), helpArea: _react2.default.createElement(
 	          'div',
 	          null,
 	          'Jeg er et hjelpeomr\xE5de'
@@ -23993,6 +24024,12 @@
 	  }
 	
 	  _createClass(WizardExample, [{
+	    key: 'overrideGoNext',
+	    value: function overrideGoNext(formData, cb) {
+	      console.log('Step goNext wrapped', formData);
+	      cb(null);
+	    }
+	  }, {
 	    key: 'handleFinish',
 	    value: function handleFinish(wizardData, cb) {
 	      console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
@@ -24084,14 +24121,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var One = function One(props, context) {
+	var Step = function Step(props, context) {
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    _react2.default.createElement(
 	      'h2',
 	      null,
-	      'F\xF8rste steg'
+	      'Step: ',
+	      props.name
 	    ),
 	    _react2.default.createElement(_nocmsForms.Input, { required: true,
 	      store: context.store,
@@ -24103,11 +24141,11 @@
 	  );
 	};
 	
-	One.contextTypes = {
+	Step.contextTypes = {
 	  store: _react2.default.PropTypes.string
 	};
 	
-	module.exports = One;
+	module.exports = Step;
 
 /***/ }
 /******/ ]);

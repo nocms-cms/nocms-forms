@@ -1,10 +1,10 @@
 import React from 'react';
 import { Input } from 'nocms-forms';
 
-const One = (props, context) => {
+const Step = (props, context) => {
   return (
     <div>
-      <h2>Første steg</h2>
+      <h2>Step: {props.name}</h2>
         <Input required
                store={context.store}
                label="Label"
@@ -17,8 +17,8 @@ const One = (props, context) => {
 }
 
 
-One.contextTypes = {
+Step.contextTypes = {
   store: React.PropTypes.string
 };
 
-module.exports = One;
+module.exports = Step;
