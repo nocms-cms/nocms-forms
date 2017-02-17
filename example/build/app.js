@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/Users/jorgen/dev/nocms/packages/nocms-forms/example";
+/******/ 	__webpack_require__.p = "/Users/wenche/Documents/Prosjekter/NoCMS/packages/nocms-forms/example";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -21895,20 +21895,14 @@
 	      setTimeout(function () {
 	        var target = _this3.formEl.querySelector('.form__error');
 	        if (target) {
-	          var _ret = function () {
-	            var targetPos = target.offsetTop;
-	            var input = target.querySelector('input');
-	            if (!input) {
-	              return {
-	                v: void 0
-	              };
-	            }
-	            utils.scrollTo(document.body, targetPos - 160, 400, function () {
-	              input.focus();
-	            });
-	          }();
-	
-	          if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	          var targetPos = target.offsetTop;
+	          var input = target.querySelector('input');
+	          if (!input) {
+	            return;
+	          }
+	          utils.scrollTo(document.body, targetPos - 160, 400, function () {
+	            input.focus();
+	          });
 	        }
 	      }, 0);
 	    }
@@ -22317,40 +22311,30 @@
 	  }, {
 	    key: 'handleDependentState',
 	    value: function handleDependentState(store, changes) {
-	      var _this2 = this;
-	
 	      if (this.props.dependOn) {
-	        var _ret = function () {
-	          var fields = _this2.props.dependOn.split(',').map(function (f) {
-	            return f.trim();
-	          });
-	          var values = {};
+	        var fields = this.props.dependOn.split(',').map(function (f) {
+	          return f.trim();
+	        });
+	        var values = {};
 	
-	          // Check if any of the changed values are in the dependOn list
-	          var doUpdate = fields.reduce(function (val, f) {
-	            values[f] = store[f];
-	            if (changes[f]) {
-	              return true;
-	            }
-	            return val;
-	          }, false);
-	
-	          if (!doUpdate) {
-	            return {
-	              v: false
-	            };
+	        // Check if any of the changed values are in the dependOn list
+	        var doUpdate = fields.reduce(function (val, f) {
+	          values[f] = store[f];
+	          if (changes[f]) {
+	            return true;
 	          }
+	          return val;
+	        }, false);
 	
-	          var aggregatedValue = _this2.props.dependencyFunc(values);
-	          var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
-	          _this2.setState(aggregatedState);
-	          _this2.updateStore(aggregatedValue, true, true);
-	          return {
-	            v: true
-	          };
-	        }();
+	        if (!doUpdate) {
+	          return false;
+	        }
 	
-	        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	        var aggregatedValue = this.props.dependencyFunc(values);
+	        var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
+	        this.setState(aggregatedState);
+	        this.updateStore(aggregatedValue, true, true);
+	        return true;
 	      }
 	      return false;
 	    }
