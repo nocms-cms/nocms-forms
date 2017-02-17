@@ -111,8 +111,12 @@ export default class RadioButtons extends Component {
       if (typeof option === 'string') {
         option = { label: option, value: option };
       }
+      let labelClasses = labelClass;
+      if (option.disabled) {
+        labelClasses += ` ${labelClass}--disabled`;
+      }
       return (
-        <label key={`${name}_${index}`} className={`${labelClass} ${option.disabled ? ' disabled' : null}`}>
+        <label key={`${name}_${index}`} className={labelClasses}>
           <input
             checked={this.state.value === option.value}
             type="radio"
