@@ -1,15 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
-import WizardStep from './WizardStep';
 
 export default class Wizard extends Component {
-
   constructor(props) {
     super(props);
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
+    this.applyWizardProps = this.applyWizardProps.bind(this);
     this.state = {
       currentStep: 0,
       lastStepIndex: props.steps.length - 1,
@@ -26,16 +25,22 @@ export default class Wizard extends Component {
     }
   }
 
-  getStoreForStep(index) {
-    return `${this.props.store}-step-${index}`;
+  getStoreForStep() {
+    return `${this.props.store}-step-${this.state.currentStep}`;
+  }
+
+  getInitialStateForStep() {
+    return this.state.initialStates[this.state.currentStep];
   }
 
   getStep() {
     const current = this.state.currentStep;
     const step = this.props.steps[current];
+    const stepComponent = this.props.steps[current].component;
+
     return {
       index: current,
-      component: this.props.steps[current].component,
+      component: this.applyWizardProps(stepComponent),
       store: this.getStoreForStep(current),
       isFirst: current === 0,
       isLast: current === this.props.steps.length - 1,
@@ -47,7 +52,30 @@ export default class Wizard extends Component {
     };
   }
 
-  goBack() {
+  getBackButton() {
+    if (this.state.currentStep === 0) {
+      return null;
+    }
+    return (<button onClick={this.goBack} className={this.props.backButtonClassName}>
+      {this.props.backButtonText}
+    </button>);
+  }
+
+  applyWizardProps(component) {
+    const props = {
+      store: this.getStoreForStep(),
+      goNext: this.goNext,
+      wizardData: this.state.wizardData,
+      backButton: this.getBackButton(),
+      initialState: this.getInitialStateForStep(),
+    };
+    return React.cloneElement(component, props);
+  }
+
+  goBack(e) {
+    if (e) {
+      e.preventDefault();
+    }
     if (this.props.goBack) {
       this.setState({ currentStep: this.props.goBack(this.state.wizardData, this.state.currentStep) });
       return;
@@ -63,6 +91,11 @@ export default class Wizard extends Component {
       this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
       return;
     }
+    if (this.state.currentStep === this.state.lastStepIndex) {
+      this.handleFinish(formData);
+      this.setState({ showReceipt: true });
+      return;
+    }
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
   }
 
@@ -76,45 +109,14 @@ export default class Wizard extends Component {
   }
 
   render() {
-    const {
-      wizardStepClassName,
-      errorText,
-      nextButtonText,
-      backButtonText,
-      backButtonClassName,
-      nextButtonClassName,
-      finishButtonClassName,
-      finishButtonText,
-      spinner,
-      steps,
-      className,
-    } = this.props;
     const step = this.getStep();
-    return (<div className={className}>
+    return (<div className={this.props.className}>
       { this.state.showReceipt ?
         this.props.receipt(this.state.wizardData)
       :
         <div>
           { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
-          <WizardStep
-            formClass={this.props.formClass}
-            goNext={this.goNext}
-            goBack={this.goBack}
-            className={wizardStepClassName}
-            {...step}
-            nextButtonText={nextButtonText}
-            backButtonText={backButtonText}
-            finishButtonText={finishButtonText}
-            handleFinish={this.handleFinish}
-            nextButtonClassName={nextButtonClassName}
-            backButtonClassName={backButtonClassName}
-            finishButtonClassName={finishButtonClassName}
-            errorText={errorText}
-            spinner={spinner}
-            noOfSteps={steps.length}
-          >
-            {step.component}
-          </WizardStep>
+          { step.component }
         </div>
       }
     </div>);
@@ -128,20 +130,14 @@ Wizard.propTypes = {
   goNext: PropTypes.func,
   progressIndicator: PropTypes.func,
   handleFinish: PropTypes.func.isRequired,
-  nextButtonClassName: PropTypes.string,
   backButtonClassName: PropTypes.string,
-  finishButtonClassName: PropTypes.string,
-  formClass: PropTypes.string,
-  nextButtonText: PropTypes.string,
   backButtonText: PropTypes.string,
-  finishButtonText: PropTypes.string,
-  errorText: PropTypes.string,
   className: PropTypes.string,
-  wizardStepClassName: PropTypes.string,
-  spinner: PropTypes.object,
   receipt: PropTypes.func,
 };
 
 Wizard.defaultProps = {
   className: 'wizard',
+  backButtonText: 'Back',
+  backButtonClassName: 'button button__back',
 };

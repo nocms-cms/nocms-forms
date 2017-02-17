@@ -21716,7 +21716,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.WizardStep = exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
+	exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
 	
 	var _Form2 = __webpack_require__(180);
 	
@@ -21742,10 +21742,6 @@
 	
 	var _Wizard3 = _interopRequireDefault(_Wizard2);
 	
-	var _WizardStep2 = __webpack_require__(191);
-	
-	var _WizardStep3 = _interopRequireDefault(_WizardStep2);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.Form = _Form3.default;
@@ -21754,7 +21750,6 @@
 	exports.Select = _Select3.default;
 	exports.TextArea = _TextArea3.default;
 	exports.Wizard = _Wizard3.default;
-	exports.WizardStep = _WizardStep3.default;
 
 /***/ },
 /* 180 */
@@ -21928,13 +21923,14 @@
 	      } else {
 	        submitInProgress = SUBMITTING_DEFAULT;
 	      }
-	      var submit = null;
+	      var buttons = null;
 	      var buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
 	      if (!noSubmitButton) {
 	        var buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
-	        submit = React.createElement(
+	        buttons = React.createElement(
 	          'div',
 	          { className: buttonContainerClassName },
+	          this.props.backButton,
 	          React.createElement(
 	            'button',
 	            { disabled: this.state.isDisabled, type: 'submit', className: submitButtonClassName || 'button button__primary' },
@@ -21959,7 +21955,7 @@
 	          this.state.errorText
 	        ) : null,
 	        this.props.children,
-	        utils.isBrowser() ? submit : spinner
+	        utils.isBrowser() ? buttons : spinner
 	      );
 	    }
 	  }]);
@@ -21978,6 +21974,7 @@
 	  className: React.PropTypes.string,
 	  centerSubmitButton: React.PropTypes.bool,
 	  spinner: React.PropTypes.object,
+	  backButton: React.PropTypes.object,
 	  submittingText: React.PropTypes.string,
 	  wizardStep: React.PropTypes.bool
 	};
@@ -23461,8 +23458,6 @@
 	  value: true
 	});
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
@@ -23476,10 +23471,6 @@
 	var _nocmsUtils = __webpack_require__(183);
 	
 	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
-	
-	var _WizardStep = __webpack_require__(191);
-	
-	var _WizardStep2 = _interopRequireDefault(_WizardStep);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23500,6 +23491,7 @@
 	    _this.goBack = _this.goBack.bind(_this);
 	    _this.goNext = _this.goNext.bind(_this);
 	    _this.handleFinish = _this.handleFinish.bind(_this);
+	    _this.applyWizardProps = _this.applyWizardProps.bind(_this);
 	    _this.state = {
 	      currentStep: 0,
 	      lastStepIndex: props.steps.length - 1,
@@ -23524,17 +23516,24 @@
 	    }
 	  }, {
 	    key: 'getStoreForStep',
-	    value: function getStoreForStep(index) {
-	      return this.props.store + '-step-' + index;
+	    value: function getStoreForStep() {
+	      return this.props.store + '-step-' + this.state.currentStep;
+	    }
+	  }, {
+	    key: 'getInitialStateForStep',
+	    value: function getInitialStateForStep() {
+	      return this.state.initialStates[this.state.currentStep];
 	    }
 	  }, {
 	    key: 'getStep',
 	    value: function getStep() {
 	      var current = this.state.currentStep;
 	      var step = this.props.steps[current];
+	      var stepComponent = this.props.steps[current].component;
+	
 	      return {
 	        index: current,
-	        component: this.props.steps[current].component,
+	        component: this.applyWizardProps(stepComponent),
 	        store: this.getStoreForStep(current),
 	        isFirst: current === 0,
 	        isLast: current === this.props.steps.length - 1,
@@ -23546,8 +23545,35 @@
 	      };
 	    }
 	  }, {
+	    key: 'getBackButton',
+	    value: function getBackButton() {
+	      if (this.state.currentStep === 0) {
+	        return null;
+	      }
+	      return _react2.default.createElement(
+	        'button',
+	        { onClick: this.goBack, className: this.props.backButtonClassName },
+	        this.props.backButtonText
+	      );
+	    }
+	  }, {
+	    key: 'applyWizardProps',
+	    value: function applyWizardProps(component) {
+	      var props = {
+	        store: this.getStoreForStep(),
+	        goNext: this.goNext,
+	        wizardData: this.state.wizardData,
+	        backButton: this.getBackButton(),
+	        initialState: this.getInitialStateForStep()
+	      };
+	      return _react2.default.cloneElement(component, props);
+	    }
+	  }, {
 	    key: 'goBack',
-	    value: function goBack() {
+	    value: function goBack(e) {
+	      if (e) {
+	        e.preventDefault();
+	      }
 	      if (this.props.goBack) {
 	        this.setState({ currentStep: this.props.goBack(this.state.wizardData, this.state.currentStep) });
 	        return;
@@ -23562,6 +23588,11 @@
 	
 	      if (this.props.goNext) {
 	        this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
+	        return;
+	      }
+	      if (this.state.currentStep === this.state.lastStepIndex) {
+	        this.handleFinish(formData);
+	        this.setState({ showReceipt: true });
 	        return;
 	      }
 	      this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
@@ -23581,48 +23612,15 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props = this.props,
-	          wizardStepClassName = _props.wizardStepClassName,
-	          errorText = _props.errorText,
-	          nextButtonText = _props.nextButtonText,
-	          backButtonText = _props.backButtonText,
-	          backButtonClassName = _props.backButtonClassName,
-	          nextButtonClassName = _props.nextButtonClassName,
-	          finishButtonClassName = _props.finishButtonClassName,
-	          finishButtonText = _props.finishButtonText,
-	          spinner = _props.spinner,
-	          steps = _props.steps,
-	          className = _props.className;
-	
 	      var step = this.getStep();
 	      return _react2.default.createElement(
 	        'div',
-	        { className: className },
+	        { className: this.props.className },
 	        this.state.showReceipt ? this.props.receipt(this.state.wizardData) : _react2.default.createElement(
 	          'div',
 	          null,
 	          this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1),
-	          _react2.default.createElement(
-	            _WizardStep2.default,
-	            _extends({
-	              formClass: this.props.formClass,
-	              goNext: this.goNext,
-	              goBack: this.goBack,
-	              className: wizardStepClassName
-	            }, step, {
-	              nextButtonText: nextButtonText,
-	              backButtonText: backButtonText,
-	              finishButtonText: finishButtonText,
-	              handleFinish: this.handleFinish,
-	              nextButtonClassName: nextButtonClassName,
-	              backButtonClassName: backButtonClassName,
-	              finishButtonClassName: finishButtonClassName,
-	              errorText: errorText,
-	              spinner: spinner,
-	              noOfSteps: steps.length
-	            }),
-	            step.component
-	          )
+	          step.component
 	        )
 	      );
 	    }
@@ -23641,279 +23639,22 @@
 	  goNext: _react.PropTypes.func,
 	  progressIndicator: _react.PropTypes.func,
 	  handleFinish: _react.PropTypes.func.isRequired,
-	  nextButtonClassName: _react.PropTypes.string,
 	  backButtonClassName: _react.PropTypes.string,
-	  finishButtonClassName: _react.PropTypes.string,
-	  formClass: _react.PropTypes.string,
-	  nextButtonText: _react.PropTypes.string,
 	  backButtonText: _react.PropTypes.string,
-	  finishButtonText: _react.PropTypes.string,
-	  errorText: _react.PropTypes.string,
 	  className: _react.PropTypes.string,
-	  wizardStepClassName: _react.PropTypes.string,
-	  spinner: _react.PropTypes.object,
 	  receipt: _react.PropTypes.func
 	};
 	
 	Wizard.defaultProps = {
-	  className: 'wizard'
+	  className: 'wizard',
+	  backButtonText: 'Back',
+	  backButtonClassName: 'button button__back'
 	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _Form = __webpack_require__(180);
-	
-	var _Form2 = _interopRequireDefault(_Form);
-	
-	var _WizardControlButtons = __webpack_require__(192);
-	
-	var _WizardControlButtons2 = _interopRequireDefault(_WizardControlButtons);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var WizardStep = function (_Component) {
-	  _inherits(WizardStep, _Component);
-	
-	  function WizardStep(props) {
-	    _classCallCheck(this, WizardStep);
-	
-	    var _this = _possibleConstructorReturn(this, (WizardStep.__proto__ || Object.getPrototypeOf(WizardStep)).call(this, props));
-	
-	    _this.state = {
-	      errorText: props.errorText
-	    };
-	    _this.handleGoBack = _this.handleGoBack.bind(_this);
-	    _this.handleSubmit = _this.handleSubmit.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(WizardStep, [{
-	    key: 'getChildContext',
-	    value: function getChildContext() {
-	      return {
-	        store: this.props.store
-	      };
-	    }
-	  }, {
-	    key: 'handleSubmit',
-	    value: function handleSubmit(formData, cb) {
-	      var _this2 = this;
-	
-	      var callback = this.props.isLast ? this.props.handleFinish : this.props.goNext;
-	      if (this.props.overrideGoNext) {
-	        this.props.overrideGoNext(formData, function (err) {
-	          if (err) {
-	            cb(err);
-	            _this2.setState({ errorText: err });
-	            return;
-	          }
-	          cb();
-	          callback(formData);
-	        });
-	        return;
-	      }
-	      cb();
-	      callback(formData);
-	    }
-	  }, {
-	    key: 'handleGoBack',
-	    value: function handleGoBack(e) {
-	      e.preventDefault();
-	      this.props.goBack();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props,
-	          className = _props.className,
-	          nextButtonText = _props.nextButtonText,
-	          backButtonText = _props.backButtonText,
-	          finishButtonText = _props.finishButtonText,
-	          initialState = _props.initialState,
-	          isFirst = _props.isFirst,
-	          isLast = _props.isLast,
-	          store = _props.store,
-	          backButtonClassName = _props.backButtonClassName,
-	          nextButtonClassName = _props.nextButtonClassName,
-	          helpArea = _props.helpArea,
-	          stepHeader = _props.stepHeader,
-	          stepFooter = _props.stepFooter,
-	          finishButtonClassName = _props.finishButtonClassName,
-	          formClass = _props.formClass;
-	
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: className },
-	        stepHeader,
-	        _react2.default.createElement(
-	          _Form2.default,
-	          {
-	            wizardStep: true,
-	            key: store,
-	            onSubmit: this.handleSubmit,
-	            initialState: initialState,
-	            className: formClass,
-	            store: store,
-	            errorText: this.state.errorText,
-	            noSubmitButton: true
-	          },
-	          this.props.children,
-	          _react2.default.createElement(_WizardControlButtons2.default, {
-	            showFinishButton: isLast,
-	            nextButtonText: nextButtonText,
-	            finishButtonText: finishButtonText,
-	            backButtonText: backButtonText,
-	            showBackButton: !isFirst,
-	            showNextButton: !isLast,
-	            handleGoBack: this.handleGoBack,
-	            backButtonClassName: backButtonClassName,
-	            nextButtonClassName: nextButtonClassName,
-	            finishButtonClassName: finishButtonClassName
-	          })
-	        ),
-	        stepFooter,
-	        helpArea
-	      );
-	    }
-	  }]);
-	
-	  return WizardStep;
-	}(_react.Component);
-	
-	exports.default = WizardStep;
-	
-	
-	WizardStep.propTypes = {
-	  goBack: _react.PropTypes.func,
-	  goNext: _react.PropTypes.func,
-	  handleFinish: _react.PropTypes.func,
-	  overrideGoNext: _react.PropTypes.func,
-	  className: _react.PropTypes.string,
-	  formClass: _react.PropTypes.string,
-	  nextButtonText: _react.PropTypes.string.isRequired,
-	  backButtonText: _react.PropTypes.string.isRequired,
-	  finishButtonText: _react.PropTypes.string.isRequired,
-	  backButtonClassName: _react.PropTypes.string,
-	  nextButtonClassName: _react.PropTypes.string,
-	  finishButtonClassName: _react.PropTypes.string,
-	  isFirst: _react.PropTypes.bool,
-	  isLast: _react.PropTypes.bool,
-	  store: _react.PropTypes.string,
-	  initialState: _react.PropTypes.object,
-	  errorText: _react.PropTypes.string,
-	  children: _react.PropTypes.node,
-	  helpArea: _react.PropTypes.object,
-	  stepHeader: _react.PropTypes.object,
-	  stepFooter: _react.PropTypes.object
-	};
-	
-	WizardStep.defaultProps = {
-	  nextButtonText: 'Neste',
-	  backButtonText: 'Tilbake',
-	  className: 'wizard__step'
-	};
-	
-	WizardStep.childContextTypes = {
-	  store: _react2.default.PropTypes.string
-	};
-	module.exports = exports['default'];
-
-/***/ },
-/* 192 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var containerClassName = 'form__button-container';
-	
-	var WizardControlButtons = function WizardControlButtons(props) {
-	  var showBackButton = props.showBackButton,
-	      showNextButton = props.showNextButton,
-	      showFinishButton = props.showFinishButton,
-	      backButtonText = props.backButtonText,
-	      nextButtonText = props.nextButtonText,
-	      finishButtonText = props.finishButtonText,
-	      finishButtonClassName = props.finishButtonClassName,
-	      backButtonClassName = props.backButtonClassName,
-	      nextButtonClassName = props.nextButtonClassName,
-	      handleGoBack = props.handleGoBack;
-	
-	  return _react2.default.createElement(
-	    'div',
-	    { className: containerClassName },
-	    showBackButton ? _react2.default.createElement(
-	      'button',
-	      { onClick: handleGoBack, className: backButtonClassName },
-	      backButtonText
-	    ) : null,
-	    showNextButton ? _react2.default.createElement(
-	      'button',
-	      { type: 'submit', className: nextButtonClassName },
-	      nextButtonText
-	    ) : null,
-	    showFinishButton ? _react2.default.createElement(
-	      'button',
-	      { type: 'submit', className: finishButtonClassName },
-	      finishButtonText
-	    ) : null
-	  );
-	};
-	
-	WizardControlButtons.propTypes = {
-	  showBackButton: _react.PropTypes.bool,
-	  showNextButton: _react.PropTypes.bool,
-	  showFinishButton: _react.PropTypes.bool,
-	  backButtonText: _react.PropTypes.string,
-	  nextButtonText: _react.PropTypes.string,
-	  backButtonClassName: _react.PropTypes.string,
-	  nextButtonClassName: _react.PropTypes.string,
-	  handleGoBack: _react.PropTypes.func.isRequired,
-	  finishButtonText: _react.PropTypes.string.isRequired,
-	  finishButtonClassName: _react.PropTypes.string
-	};
-	
-	WizardControlButtons.defaultProps = {
-	  backButtonClassName: 'button button__back',
-	  nextButtonClassName: 'button button__next',
-	  finishButtonClassName: 'button button__finish'
-	};
-	
-	exports.default = WizardControlButtons;
-	module.exports = exports['default'];
-
-/***/ },
+/* 191 */,
+/* 192 */,
 /* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23953,6 +23694,14 @@
 	
 	var _nocmsForms = __webpack_require__(179);
 	
+	var _EmptyStep = __webpack_require__(196);
+	
+	var _EmptyStep2 = _interopRequireDefault(_EmptyStep);
+	
+	var _Step = __webpack_require__(195);
+	
+	var _Step2 = _interopRequireDefault(_Step);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -23962,8 +23711,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Step = __webpack_require__(195);
 	
 	var wizardStoreName = 'test-form-wizard';
 	
@@ -23976,31 +23723,7 @@
 	    var _this = _possibleConstructorReturn(this, (WizardExample.__proto__ || Object.getPrototypeOf(WizardExample)).call(this));
 	
 	    _this.state = {
-	      steps: [{ title: 'Overskrift steg 1', component: _react2.default.createElement(Step, { name: 'firststep' }), stepFooter: _react2.default.createElement(
-	          'div',
-	          null,
-	          'Jeg er en step footer'
-	        ) }, { title: 'Overskrift steg 2', overrideGoNext: _this.overrideGoNext, component: _react2.default.createElement(Step, { name: 'secondstep' }), initialState: { secondstep: 't2' }, stepHeader: _react2.default.createElement(
-	          'div',
-	          null,
-	          'Jeg er en step header'
-	        ) }, { title: 'Overskrift steg 3', component: _react2.default.createElement(Step, { name: 'thirdstep' }), initialState: { secondstep: 't3' }, stepHeader: _react2.default.createElement(
-	          'div',
-	          null,
-	          'Jeg har custom submit funksjon.'
-	        ) }, { title: 'Overskrift steg 4', component: _react2.default.createElement(
-	          'div',
-	          null,
-	          'Empty step'
-	        ), helpArea: _react2.default.createElement(
-	          'div',
-	          null,
-	          'Jeg er et hjelpeomr\xE5de'
-	        ) }, { title: 'Overskrift steg 5', component: _react2.default.createElement(Step, { name: 'thirdstep' }), helpArea: _react2.default.createElement(
-	          'div',
-	          null,
-	          'Jeg er et hjelpeomr\xE5de'
-	        ) }]
+	      steps: [{ title: 'Overskrift steg 1', component: _react2.default.createElement(_Step2.default, { name: 'firststep' }) }, { title: 'Overskrift steg 2', overrideGoNext: _this.overrideGoNext, component: _react2.default.createElement(_Step2.default, { name: 'secondstep' }), initialState: { secondstep: 't2' } }, { title: 'Overskrift steg 3', component: _react2.default.createElement(_Step2.default, { name: 'thirdstep' }), initialState: { secondstep: 't3' } }, { title: 'Overskrift steg 4', component: _react2.default.createElement(_EmptyStep2.default, null) }, { title: 'Overskrift steg 5', component: _react2.default.createElement(_Step2.default, { name: 'fifthstep' }) }]
 	    };
 	    _this.progressIndicator = _this.progressIndicator.bind(_this);
 	    _this.handleFinish = _this.handleFinish.bind(_this);
@@ -24097,6 +23820,12 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -24105,31 +23834,144 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Step = function Step(props, context) {
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(
-	      'h2',
-	      null,
-	      'Step: ',
-	      props.name
-	    ),
-	    _react2.default.createElement(_nocmsForms.Input, { required: true,
-	      store: context.store,
-	      label: 'Label',
-	      name: props.name,
-	      errorText: 'Oisann',
-	      validate: 'notEmpty'
-	    })
-	  );
-	};
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	Step.contextTypes = {
-	  store: _react2.default.PropTypes.string
-	};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	module.exports = Step;
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
+	
+	  function Step() {
+	    _classCallCheck(this, Step);
+	
+	    var _this = _possibleConstructorReturn(this, (Step.__proto__ || Object.getPrototypeOf(Step)).call(this));
+	
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.state = {
+	      errorText: null
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Step, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(formData, cb) {
+	      cb();
+	      this.props.goNext(formData);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _nocmsForms.Form,
+	        {
+	          wizardStep: true,
+	          key: this.props.store,
+	          onSubmit: this.handleSubmit,
+	          initialState: this.props.initialState,
+	          className: this.props.formClass,
+	          store: this.props.store,
+	          errorText: this.state.errorText,
+	          backButton: this.props.backButton
+	        },
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Step: ',
+	          this.props.name
+	        ),
+	        _react2.default.createElement(_nocmsForms.Input, { required: true,
+	          store: this.props.store,
+	          label: 'Label',
+	          name: this.props.name,
+	          errorText: 'Oisann',
+	          validate: 'notEmpty'
+	        })
+	      );
+	    }
+	  }]);
+	
+	  return Step;
+	}(_react.Component);
+	
+	exports.default = Step;
+	module.exports = exports['default'];
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsForms = __webpack_require__(179);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EmptyStep = function (_Component) {
+	  _inherits(EmptyStep, _Component);
+	
+	  function EmptyStep() {
+	    _classCallCheck(this, EmptyStep);
+	
+	    var _this = _possibleConstructorReturn(this, (EmptyStep.__proto__ || Object.getPrototypeOf(EmptyStep)).call(this));
+	
+	    _this.handleNextClick = _this.handleNextClick.bind(_this);
+	    _this.state = {
+	      errorText: null
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(EmptyStep, [{
+	    key: 'handleNextClick',
+	    value: function handleNextClick(e) {
+	      e.preventDefault();
+	      this.props.goNext({});
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'Empty step'
+	        ),
+	        this.props.backButton,
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.handleNextClick },
+	          'Next'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return EmptyStep;
+	}(_react.Component);
+	
+	exports.default = EmptyStep;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

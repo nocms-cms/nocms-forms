@@ -1,24 +1,41 @@
-import React from 'react';
-import { Input } from 'nocms-forms';
+import React, { Component } from 'react';
+import { Form, Input } from 'nocms-forms';
 
-const Step = (props, context) => {
-  return (
-    <div>
-      <h2>Step: {props.name}</h2>
+export default class Step extends Component {
+  constructor(){
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      errorText: null,
+    };
+  }
+
+  handleSubmit(formData, cb){
+    cb();
+    this.props.goNext(formData);
+  }
+
+  render(){
+    return (
+      <Form
+        wizardStep
+        key={this.props.store}
+        onSubmit={this.handleSubmit}
+        initialState={this.props.initialState}
+        className={this.props.formClass}
+        store={this.props.store}
+        errorText={this.state.errorText}
+        backButton={this.props.backButton}
+      >
+        <h2>Step: {this.props.name}</h2>
         <Input required
-               store={context.store}
-               label="Label"
-               name={props.name}
-               errorText="Oisann"
-               validate="notEmpty"
-             />
-    </div>
-  );
+           store={this.props.store}
+           label="Label"
+           name={this.props.name}
+           errorText="Oisann"
+           validate="notEmpty"
+         />
+      </Form>
+    );
+  }
 }
-
-
-Step.contextTypes = {
-  store: React.PropTypes.string
-};
-
-module.exports = Step;

@@ -130,11 +130,12 @@ class Form extends React.Component {
     } else {
       submitInProgress = SUBMITTING_DEFAULT;
     }
-    let submit = null;
+    let buttons = null;
     const buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
     if (!noSubmitButton) {
       const buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
-      submit = (<div className={buttonContainerClassName}>
+      buttons = (<div className={buttonContainerClassName}>
+        {this.props.backButton}
         <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button__primary'}>{buttonText}</button>
       </div>);
     }
@@ -150,7 +151,7 @@ class Form extends React.Component {
         : null}
         {this.props.children}
         {utils.isBrowser() ?
-          submit
+          buttons
         : spinner }
       </form>
     );
@@ -168,6 +169,7 @@ Form.propTypes = {
   className: React.PropTypes.string,
   centerSubmitButton: React.PropTypes.bool,
   spinner: React.PropTypes.object,
+  backButton: React.PropTypes.object,
   submittingText: React.PropTypes.string,
   wizardStep: React.PropTypes.bool,
 };
