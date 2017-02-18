@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/Users/wenche/Documents/Prosjekter/NoCMS/packages/nocms-forms/example";
+/******/ 	__webpack_require__.p = "/Users/jorgen/dev/nocms/packages/nocms-forms/example";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -21635,7 +21635,6 @@
 	          React.createElement(_nocmsForms.Input, _extends({
 	            required: true
 	          }, inputClasses, {
-	            store: storeName,
 	            label: 'Required text field with e-mail validation',
 	            name: 'email',
 	            errorText: 'Wrong e-mail',
@@ -21643,7 +21642,6 @@
 	          })),
 	          React.createElement(_nocmsForms.Input, {
 	            required: true,
-	            store: storeName,
 	            label: 'Required text field',
 	            name: 'required',
 	            errorText: 'Error'
@@ -21651,19 +21649,16 @@
 	          React.createElement(_nocmsForms.RadioButtons, _extends({}, inputClasses, {
 	            required: true,
 	            errorText: 'Oh no',
-	            store: storeName,
 	            label: 'Radio buttons',
 	            name: 'radio',
 	            options: radioOptions
 	          })),
 	          React.createElement(_nocmsForms.Select, _extends({}, inputClasses, {
-	            store: storeName,
 	            label: 'Select',
 	            options: selectOptions,
 	            name: 'select'
 	          })),
 	          React.createElement(_nocmsForms.TextArea, _extends({}, inputClasses, {
-	            store: storeName,
 	            label: 'Text area',
 	            name: 'textarea'
 	          })),
@@ -21671,8 +21666,7 @@
 	            type: 'hidden',
 	            name: 'hiddenName',
 	            dependOn: 'name',
-	            dependencyFunc: this.getUppercaseName,
-	            store: storeName
+	            dependencyFunc: this.getUppercaseName
 	          })
 	        ),
 	        this.state.formData ? React.createElement(
@@ -21812,6 +21806,13 @@
 	  }
 	
 	  _createClass(Form, [{
+	    key: 'getChildContext',
+	    value: function getChildContext() {
+	      return {
+	        store: this.props.store
+	      };
+	    }
+	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (utils.isBrowser()) {
@@ -21890,14 +21891,20 @@
 	      setTimeout(function () {
 	        var target = _this3.formEl.querySelector('.form__error');
 	        if (target) {
-	          var targetPos = target.offsetTop;
-	          var input = target.querySelector('input');
-	          if (!input) {
-	            return;
-	          }
-	          utils.scrollTo(document.body, targetPos - 160, 400, function () {
-	            input.focus();
-	          });
+	          var _ret = function () {
+	            var targetPos = target.offsetTop;
+	            var input = target.querySelector('input');
+	            if (!input) {
+	              return {
+	                v: void 0
+	              };
+	            }
+	            utils.scrollTo(document.body, targetPos - 160, 400, function () {
+	              input.focus();
+	            });
+	          }();
+	
+	          if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	        }
 	      }, 0);
 	    }
@@ -21938,7 +21945,6 @@
 	          )
 	        );
 	      }
-	      var formClassName = (className + ' form').trim();
 	      return React.createElement(
 	        'form',
 	        {
@@ -21946,7 +21952,7 @@
 	            return _this4.setFormEl(node);
 	          },
 	          onSubmit: this.handleSubmit,
-	          className: formClassName,
+	          className: className,
 	          noValidate: true
 	        },
 	        this.state.errorText ? React.createElement(
@@ -21980,7 +21986,12 @@
 	};
 	
 	Form.defaultProps = {
-	  centerSubmitButton: true
+	  centerSubmitButton: true,
+	  className: 'form'
+	};
+	
+	Form.childContextTypes = {
+	  store: React.PropTypes.string
 	};
 	
 	exports.default = Form;
@@ -22276,8 +22287,8 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.subscribe(this.props.store, this.handleStoreChange);
-	        var store = _nocmsStores2.default.getStore(this.props.store);
+	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
+	        var store = _nocmsStores2.default.getStore(this.context.store);
 	        var initialState = store[this.props.name];
 	        var inputState = {};
 	        inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
@@ -22290,48 +22301,59 @@
 	          inputState = initialState;
 	        }
 	
-	        _nocmsStores2.default.update(this.props.store, inputState);
+	        _nocmsStores2.default.update(this.context.store, inputState);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (global.environment !== 'server') {
-	        _nocmsStores2.default.unsubscribe(this.props.store, this.handleStoreChange);
+	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
 	        if (this.props.deleteOnUnmount) {
 	          var inputState = {};
 	          inputState[this.props.name] = undefined;
-	          _nocmsStores2.default.update(this.props.store, inputState);
+	          _nocmsStores2.default.update(this.context.store, inputState);
 	        }
 	      }
 	    }
 	  }, {
 	    key: 'handleDependentState',
 	    value: function handleDependentState(store, changes) {
+	      var _this2 = this;
+	
 	      if (this.props.dependOn) {
-	        var fields = this.props.dependOn.split(',').map(function (f) {
-	          return f.trim();
-	        });
-	        var values = {};
+	        var _ret = function () {
+	          var fields = _this2.props.dependOn.split(',').map(function (f) {
+	            return f.trim();
+	          });
+	          var values = {};
 	
-	        // Check if any of the changed values are in the dependOn list
-	        var doUpdate = fields.reduce(function (val, f) {
-	          values[f] = store[f];
-	          if (changes[f]) {
-	            return true;
+	          // Check if any of the changed values are in the dependOn list
+	          var doUpdate = fields.reduce(function (val, f) {
+	            values[f] = store[f];
+	            if (changes[f]) {
+	              return true;
+	            }
+	            return val;
+	          }, false);
+	
+	          if (!doUpdate) {
+	            return {
+	              v: false
+	            };
 	          }
-	          return val;
-	        }, false);
 	
-	        if (!doUpdate) {
-	          return false;
-	        }
+	          var aggregatedValue = _this2.props.dependencyFunc(values);
+	          var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
 	
-	        var aggregatedValue = this.props.dependencyFunc(values);
-	        var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
-	        this.setState(aggregatedState);
-	        this.updateStore(aggregatedValue, true, true);
-	        return true;
+	          _this2.setState(aggregatedState);
+	          _this2.updateStore(aggregatedValue, true, true);
+	          return {
+	            v: true
+	          };
+	        }();
+	
+	        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	      }
 	      return false;
 	    }
@@ -22341,7 +22363,6 @@
 	      if (this.handleDependentState(store, changes)) {
 	        return;
 	      }
-	
 	      var newState = store[this.props.name];
 	      if ((typeof newState === 'undefined' ? 'undefined' : _typeof(newState)) !== 'object') {
 	        // Upgrade simple data values to input state in store
@@ -22385,7 +22406,7 @@
 	        convertDate: this.props.type === 'date'
 	      };
 	
-	      _nocmsStores2.default.update(this.props.store, state);
+	      _nocmsStores2.default.update(this.context.store, state);
 	    }
 	  }, {
 	    key: 'validate',
@@ -22491,7 +22512,6 @@
 	
 	Input.propTypes = {
 	  name: _react.PropTypes.string.isRequired,
-	  store: _react.PropTypes.string.isRequired,
 	  type: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
 	  successWrapperClass: _react.PropTypes.string,
@@ -22531,6 +22551,9 @@
 	  disabled: false,
 	  placeholder: ''
 	};
+	
+	Input.contextTypes = {
+	  store: _react2.default.PropTypes.string };
 	
 	exports.default = Input;
 	module.exports = exports['default'];
@@ -22783,8 +22806,8 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.subscribe(this.props.store, this.handleStoreChange);
-	        var store = _nocmsStores2.default.getStore(this.props.store);
+	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
+	        var store = _nocmsStores2.default.getStore(this.context.store);
 	        var initialState = store[this.props.name];
 	        var inputState = {};
 	        inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
@@ -22796,14 +22819,14 @@
 	        } else {
 	          inputState = initialState;
 	        }
-	        _nocmsStores2.default.update(this.props.store, inputState);
+	        _nocmsStores2.default.update(this.context.store, inputState);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.unsubscribe(this.props.store, this.handleStoreChange);
+	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
 	      }
 	    }
 	  }, {
@@ -22821,7 +22844,7 @@
 	        isValidated: this.state.isValidated,
 	        validate: this.validate
 	      };
-	      _nocmsStores2.default.update(this.props.store, state);
+	      _nocmsStores2.default.update(this.context.store, state);
 	      if (this.props.onChange) {
 	        this.props.onChange(e, e.currentTarget.value);
 	      }
@@ -22846,7 +22869,7 @@
 	          isValidated: true,
 	          validate: this.validate
 	        };
-	        _nocmsStores2.default.update(this.props.store, state);
+	        _nocmsStores2.default.update(this.context.store, state);
 	        return isValid;
 	      }
 	      return true;
@@ -22885,9 +22908,13 @@
 	        if (typeof option === 'string') {
 	          option = { label: option, value: option };
 	        }
+	        var labelClasses = labelClass;
+	        if (option.disabled) {
+	          labelClasses += ' ' + labelClass + '--disabled';
+	        }
 	        return _react2.default.createElement(
 	          'label',
-	          { key: name + '_' + index, className: labelClass + ' ' + (option.disabled ? ' disabled' : null) },
+	          { key: name + '_' + index, className: labelClasses },
 	          _react2.default.createElement('input', {
 	            checked: _this2.state.value === option.value,
 	            type: 'radio',
@@ -22938,6 +22965,9 @@
 	exports.default = RadioButtons;
 	
 	
+	RadioButtons.contextTypes = {
+	  store: _react2.default.PropTypes.string };
+	
 	RadioButtons.propTypes = {
 	  name: _react.PropTypes.string.isRequired,
 	  successWrapperClass: _react.PropTypes.string,
@@ -22948,7 +22978,6 @@
 	  requiredClass: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
 	  errorText: _react.PropTypes.string,
-	  store: _react.PropTypes.string.isRequired,
 	  onChange: _react.PropTypes.func,
 	  required: _react.PropTypes.bool,
 	  validate: _react.PropTypes.string,
@@ -23025,14 +23054,13 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      var _props = this.props,
-	          store = _props.store,
 	          name = _props.name,
 	          value = _props.value,
 	          required = _props.required;
 	
 	      if (utils.isBrowser()) {
-	        stores.subscribe(store, this.handleStoreChange);
-	        var storeObj = stores.getStore(store);
+	        stores.subscribe(this.context.store, this.handleStoreChange);
+	        var storeObj = stores.getStore(this.context.store);
 	        var initialState = storeObj[name];
 	        var inputState = {};
 	        inputState[name] = { isValid: true, isValidated: !required, validate: this.validate };
@@ -23043,14 +23071,14 @@
 	        } else {
 	          inputState = initialState;
 	        }
-	        stores.update(store, inputState);
+	        stores.update(this.context.store, inputState);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (utils.isBrowser()) {
-	        stores.unsubscribe(this.props.store, this.handleStoreChange);
+	        stores.unsubscribe(this.context.store, this.handleStoreChange);
 	      }
 	    }
 	  }, {
@@ -23068,7 +23096,7 @@
 	        isValidated: this.state.isValidated,
 	        validate: this.validate
 	      };
-	      stores.update(this.props.store, state);
+	      stores.update(this.context.store, state);
 	      if (this.props.onChange) {
 	        this.props.onChange(e, e.currentTarget.value);
 	      }
@@ -23099,7 +23127,7 @@
 	          isValidated: true,
 	          validate: this.validate
 	        };
-	        stores.update(this.props.store, state);
+	        stores.update(this.context.store, state);
 	        return isValid;
 	      }
 	      return true;
@@ -23193,6 +23221,9 @@
 	exports.default = Select;
 	
 	
+	Select.contextTypes = {
+	  store: React.PropTypes.string };
+	
 	Select.propTypes = {
 	  requiredMark: React.PropTypes.string,
 	  value: React.PropTypes.string,
@@ -23203,7 +23234,6 @@
 	  controlGroupClass: React.PropTypes.string,
 	  name: React.PropTypes.string.isRequired,
 	  emptyLabel: React.PropTypes.string,
-	  store: React.PropTypes.string,
 	  options: React.PropTypes.array,
 	  errorText: React.PropTypes.string,
 	  onChange: React.PropTypes.func,
@@ -23283,7 +23313,7 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.subscribe(this.props.store, this.handleStoreChange);
+	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
 	        var initialState = {};
 	        initialState[this.props.name] = {
 	          value: this.props.value,
@@ -23291,14 +23321,14 @@
 	          isValidated: !this.props.required,
 	          validate: this.validate
 	        };
-	        _nocmsStores2.default.update(this.props.store, initialState);
+	        _nocmsStores2.default.update(this.context.store, initialState);
 	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.unsubscribe(this.props.store, this.handleStoreChange);
+	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
 	      }
 	    }
 	  }, {
@@ -23318,7 +23348,7 @@
 	        isValidated: this.state.isValidated,
 	        validate: this.validate
 	      };
-	      _nocmsStores2.default.update(this.props.store, state);
+	      _nocmsStores2.default.update(this.context.store, state);
 	    }
 	  }, {
 	    key: 'validate',
@@ -23331,7 +23361,7 @@
 	          isValid: isValid,
 	          isValidated: true
 	        };
-	        _nocmsStores2.default.update(this.props.store, state);
+	        _nocmsStores2.default.update(this.context.store, state);
 	        return isValid;
 	      }
 	      return true;
@@ -23413,6 +23443,9 @@
 	exports.default = TextArea;
 	
 	
+	TextArea.contextTypes = {
+	  store: _react2.default.PropTypes.string };
+	
 	TextArea.propTypes = {
 	  errorTextClass: _react.PropTypes.string,
 	  labelClass: _react.PropTypes.string,
@@ -23422,7 +23455,6 @@
 	  validate: _react.PropTypes.string,
 	  required: _react.PropTypes.bool,
 	  requiredClass: _react.PropTypes.string,
-	  store: _react.PropTypes.string.isRequired,
 	  value: _react.PropTypes.string,
 	  errorText: _react.PropTypes.string,
 	  name: _react.PropTypes.string.isRequired,

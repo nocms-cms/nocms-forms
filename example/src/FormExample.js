@@ -84,7 +84,6 @@ export default class FormExample extends React.Component {
           <Input
             required
             {...inputClasses}
-            store={storeName}
             label="Required text field with e-mail validation"
             name="email"
             errorText="Wrong e-mail"
@@ -92,7 +91,6 @@ export default class FormExample extends React.Component {
           />
           <Input
             required
-            store={storeName}
             label="Required text field"
             name="required"
             errorText="Error"
@@ -101,21 +99,18 @@ export default class FormExample extends React.Component {
             {...inputClasses}
             required
             errorText="Oh no"
-            store={storeName}
             label="Radio buttons"
             name="radio"
             options={radioOptions}
           />
           <Select
             {...inputClasses}
-            store={storeName}
             label="Select"
             options={selectOptions}
             name="select"
           />
           <TextArea
             {...inputClasses}
-            store={storeName}
             label="Text area"
             name="textarea"
           />
@@ -124,7 +119,6 @@ export default class FormExample extends React.Component {
             name="hiddenName"
             dependOn="name"
             dependencyFunc={this.getUppercaseName}
-            store={storeName}
           />
         </Form>
         { this.state.formData ?
