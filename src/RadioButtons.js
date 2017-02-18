@@ -1,74 +1,70 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class RadioButtons extends Component {
-  render() {
-    const {
-      controlGroupClass,
-      successWrapperClass,
-      errorText,
-      errorTextClass,
-      errorWrapperClass,
-      labelClass,
-      label,
-      required,
-      requiredMark,
-      name,
-      options,
-      radioClass,
-      requiredClass,
-      radioLabelClass,
-    } = this.props;
+const RadioButtons = (props) => {
+  const {
+    controlGroupClass,
+    successWrapperClass,
+    errorText,
+    errorTextClass,
+    errorWrapperClass,
+    labelClass,
+    label,
+    required,
+    requiredMark,
+    name,
+    options,
+    radioClass,
+    requiredClass,
+    radioLabelClass,
+    value,
+    handleChange,
+  } = props;
 
-    let containerClasses = ` ${controlGroupClass} ${radioClass}`;
-    if (this.props.isValid && this.props.isValidated) {
-      containerClasses += ` ${successWrapperClass}`;
-    }
-    if (!this.props.isValid) {
-      containerClasses += ` ${errorWrapperClass}`;
-    }
-    const radios = options.map((o, index) => {
-      let option = o;
-      if (typeof option === 'string') {
-        option = { label: option, value: option };
-      }
-      let labelClasses = labelClass;
-      if (option.disabled) {
-        labelClasses += ` ${labelClass}--disabled`;
-      }
-      return (
-        <label key={`${name}_${index}`} className={labelClasses}>
-          <input
-            checked={this.props.value === option.value}
-            type="radio"
-            value={option.value}
-            name={name}
-            disabled={option.disabled}
-            onChange={this.props.onChange}
-            onClick={this.props.handleChange}
-            onKeyDown={this.props.handleKeyDown}
-          />
-          <span className={radioLabelClass}>{option.label}</span>
-        </label>);
-    });
-    return (
-      <div className={containerClasses}>
-        <fieldset>
-          <legend>
-            {label}
-            {required ? <span className={requiredClass}>{requiredMark}</span> : null}
-          </legend>
-          {radios}
-          {errorText && !this.props.isValid ?
-            <div className={errorTextClass}>{this.props.errorText}</div>
-          : null}
-        </fieldset>
-      </div>
-    );
+  let containerClasses = ` ${controlGroupClass} ${radioClass}`;
+  if (props.isValid && props.isValidated) {
+    containerClasses += ` ${successWrapperClass}`;
   }
-}
-
-RadioButtons.contextTypes = {
-  store: React.PropTypes.string, // we get this from Form.js
+  if (!props.isValid) {
+    containerClasses += ` ${errorWrapperClass}`;
+  }
+  const radios = options.map((o, index) => {
+    let option = o;
+    if (typeof option === 'string') {
+      option = { label: option, value: option };
+    }
+    let labelClasses = labelClass;
+    if (option.disabled) {
+      labelClasses += ` ${labelClass}--disabled`;
+    }
+    return (
+      <label key={`${name}_${index}`} className={labelClasses}>
+        <input
+          checked={value === option.value}
+          type="radio"
+          value={option.value}
+          name={name}
+          disabled={option.disabled}
+          onChange={handleChange}
+          onClick={handleChange}
+          onKeyDown={props.handleKeyDown}
+        />
+        <span className={radioLabelClass}>{option.label}</span>
+      </label>);
+  });
+  return (
+    <div className={containerClasses}>
+      <fieldset>
+        <legend>
+          {label}
+          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+        </legend>
+        {radios}
+        {errorText && !props.isValid ?
+          <div className={errorTextClass}>{props.errorText}</div>
+        : null}
+      </fieldset>
+    </div>
+  );
 };
 
 RadioButtons.propTypes = {
@@ -105,3 +101,5 @@ RadioButtons.defaultProps = {
   radioLabelClass: 'form__radio-label',
   requiredClass: 'form__label--required',
 };
+
+export default RadioButtons;

@@ -22248,119 +22248,95 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var Input = function Input(props) {
+	  var controlGroupClass = props.controlGroupClass,
+	      successWrapperClass = props.successWrapperClass,
+	      inlineLabel = props.inlineLabel,
+	      type = props.type,
+	      errorText = props.errorText,
+	      errorTextClass = props.errorTextClass,
+	      errorWrapperClass = props.errorWrapperClass,
+	      inlineLabelClass = props.inlineLabelClass,
+	      checkboxClass = props.checkboxClass,
+	      labelId = props.labelId,
+	      labelClass = props.labelClass,
+	      label = props.label,
+	      required = props.required,
+	      requiredClass = props.requiredClass,
+	      requiredMark = props.requiredMark,
+	      maxLength = props.maxLength,
+	      name = props.name,
+	      disabled = props.disabled,
+	      placeholder = props.placeholder;
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Input = function (_Component) {
-	  _inherits(Input, _Component);
-	
-	  function Input() {
-	    _classCallCheck(this, Input);
-	
-	    return _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).apply(this, arguments));
+	  if (type === 'hidden') {
+	    return _react2.default.createElement('input', { type: 'hidden', value: props.value, name: name });
 	  }
 	
-	  _createClass(Input, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props,
-	          controlGroupClass = _props.controlGroupClass,
-	          successWrapperClass = _props.successWrapperClass,
-	          inlineLabel = _props.inlineLabel,
-	          type = _props.type,
-	          errorText = _props.errorText,
-	          errorTextClass = _props.errorTextClass,
-	          errorWrapperClass = _props.errorWrapperClass,
-	          inlineLabelClass = _props.inlineLabelClass,
-	          checkboxClass = _props.checkboxClass,
-	          labelId = _props.labelId,
-	          labelClass = _props.labelClass,
-	          label = _props.label,
-	          required = _props.required,
-	          requiredClass = _props.requiredClass,
-	          requiredMark = _props.requiredMark,
-	          maxLength = _props.maxLength,
-	          name = _props.name,
-	          disabled = _props.disabled,
-	          placeholder = _props.placeholder;
-	
-	
-	      if (type === 'hidden') {
-	        return _react2.default.createElement('input', { type: 'hidden', value: this.props.value, name: name });
-	      }
-	
-	      var containerClasses = controlGroupClass;
-	      if (this.props.isValid && this.props.isValidated) {
-	        containerClasses += ' ' + successWrapperClass;
-	      }
-	      if (!this.props.isValid) {
-	        containerClasses += ' ' + errorWrapperClass;
-	      }
-	      if (inlineLabel) {
-	        containerClasses += ' ' + inlineLabelClass;
-	      }
-	      if (type === 'checkbox') {
-	        containerClasses += ' ' + checkboxClass;
-	      }
-	      return _react2.default.createElement(
+	  var containerClasses = controlGroupClass;
+	  if (props.isValid && props.isValidated) {
+	    containerClasses += ' ' + successWrapperClass;
+	  }
+	  if (!props.isValid) {
+	    containerClasses += ' ' + errorWrapperClass;
+	  }
+	  if (inlineLabel) {
+	    containerClasses += ' ' + inlineLabelClass;
+	  }
+	  if (type === 'checkbox') {
+	    containerClasses += ' ' + checkboxClass;
+	  }
+	  return _react2.default.createElement(
+	    'div',
+	    { className: containerClasses },
+	    inlineLabel && errorText && !undefined.state.isValid ? _react2.default.createElement(
+	      'div',
+	      { className: errorTextClass },
+	      errorText
+	    ) : null,
+	    _react2.default.createElement(
+	      'label',
+	      { id: labelId },
+	      _react2.default.createElement(
+	        'span',
+	        { className: labelClass },
+	        label,
+	        required ? _react2.default.createElement(
+	          'span',
+	          { className: requiredClass },
+	          requiredMark
+	        ) : null
+	      ),
+	      _react2.default.createElement('input', {
+	        type: type,
+	        autoComplete: 'off',
+	        maxLength: maxLength,
+	        name: name,
+	        value: props.value,
+	        disabled: disabled,
+	        placeholder: placeholder,
+	        'aria-invalid': !props.isValid,
+	        'aria-required': required,
+	        onChange: props.handleChange,
+	        onClick: type === 'checkbox' ? props.handleChange : null,
+	        onKeyDown: props.handleKeyDown,
+	        onBlur: props.validate
+	      }),
+	      !inlineLabel && errorText && !props.isValid ? _react2.default.createElement(
 	        'div',
-	        { className: containerClasses },
-	        inlineLabel && errorText && !this.state.isValid ? _react2.default.createElement(
-	          'div',
-	          { className: errorTextClass },
-	          errorText
-	        ) : null,
-	        _react2.default.createElement(
-	          'label',
-	          { id: labelId },
-	          _react2.default.createElement(
-	            'span',
-	            { className: labelClass },
-	            label,
-	            required ? _react2.default.createElement(
-	              'span',
-	              { className: requiredClass },
-	              requiredMark
-	            ) : null
-	          ),
-	          _react2.default.createElement('input', {
-	            type: type,
-	            autoComplete: 'off',
-	            maxLength: maxLength,
-	            name: name,
-	            value: this.props.value,
-	            disabled: disabled,
-	            placeholder: placeholder,
-	            'aria-invalid': !this.props.isValid,
-	            'aria-required': required,
-	            onChange: this.props.handleChange,
-	            onClick: type === 'checkbox' ? this.props.handleChange : null,
-	            onKeyDown: this.props.handleKeyDown,
-	            onBlur: this.props.validate
-	          }),
-	          !inlineLabel && errorText && !this.props.isValid ? _react2.default.createElement(
-	            'div',
-	            { className: ' ' + errorTextClass },
-	            errorText
-	          ) : null
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return Input;
-	}(_react.Component);
+	        { className: ' ' + errorTextClass },
+	        errorText
+	      ) : null
+	    )
+	  );
+	};
 	
 	Input.propTypes = {
 	  handleChange: _react.PropTypes.func,
@@ -22404,9 +22380,6 @@
 	  disabled: false,
 	  placeholder: ''
 	};
-	
-	Input.contextTypes = {
-	  store: _react2.default.PropTypes.string };
 	
 	exports.default = Input;
 	module.exports = exports['default'];
@@ -22604,122 +22577,92 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var RadioButtons = function RadioButtons(props) {
+	  var controlGroupClass = props.controlGroupClass,
+	      successWrapperClass = props.successWrapperClass,
+	      errorText = props.errorText,
+	      errorTextClass = props.errorTextClass,
+	      errorWrapperClass = props.errorWrapperClass,
+	      labelClass = props.labelClass,
+	      label = props.label,
+	      required = props.required,
+	      requiredMark = props.requiredMark,
+	      name = props.name,
+	      options = props.options,
+	      radioClass = props.radioClass,
+	      requiredClass = props.requiredClass,
+	      radioLabelClass = props.radioLabelClass,
+	      value = props.value,
+	      handleChange = props.handleChange;
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var RadioButtons = function (_Component) {
-	  _inherits(RadioButtons, _Component);
-	
-	  function RadioButtons() {
-	    _classCallCheck(this, RadioButtons);
-	
-	    return _possibleConstructorReturn(this, (RadioButtons.__proto__ || Object.getPrototypeOf(RadioButtons)).apply(this, arguments));
+	  var containerClasses = ' ' + controlGroupClass + ' ' + radioClass;
+	  if (props.isValid && props.isValidated) {
+	    containerClasses += ' ' + successWrapperClass;
 	  }
-	
-	  _createClass(RadioButtons, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      var _props = this.props,
-	          controlGroupClass = _props.controlGroupClass,
-	          successWrapperClass = _props.successWrapperClass,
-	          errorText = _props.errorText,
-	          errorTextClass = _props.errorTextClass,
-	          errorWrapperClass = _props.errorWrapperClass,
-	          labelClass = _props.labelClass,
-	          label = _props.label,
-	          required = _props.required,
-	          requiredMark = _props.requiredMark,
-	          name = _props.name,
-	          options = _props.options,
-	          radioClass = _props.radioClass,
-	          requiredClass = _props.requiredClass,
-	          radioLabelClass = _props.radioLabelClass;
-	
-	
-	      var containerClasses = ' ' + controlGroupClass + ' ' + radioClass;
-	      if (this.props.isValid && this.props.isValidated) {
-	        containerClasses += ' ' + successWrapperClass;
-	      }
-	      if (!this.props.isValid) {
-	        containerClasses += ' ' + errorWrapperClass;
-	      }
-	      var radios = options.map(function (o, index) {
-	        var option = o;
-	        if (typeof option === 'string') {
-	          option = { label: option, value: option };
-	        }
-	        var labelClasses = labelClass;
-	        if (option.disabled) {
-	          labelClasses += ' ' + labelClass + '--disabled';
-	        }
-	        return _react2.default.createElement(
-	          'label',
-	          { key: name + '_' + index, className: labelClasses },
-	          _react2.default.createElement('input', {
-	            checked: _this2.props.value === option.value,
-	            type: 'radio',
-	            value: option.value,
-	            name: name,
-	            disabled: option.disabled,
-	            onChange: _this2.props.onChange,
-	            onClick: _this2.props.handleChange,
-	            onKeyDown: _this2.props.handleKeyDown
-	          }),
-	          _react2.default.createElement(
-	            'span',
-	            { className: radioLabelClass },
-	            option.label
-	          )
-	        );
-	      });
-	      return _react2.default.createElement(
-	        'div',
-	        { className: containerClasses },
-	        _react2.default.createElement(
-	          'fieldset',
-	          null,
-	          _react2.default.createElement(
-	            'legend',
-	            null,
-	            label,
-	            required ? _react2.default.createElement(
-	              'span',
-	              { className: requiredClass },
-	              requiredMark
-	            ) : null
-	          ),
-	          radios,
-	          errorText && !this.props.isValid ? _react2.default.createElement(
-	            'div',
-	            { className: errorTextClass },
-	            this.props.errorText
-	          ) : null
-	        )
-	      );
+	  if (!props.isValid) {
+	    containerClasses += ' ' + errorWrapperClass;
+	  }
+	  var radios = options.map(function (o, index) {
+	    var option = o;
+	    if (typeof option === 'string') {
+	      option = { label: option, value: option };
 	    }
-	  }]);
-	
-	  return RadioButtons;
-	}(_react.Component);
-	
-	exports.default = RadioButtons;
-	
-	
-	RadioButtons.contextTypes = {
-	  store: _react2.default.PropTypes.string };
+	    var labelClasses = labelClass;
+	    if (option.disabled) {
+	      labelClasses += ' ' + labelClass + '--disabled';
+	    }
+	    return _react2.default.createElement(
+	      'label',
+	      { key: name + '_' + index, className: labelClasses },
+	      _react2.default.createElement('input', {
+	        checked: value === option.value,
+	        type: 'radio',
+	        value: option.value,
+	        name: name,
+	        disabled: option.disabled,
+	        onChange: handleChange,
+	        onClick: handleChange,
+	        onKeyDown: props.handleKeyDown
+	      }),
+	      _react2.default.createElement(
+	        'span',
+	        { className: radioLabelClass },
+	        option.label
+	      )
+	    );
+	  });
+	  return _react2.default.createElement(
+	    'div',
+	    { className: containerClasses },
+	    _react2.default.createElement(
+	      'fieldset',
+	      null,
+	      _react2.default.createElement(
+	        'legend',
+	        null,
+	        label,
+	        required ? _react2.default.createElement(
+	          'span',
+	          { className: requiredClass },
+	          requiredMark
+	        ) : null
+	      ),
+	      radios,
+	      errorText && !props.isValid ? _react2.default.createElement(
+	        'div',
+	        { className: errorTextClass },
+	        props.errorText
+	      ) : null
+	    )
+	  );
+	};
 	
 	RadioButtons.propTypes = {
 	  isValid: _react.PropTypes.bool,
@@ -22755,6 +22698,8 @@
 	  radioLabelClass: 'form__radio-label',
 	  requiredClass: 'form__label--required'
 	};
+	
+	exports.default = RadioButtons;
 	module.exports = exports['default'];
 
 /***/ },
@@ -22767,136 +22712,110 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _react = __webpack_require__(1);
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _react2 = _interopRequireDefault(_react);
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	var Select = function Select(props) {
+	  var controlGroupClass = props.controlGroupClass,
+	      successWrapperClass = props.successWrapperClass,
+	      errorText = props.errorText,
+	      errorTextClass = props.errorTextClass,
+	      errorWrapperClass = props.errorWrapperClass,
+	      labelClass = props.labelClass,
+	      label = props.label,
+	      name = props.name,
+	      options = props.options,
+	      required = props.required,
+	      requiredClass = props.requiredClass,
+	      requiredMark = props.requiredMark,
+	      emptyLabel = props.emptyLabel;
 	
-	var React = __webpack_require__(1);
 	
-	var Select = function (_React$Component) {
-	  _inherits(Select, _React$Component);
-	
-	  function Select() {
-	    _classCallCheck(this, Select);
-	
-	    return _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
+	  var containerClasses = controlGroupClass;
+	  if (props.isValid && props.isValidated) {
+	    containerClasses += " " + successWrapperClass;
+	  }
+	  if (!props.isValid) {
+	    containerClasses += " " + errorWrapperClass;
 	  }
 	
-	  _createClass(Select, [{
-	    key: "render",
-	    value: function render() {
-	      var _props = this.props,
-	          controlGroupClass = _props.controlGroupClass,
-	          successWrapperClass = _props.successWrapperClass,
-	          errorText = _props.errorText,
-	          errorTextClass = _props.errorTextClass,
-	          errorWrapperClass = _props.errorWrapperClass,
-	          labelClass = _props.labelClass,
-	          label = _props.label,
-	          name = _props.name,
-	          options = _props.options,
-	          required = _props.required,
-	          requiredClass = _props.requiredClass,
-	          requiredMark = _props.requiredMark,
-	          emptyLabel = _props.emptyLabel;
-	
-	
-	      var containerClasses = controlGroupClass;
-	      if (this.props.isValid && this.props.isValidated) {
-	        containerClasses += " " + successWrapperClass;
-	      }
-	      if (!this.props.isValid) {
-	        containerClasses += " " + errorWrapperClass;
-	      }
-	
-	      var emptyOption = emptyLabel ? [React.createElement(
-	        "option",
-	        { key: "empty", value: "" },
-	        emptyLabel
-	      )] : [];
-	      var optionsList = emptyOption.concat(options.map(function (o, index) {
-	        var option = o;
-	        if (typeof option === 'string') {
-	          option = { label: option, value: option };
-	        }
-	        return React.createElement(
-	          "option",
-	          { key: index, value: option.value },
-	          option.label
-	        );
-	      }));
-	
-	      return React.createElement(
-	        "div",
-	        { className: containerClasses },
-	        React.createElement(
-	          "label",
-	          null,
-	          React.createElement(
-	            "span",
-	            { className: labelClass },
-	            label,
-	            required ? React.createElement(
-	              "span",
-	              { className: requiredClass },
-	              requiredMark
-	            ) : null
-	          ),
-	          React.createElement(
-	            "select",
-	            {
-	              name: name,
-	              value: this.props.value,
-	              "aria-invalid": !this.props.isValid,
-	              "aria-required": required,
-	              onChange: this.props.handleChange,
-	              onKeyDown: this.props.handleKeyDown,
-	              onBlur: this.props.handleChange
-	            },
-	            optionsList
-	          ),
-	          errorText && !this.props.isValid ? React.createElement(
-	            "div",
-	            { className: errorTextClass },
-	            errorText
-	          ) : null
-	        )
-	      );
+	  var emptyOption = emptyLabel ? [_react2.default.createElement(
+	    "option",
+	    { key: "empty", value: "" },
+	    emptyLabel
+	  )] : [];
+	  var optionsList = emptyOption.concat(options.map(function (o, index) {
+	    var option = o;
+	    if (typeof option === 'string') {
+	      option = { label: option, value: option };
 	    }
-	  }]);
+	    return _react2.default.createElement(
+	      "option",
+	      { key: index, value: option.value },
+	      option.label
+	    );
+	  }));
 	
-	  return Select;
-	}(React.Component);
-	
-	exports.default = Select;
-	
-	
-	Select.contextTypes = {
-	  store: React.PropTypes.string };
+	  return _react2.default.createElement(
+	    "div",
+	    { className: containerClasses },
+	    _react2.default.createElement(
+	      "label",
+	      null,
+	      _react2.default.createElement(
+	        "span",
+	        { className: labelClass },
+	        label,
+	        required ? _react2.default.createElement(
+	          "span",
+	          { className: requiredClass },
+	          requiredMark
+	        ) : null
+	      ),
+	      _react2.default.createElement(
+	        "select",
+	        {
+	          name: name,
+	          value: props.value,
+	          "aria-invalid": !props.isValid,
+	          "aria-required": required,
+	          onChange: props.handleChange,
+	          onKeyDown: props.handleKeyDown,
+	          onBlur: props.handleChange
+	        },
+	        optionsList
+	      ),
+	      errorText && !props.isValid ? _react2.default.createElement(
+	        "div",
+	        { className: errorTextClass },
+	        errorText
+	      ) : null
+	    )
+	  );
+	};
 	
 	Select.propTypes = {
-	  isValid: React.PropTypes.bool,
-	  isValidated: React.PropTypes.bool,
-	  requiredMark: React.PropTypes.string,
-	  value: React.PropTypes.string,
-	  errorTextClass: React.PropTypes.string,
-	  errorWrapperClass: React.PropTypes.string,
-	  successWrapperClass: React.PropTypes.string,
-	  labelClass: React.PropTypes.string,
-	  controlGroupClass: React.PropTypes.string,
-	  name: React.PropTypes.string.isRequired,
-	  emptyLabel: React.PropTypes.string,
-	  options: React.PropTypes.array,
-	  errorText: React.PropTypes.string,
-	  handleChange: React.PropTypes.func,
-	  required: React.PropTypes.bool,
-	  requiredClass: React.PropTypes.string,
-	  handleKeyDown: React.PropTypes.func,
-	  label: React.PropTypes.string
+	  isValid: _react.PropTypes.bool,
+	  isValidated: _react.PropTypes.bool,
+	  requiredMark: _react.PropTypes.string,
+	  value: _react.PropTypes.string,
+	  errorTextClass: _react.PropTypes.string,
+	  errorWrapperClass: _react.PropTypes.string,
+	  successWrapperClass: _react.PropTypes.string,
+	  labelClass: _react.PropTypes.string,
+	  controlGroupClass: _react.PropTypes.string,
+	  name: _react.PropTypes.string.isRequired,
+	  emptyLabel: _react.PropTypes.string,
+	  options: _react.PropTypes.array,
+	  errorText: _react.PropTypes.string,
+	  handleChange: _react.PropTypes.func,
+	  required: _react.PropTypes.bool,
+	  requiredClass: _react.PropTypes.string,
+	  handleKeyDown: _react.PropTypes.func,
+	  label: _react.PropTypes.string
 	};
 	
 	Select.defaultProps = {
@@ -22908,6 +22827,8 @@
 	  labelClass: 'form__label',
 	  controlGroupClass: 'form__control-group'
 	};
+	
+	exports.default = Select;
 	module.exports = exports["default"];
 
 /***/ },
@@ -22920,120 +22841,81 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsValidation = __webpack_require__(185);
-	
-	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
-	
-	var _nocmsUtils = __webpack_require__(183);
-	
-	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
-	
-	var _nocmsStores = __webpack_require__(181);
-	
-	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var TextArea = function TextArea(props) {
+	  var controlGroupClass = props.controlGroupClass,
+	      successWrapperClass = props.successWrapperClass,
+	      inlineLabel = props.inlineLabel,
+	      errorText = props.errorText,
+	      errorTextClass = props.errorTextClass,
+	      errorWrapperClass = props.errorWrapperClass,
+	      inlineLabelClass = props.inlineLabelClass,
+	      labelId = props.labelId,
+	      labelClass = props.labelClass,
+	      label = props.label,
+	      required = props.required,
+	      requiredClass = props.requiredClass,
+	      requiredMark = props.requiredMark,
+	      maxLength = props.maxLength,
+	      name = props.name,
+	      disabled = props.disabled,
+	      placeholder = props.placeholder,
+	      handleChange = props.handleChange,
+	      isValid = props.isValid,
+	      isValidated = props.isValidated;
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var TextArea = function (_Component) {
-	  _inherits(TextArea, _Component);
-	
-	  function TextArea() {
-	    _classCallCheck(this, TextArea);
-	
-	    return _possibleConstructorReturn(this, (TextArea.__proto__ || Object.getPrototypeOf(TextArea)).apply(this, arguments));
+	  var containerClasses = controlGroupClass;
+	  if (isValid && isValidated) {
+	    containerClasses += ' ' + successWrapperClass;
+	  }
+	  if (!props.isValid) {
+	    containerClasses += ' ' + errorWrapperClass;
+	  }
+	  if (inlineLabel) {
+	    containerClasses += ' ' + inlineLabelClass;
 	  }
 	
-	  _createClass(TextArea, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props,
-	          controlGroupClass = _props.controlGroupClass,
-	          successWrapperClass = _props.successWrapperClass,
-	          inlineLabel = _props.inlineLabel,
-	          errorText = _props.errorText,
-	          errorTextClass = _props.errorTextClass,
-	          errorWrapperClass = _props.errorWrapperClass,
-	          inlineLabelClass = _props.inlineLabelClass,
-	          labelId = _props.labelId,
-	          labelClass = _props.labelClass,
-	          label = _props.label,
-	          required = _props.required,
-	          requiredClass = _props.requiredClass,
-	          requiredMark = _props.requiredMark,
-	          maxLength = _props.maxLength,
-	          name = _props.name,
-	          disabled = _props.disabled,
-	          placeholder = _props.placeholder;
-	
-	
-	      var containerClasses = controlGroupClass;
-	      if (this.props.isValid && this.props.isValidated) {
-	        containerClasses += ' ' + successWrapperClass;
-	      }
-	      if (!this.props.isValid) {
-	        containerClasses += ' ' + errorWrapperClass;
-	      }
-	      if (inlineLabel) {
-	        containerClasses += ' ' + inlineLabelClass;
-	      }
-	
-	      return _react2.default.createElement(
+	  return _react2.default.createElement(
+	    'div',
+	    { className: containerClasses },
+	    _react2.default.createElement(
+	      'label',
+	      { id: labelId },
+	      _react2.default.createElement(
+	        'span',
+	        { className: labelClass },
+	        label,
+	        required ? _react2.default.createElement(
+	          'span',
+	          { className: requiredClass },
+	          requiredMark
+	        ) : null
+	      ),
+	      _react2.default.createElement('textarea', {
+	        name: name,
+	        'aria-invalid': !isValid,
+	        'aria-required': required,
+	        onChange: handleChange,
+	        onBlur: props.validate,
+	        maxLength: maxLength,
+	        value: props.value,
+	        disabled: disabled,
+	        placeholder: placeholder
+	      }),
+	      errorText && !props.isValid ? _react2.default.createElement(
 	        'div',
-	        { className: containerClasses },
-	        _react2.default.createElement(
-	          'label',
-	          { id: labelId },
-	          _react2.default.createElement(
-	            'span',
-	            { className: labelClass },
-	            label,
-	            required ? _react2.default.createElement(
-	              'span',
-	              { className: requiredClass },
-	              requiredMark
-	            ) : null
-	          ),
-	          _react2.default.createElement('textarea', {
-	            name: name,
-	            'aria-invalid': !this.props.isValid,
-	            'aria-required': required,
-	            onChange: this.props.handleChange,
-	            onBlur: this.props.validate,
-	            maxLength: maxLength,
-	            value: this.props.value,
-	            disabled: disabled,
-	            placeholder: placeholder
-	          }),
-	          errorText && !this.props.isValid ? _react2.default.createElement(
-	            'div',
-	            { className: errorTextClass },
-	            errorText
-	          ) : null
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return TextArea;
-	}(_react.Component);
-	
-	exports.default = TextArea;
-	
-	
-	TextArea.contextTypes = {
-	  store: _react2.default.PropTypes.string };
+	        { className: errorTextClass },
+	        errorText
+	      ) : null
+	    )
+	  );
+	};
 	
 	TextArea.propTypes = {
 	  errorTextClass: _react.PropTypes.string,
@@ -23042,7 +22924,10 @@
 	  errorWrapperClass: _react.PropTypes.string,
 	  controlGroupClass: _react.PropTypes.string,
 	  validate: _react.PropTypes.func,
+	  handleChange: _react.PropTypes.func,
 	  required: _react.PropTypes.bool,
+	  isValidated: _react.PropTypes.bool,
+	  isValid: _react.PropTypes.bool,
 	  requiredClass: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
 	  errorText: _react.PropTypes.string,
@@ -23067,6 +22952,8 @@
 	  requiredClass: 'form__label--required',
 	  inlineLabelClass: ''
 	};
+	
+	exports.default = TextArea;
 	module.exports = exports['default'];
 
 /***/ },
@@ -23831,43 +23718,16 @@
 	  name: _react.PropTypes.string.isRequired,
 	  type: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
-	  successWrapperClass: _react.PropTypes.string,
-	  errorTextClass: _react.PropTypes.string,
-	  errorWrapperClass: _react.PropTypes.string,
-	  labelClass: _react.PropTypes.string,
-	  controlGroupClass: _react.PropTypes.string,
 	  required: _react.PropTypes.bool,
-	  requiredClass: _react.PropTypes.string,
 	  deleteOnUnmount: _react.PropTypes.bool,
 	  validate: _react.PropTypes.string,
-	  inlineLabel: _react.PropTypes.bool,
-	  inlineLabelClass: _react.PropTypes.string,
-	  checkboxClass: _react.PropTypes.string,
-	  errorText: _react.PropTypes.string,
-	  label: _react.PropTypes.string,
-	  requiredMark: _react.PropTypes.string,
-	  maxLength: _react.PropTypes.number,
-	  disabled: _react.PropTypes.bool,
-	  placeholder: _react.PropTypes.string,
-	  labelId: _react.PropTypes.string,
 	  dependOn: _react.PropTypes.string,
 	  dependencyFunc: _react.PropTypes.func,
 	  onChange: _react.PropTypes.func
 	};
 	
 	Field.defaultProps = {
-	  successWrapperClass: 'form__control-group--success',
-	  errorWrapperClass: 'form__control-group--error',
-	  requiredMark: '*',
-	  type: 'text',
-	  errorTextClass: 'form__error-text',
-	  labelClass: 'form__label',
-	  controlGroupClass: 'form__control-group',
-	  inlineLabelClass: '',
-	  requiredClass: 'form__label--required',
-	  required: false,
-	  disabled: false,
-	  placeholder: ''
+	  type: 'text'
 	};
 	
 	Field.contextTypes = {

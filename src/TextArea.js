@@ -1,71 +1,65 @@
-import React, { Component, PropTypes } from 'react';
-import Validator from 'nocms-validation';
-import utils from 'nocms-utils';
-import stores from 'nocms-stores';
+import React, { PropTypes } from 'react';
 
-export default class TextArea extends Component {
-  render() {
-    const {
-      controlGroupClass,
-      successWrapperClass,
-      inlineLabel,
-      errorText,
-      errorTextClass,
-      errorWrapperClass,
-      inlineLabelClass,
-      labelId,
-      labelClass,
-      label,
-      required,
-      requiredClass,
-      requiredMark,
-      maxLength,
-      name,
-      disabled,
-      placeholder,
-    } = this.props;
+const TextArea = (props) => {
+  const {
+    controlGroupClass,
+    successWrapperClass,
+    inlineLabel,
+    errorText,
+    errorTextClass,
+    errorWrapperClass,
+    inlineLabelClass,
+    labelId,
+    labelClass,
+    label,
+    required,
+    requiredClass,
+    requiredMark,
+    maxLength,
+    name,
+    disabled,
+    placeholder,
+    handleChange,
+    isValid,
+    isValidated,
+  } = props;
 
-    let containerClasses = controlGroupClass;
-    if (this.props.isValid && this.props.isValidated) {
-      containerClasses += ` ${successWrapperClass}`;
-    }
-    if (!this.props.isValid) {
-      containerClasses += ` ${errorWrapperClass}`;
-    }
-    if (inlineLabel) {
-      containerClasses += ` ${inlineLabelClass}`;
-    }
-
-    return (
-      <div className={containerClasses}>
-        <label id={labelId}>
-          <span className={labelClass}>
-            {label}
-            {required ? <span className={requiredClass}>{requiredMark}</span> : null}
-          </span>
-          <textarea
-            name={name}
-            aria-invalid={!this.props.isValid}
-            aria-required={required}
-            onChange={this.props.handleChange}
-            onBlur={this.props.validate}
-            maxLength={maxLength}
-            value={this.props.value}
-            disabled={disabled}
-            placeholder={placeholder}
-          />
-
-        {errorText && !this.props.isValid ?
-            <div className={errorTextClass}>{errorText}</div>
-         : null}
-        </label>
-      </div>
-    );
+  let containerClasses = controlGroupClass;
+  if (isValid && isValidated) {
+    containerClasses += ` ${successWrapperClass}`;
   }
-}
+  if (!props.isValid) {
+    containerClasses += ` ${errorWrapperClass}`;
+  }
+  if (inlineLabel) {
+    containerClasses += ` ${inlineLabelClass}`;
+  }
 
-TextArea.contextTypes = {
-  store: React.PropTypes.string, // we get this from Form.js
+  return (
+    <div className={containerClasses}>
+      <label id={labelId}>
+        <span className={labelClass}>
+          {label}
+          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+        </span>
+        <textarea
+          name={name}
+          aria-invalid={!isValid}
+          aria-required={required}
+          onChange={handleChange}
+          onBlur={props.validate}
+          maxLength={maxLength}
+          value={props.value}
+          disabled={disabled}
+          placeholder={placeholder}
+        />
+
+        {errorText && !props.isValid ?
+          <div className={errorTextClass}>{errorText}</div>
+       : null}
+      </label>
+    </div>
+  );
 };
 
 TextArea.propTypes = {
@@ -75,7 +69,10 @@ TextArea.propTypes = {
   errorWrapperClass: PropTypes.string,
   controlGroupClass: PropTypes.string,
   validate: PropTypes.func,
+  handleChange: PropTypes.func,
   required: PropTypes.bool,
+  isValidated: PropTypes.bool,
+  isValid: PropTypes.bool,
   requiredClass: PropTypes.string,
   value: PropTypes.string,
   errorText: PropTypes.string,
@@ -100,3 +97,5 @@ TextArea.defaultProps = {
   requiredClass: 'form__label--required',
   inlineLabelClass: '',
 };
+
+export default TextArea;
