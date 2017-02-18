@@ -32,6 +32,12 @@ class Form extends React.Component {
     }
   }
 
+  getChildContext() {
+    return {
+      store: this.props.store,
+    };
+  }
+
   componentWillUnmount() {
     if (utils.isBrowser()) {
       if (this.props.wizardStep) {
@@ -177,6 +183,10 @@ Form.propTypes = {
 Form.defaultProps = {
   centerSubmitButton: true,
   className: 'form',
+};
+
+Form.childContextTypes = {
+  store: React.PropTypes.string,
 };
 
 export default Form;

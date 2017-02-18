@@ -21,8 +21,8 @@ class Input extends Component {
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      stores.subscribe(this.props.store, this.handleStoreChange);
-      const store = stores.getStore(this.props.store);
+      stores.subscribe(this.context.store, this.handleStoreChange);
+      const store = stores.getStore(this.context.store);
       const initialState = store[this.props.name];
       let inputState = {};
       inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
@@ -35,16 +35,16 @@ class Input extends Component {
         inputState = initialState;
       }
 
-      stores.update(this.props.store, inputState);
+      stores.update(this.context.store, inputState);
     }
   }
   componentWillUnmount() {
     if (global.environment !== 'server') {
-      stores.unsubscribe(this.props.store, this.handleStoreChange);
+      stores.unsubscribe(this.context.store, this.handleStoreChange);
       if (this.props.deleteOnUnmount) {
         const inputState = {};
         inputState[this.props.name] = undefined;
-        stores.update(this.props.store, inputState);
+        stores.update(this.context.store, inputState);
       }
     }
   }
@@ -69,6 +69,7 @@ class Input extends Component {
 
       const aggregatedValue = this.props.dependencyFunc(values);
       const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
+
       this.setState(aggregatedState);
       this.updateStore(aggregatedValue, true, true);
       return true;
@@ -80,7 +81,6 @@ class Input extends Component {
     if (this.handleDependentState(store, changes)) {
       return;
     }
-
     let newState = store[this.props.name];
     if (typeof newState !== 'object') {
       // Upgrade simple data values to input state in store
@@ -119,7 +119,7 @@ class Input extends Component {
       convertDate: this.props.type === 'date',
     };
 
-    stores.update(this.props.store, state);
+    stores.update(this.context.store, state);
   }
 
   validate() {
@@ -209,7 +209,6 @@ class Input extends Component {
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
-  store: PropTypes.string.isRequired,
   type: PropTypes.string,
   value: PropTypes.string,
   successWrapperClass: PropTypes.string,
@@ -248,6 +247,10 @@ Input.defaultProps = {
   required: false,
   disabled: false,
   placeholder: '',
+};
+
+Input.contextTypes = {
+  store: React.PropTypes.string, // we get this from Form.js
 };
 
 export default Input;

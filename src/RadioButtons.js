@@ -21,8 +21,8 @@ export default class RadioButtons extends Component {
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      stores.subscribe(this.props.store, this.handleStoreChange);
-      const store = stores.getStore(this.props.store);
+      stores.subscribe(this.context.store, this.handleStoreChange);
+      const store = stores.getStore(this.context.store);
       const initialState = store[this.props.name];
       let inputState = {};
       inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
@@ -34,13 +34,13 @@ export default class RadioButtons extends Component {
       } else {
         inputState = initialState;
       }
-      stores.update(this.props.store, inputState);
+      stores.update(this.context.store, inputState);
     }
   }
 
   componentWillUnmount() {
     if (utils.isBrowser()) {
-      stores.unsubscribe(this.props.store, this.handleStoreChange);
+      stores.unsubscribe(this.context.store, this.handleStoreChange);
     }
   }
 
@@ -56,7 +56,7 @@ export default class RadioButtons extends Component {
       isValidated: this.state.isValidated,
       validate: this.validate,
     };
-    stores.update(this.props.store, state);
+    stores.update(this.context.store, state);
     if (this.props.onChange) {
       this.props.onChange(e, e.currentTarget.value);
     }
@@ -76,7 +76,7 @@ export default class RadioButtons extends Component {
         isValidated: true,
         validate: this.validate,
       };
-      stores.update(this.props.store, state);
+      stores.update(this.context.store, state);
       return isValid;
     }
     return true;
@@ -147,6 +147,10 @@ export default class RadioButtons extends Component {
   }
 }
 
+RadioButtons.contextTypes = {
+  store: React.PropTypes.string, // we get this from Form.js
+};
+
 RadioButtons.propTypes = {
   name: PropTypes.string.isRequired,
   successWrapperClass: PropTypes.string,
@@ -157,7 +161,6 @@ RadioButtons.propTypes = {
   requiredClass: PropTypes.string,
   value: PropTypes.string,
   errorText: PropTypes.string,
-  store: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   required: PropTypes.bool,
   validate: PropTypes.string,

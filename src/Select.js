@@ -21,10 +21,10 @@ export default class Select extends React.Component {
   }
 
   componentWillMount() {
-    const { store, name, value, required } = this.props;
+    const { name, value, required } = this.props;
     if (utils.isBrowser()) {
-      stores.subscribe(store, this.handleStoreChange);
-      const storeObj = stores.getStore(store);
+      stores.subscribe(this.context.store, this.handleStoreChange);
+      const storeObj = stores.getStore(this.context.store);
       const initialState = storeObj[name];
       let inputState = {};
       inputState[name] = { isValid: true, isValidated: !required, validate: this.validate };
@@ -35,13 +35,13 @@ export default class Select extends React.Component {
       } else {
         inputState = initialState;
       }
-      stores.update(store, inputState);
+      stores.update(this.context.store, inputState);
     }
   }
 
   componentWillUnmount() {
     if (utils.isBrowser()) {
-      stores.unsubscribe(this.props.store, this.handleStoreChange);
+      stores.unsubscribe(this.context.store, this.handleStoreChange);
     }
   }
 
@@ -57,7 +57,7 @@ export default class Select extends React.Component {
       isValidated: this.state.isValidated,
       validate: this.validate,
     };
-    stores.update(this.props.store, state);
+    stores.update(this.context.store, state);
     if (this.props.onChange) {
       this.props.onChange(e, e.currentTarget.value);
     }
@@ -84,7 +84,7 @@ export default class Select extends React.Component {
         isValidated: true,
         validate: this.validate,
       };
-      stores.update(this.props.store, state);
+      stores.update(this.context.store, state);
       return isValid;
     }
     return true;
@@ -151,6 +151,10 @@ export default class Select extends React.Component {
   }
 }
 
+Select.contextTypes = {
+  store: React.PropTypes.string, // we get this from Form.js
+};
+
 Select.propTypes = {
   requiredMark: React.PropTypes.string,
   value: React.PropTypes.string,
@@ -161,7 +165,6 @@ Select.propTypes = {
   controlGroupClass: React.PropTypes.string,
   name: React.PropTypes.string.isRequired,
   emptyLabel: React.PropTypes.string,
-  store: React.PropTypes.string,
   options: React.PropTypes.array,
   errorText: React.PropTypes.string,
   onChange: React.PropTypes.func,

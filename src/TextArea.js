@@ -18,7 +18,7 @@ export default class TextArea extends Component {
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      stores.subscribe(this.props.store, this.handleStoreChange);
+      stores.subscribe(this.context.store, this.handleStoreChange);
       const initialState = {};
       initialState[this.props.name] = {
         value: this.props.value,
@@ -26,12 +26,12 @@ export default class TextArea extends Component {
         isValidated: !this.props.required,
         validate: this.validate,
       };
-      stores.update(this.props.store, initialState);
+      stores.update(this.context.store, initialState);
     }
   }
   componentWillUnmount() {
     if (utils.isBrowser()) {
-      stores.unsubscribe(this.props.store, this.handleStoreChange);
+      stores.unsubscribe(this.context.store, this.handleStoreChange);
     }
   }
 
@@ -49,7 +49,7 @@ export default class TextArea extends Component {
       isValidated: this.state.isValidated,
       validate: this.validate,
     };
-    stores.update(this.props.store, state);
+    stores.update(this.context.store, state);
   }
   validate() {
     if (this.props.validate || this.props.required) {
@@ -60,7 +60,7 @@ export default class TextArea extends Component {
         isValid,
         isValidated: true,
       };
-      stores.update(this.props.store, state);
+      stores.update(this.context.store, state);
       return isValid;
     }
     return true;
@@ -126,6 +126,10 @@ export default class TextArea extends Component {
   }
 }
 
+TextArea.contextTypes = {
+  store: React.PropTypes.string, // we get this from Form.js
+};
+
 TextArea.propTypes = {
   errorTextClass: PropTypes.string,
   labelClass: PropTypes.string,
@@ -135,7 +139,6 @@ TextArea.propTypes = {
   validate: PropTypes.string,
   required: PropTypes.bool,
   requiredClass: PropTypes.string,
-  store: PropTypes.string.isRequired,
   value: PropTypes.string,
   errorText: PropTypes.string,
   name: PropTypes.string.isRequired,
