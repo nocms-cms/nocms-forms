@@ -1,95 +1,6 @@
 const React = require('react');
-const stores = require('nocms-stores');
-const utils = require('nocms-utils');
-const Validator = require('nocms-validation');
 
 export default class Select extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleStoreChange = this.handleStoreChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleEnterKey = this.handleEnterKey.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.validate = this.validate.bind(this);
-
-    this.state = {
-      value: props.value,
-      isValid: true,
-      isValidated: false,
-      validate: this.validate,
-    };
-  }
-
-  componentWillMount() {
-    const { name, value, required } = this.props;
-    if (utils.isBrowser()) {
-      stores.subscribe(this.context.store, this.handleStoreChange);
-      const storeObj = stores.getStore(this.context.store);
-      const initialState = storeObj[name];
-      let inputState = {};
-      inputState[name] = { isValid: true, isValidated: !required, validate: this.validate };
-      if (typeof initialState === 'undefined') {
-        inputState[name].value = value;
-      } else if (typeof initialState !== 'object') {
-        inputState[name].value = initialState;
-      } else {
-        inputState = initialState;
-      }
-      stores.update(this.context.store, inputState);
-    }
-  }
-
-  componentWillUnmount() {
-    if (utils.isBrowser()) {
-      stores.unsubscribe(this.context.store, this.handleStoreChange);
-    }
-  }
-
-  handleStoreChange(store) {
-    this.setState(store[this.props.name]);
-  }
-
-  handleChange(e) {
-    const state = {};
-    state[this.props.name] = {
-      value: e.currentTarget.value,
-      isValid: true,
-      isValidated: this.state.isValidated,
-      validate: this.validate,
-    };
-    stores.update(this.context.store, state);
-    if (this.props.onChange) {
-      this.props.onChange(e, e.currentTarget.value);
-    }
-  }
-
-  handleEnterKey(e) {
-    if (e.keyCode === 13) { // Enter
-      this.validate();
-    }
-  }
-
-  handleBlur(e) {
-    e.stopPropagation();
-    this.validate();
-  }
-
-  validate() {
-    if (this.props.validate || this.props.required) {
-      const isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
-      const state = {};
-      state[this.props.name] = {
-        value: this.state.value,
-        isValid,
-        isValidated: true,
-        validate: this.validate,
-      };
-      stores.update(this.context.store, state);
-      return isValid;
-    }
-    return true;
-  }
-
   render() {
     const {
       controlGroupClass,
@@ -108,10 +19,10 @@ export default class Select extends React.Component {
     } = this.props;
 
     let containerClasses = controlGroupClass;
-    if (this.state.isValid && this.state.isValidated) {
+    if (this.props.isValid && this.props.isValidated) {
       containerClasses += ` ${successWrapperClass}`;
     }
-    if (!this.state.isValid) {
+    if (!this.props.isValid) {
       containerClasses += ` ${errorWrapperClass}`;
     }
 
@@ -133,16 +44,16 @@ export default class Select extends React.Component {
           </span>
           <select
             name={name}
-            value={this.state.value}
-            aria-invalid={!this.state.isValid}
+            value={this.props.value}
+            aria-invalid={!this.props.isValid}
             aria-required={required}
-            onChange={this.handleChange}
-            onKeyDown={this.handleEnterKey}
-            onBlur={this.handleBlur}
+            onChange={this.props.handleChange}
+            onKeyDown={this.props.handleKeyDown}
+            onBlur={this.props.handleChange}
           >
             {optionsList}
           </select>
-          {errorText && !this.state.isValid ?
+          {errorText && !this.props.isValid ?
             <div className={errorTextClass}>{errorText}</div>
           : null}
         </label>
@@ -156,6 +67,8 @@ Select.contextTypes = {
 };
 
 Select.propTypes = {
+  isValid: React.PropTypes.bool,
+  isValidated: React.PropTypes.bool,
   requiredMark: React.PropTypes.string,
   value: React.PropTypes.string,
   errorTextClass: React.PropTypes.string,
@@ -167,10 +80,10 @@ Select.propTypes = {
   emptyLabel: React.PropTypes.string,
   options: React.PropTypes.array,
   errorText: React.PropTypes.string,
-  onChange: React.PropTypes.func,
+  handleChange: React.PropTypes.func,
   required: React.PropTypes.bool,
   requiredClass: React.PropTypes.string,
-  validate: React.PropTypes.string,
+  handleKeyDown: React.PropTypes.func,
   label: React.PropTypes.string,
 };
 

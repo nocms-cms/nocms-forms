@@ -1,5 +1,5 @@
 const React = require('react');
-import { Form, Input, RadioButtons, Select, TextArea } from 'nocms-forms';
+import { Form, Field } from 'nocms-forms';
 const Spinner = require('./Spinner');
 
 const storeName = 'test-form';
@@ -67,13 +67,15 @@ export default class FormExample extends React.Component {
           spinner={<Spinner />}
           submittingText='Vent litt'
         >
-          <Input
+          <Field
+            required
+            errorText="foo"
             {...inputClasses}
             store={storeName}
             label="Text field"
             name="name"
           />
-          <Input
+          <Field
             {...inputClasses}
             dependOn="name"
             dependencyFunc={this.getUppercaseName}
@@ -81,7 +83,7 @@ export default class FormExample extends React.Component {
             label="Dependent text field"
             name="aggregatedName"
           />
-          <Input
+          <Field
             required
             {...inputClasses}
             label="Required text field with e-mail validation"
@@ -89,13 +91,15 @@ export default class FormExample extends React.Component {
             errorText="Wrong e-mail"
             validate="email"
           />
-          <Input
+          <Field
             required
             label="Required text field"
             name="required"
-            errorText="Error"
+            errorText="Field is required"
+            validate="notEmpty"
           />
-          <RadioButtons
+          <Field
+            type="radio"
             {...inputClasses}
             required
             errorText="Oh no"
@@ -103,18 +107,20 @@ export default class FormExample extends React.Component {
             name="radio"
             options={radioOptions}
           />
-          <Select
+          <Field
+            type="select"
             {...inputClasses}
             label="Select"
             options={selectOptions}
             name="select"
           />
-          <TextArea
+          <Field
+            type="textarea"
             {...inputClasses}
             label="Text area"
             name="textarea"
           />
-          <Input
+          <Field
             type="hidden"
             name="hiddenName"
             dependOn="name"

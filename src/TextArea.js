@@ -4,68 +4,6 @@ import utils from 'nocms-utils';
 import stores from 'nocms-stores';
 
 export default class TextArea extends Component {
-  constructor(props) {
-    super(props);
-    this.handleStoreChange = this.handleStoreChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      value: props.value,
-      isValid: true,
-      isValidated: false,
-    };
-    this.validate = this.validate.bind(this);
-  }
-
-  componentWillMount() {
-    if (utils.isBrowser()) {
-      stores.subscribe(this.context.store, this.handleStoreChange);
-      const initialState = {};
-      initialState[this.props.name] = {
-        value: this.props.value,
-        isValid: true,
-        isValidated: !this.props.required,
-        validate: this.validate,
-      };
-      stores.update(this.context.store, initialState);
-    }
-  }
-  componentWillUnmount() {
-    if (utils.isBrowser()) {
-      stores.unsubscribe(this.context.store, this.handleStoreChange);
-    }
-  }
-
-  handleStoreChange(store) {
-    this.setState(store[this.props.name]);
-  }
-
-  handleChange(e) {
-    const data = {};
-    data[this.props.name] = { value: e.currentTarget.value, isValid: true };
-    const state = {};
-    state[this.props.name] = {
-      value: e.currentTarget.value,
-      isValid: true,
-      isValidated: this.state.isValidated,
-      validate: this.validate,
-    };
-    stores.update(this.context.store, state);
-  }
-  validate() {
-    if (this.props.validate || this.props.required) {
-      const isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
-      const state = {};
-      state[this.props.name] = {
-        value: this.state.value,
-        isValid,
-        isValidated: true,
-      };
-      stores.update(this.context.store, state);
-      return isValid;
-    }
-    return true;
-  }
-
   render() {
     const {
       controlGroupClass,
@@ -88,10 +26,10 @@ export default class TextArea extends Component {
     } = this.props;
 
     let containerClasses = controlGroupClass;
-    if (this.state.isValid && this.state.isValidated) {
+    if (this.props.isValid && this.props.isValidated) {
       containerClasses += ` ${successWrapperClass}`;
     }
-    if (!this.state.isValid) {
+    if (!this.props.isValid) {
       containerClasses += ` ${errorWrapperClass}`;
     }
     if (inlineLabel) {
@@ -107,17 +45,17 @@ export default class TextArea extends Component {
           </span>
           <textarea
             name={name}
-            aria-invalid={!this.state.isValid}
+            aria-invalid={!this.props.isValid}
             aria-required={required}
-            onChange={this.handleChange}
-            onBlur={this.validate}
+            onChange={this.props.handleChange}
+            onBlur={this.props.validate}
             maxLength={maxLength}
-            value={this.state.value}
+            value={this.props.value}
             disabled={disabled}
             placeholder={placeholder}
           />
 
-          {errorText && !this.state.isValid ?
+        {errorText && !this.props.isValid ?
             <div className={errorTextClass}>{errorText}</div>
          : null}
         </label>
@@ -136,7 +74,7 @@ TextArea.propTypes = {
   successWrapperClass: PropTypes.string,
   errorWrapperClass: PropTypes.string,
   controlGroupClass: PropTypes.string,
-  validate: PropTypes.string,
+  validate: PropTypes.func,
   required: PropTypes.bool,
   requiredClass: PropTypes.string,
   value: PropTypes.string,

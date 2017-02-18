@@ -21620,19 +21620,22 @@
 	            spinner: React.createElement(Spinner, null),
 	            submittingText: 'Vent litt'
 	          },
-	          React.createElement(_nocmsForms.Input, _extends({}, inputClasses, {
+	          React.createElement(_nocmsForms.Field, _extends({
+	            required: true,
+	            errorText: 'foo'
+	          }, inputClasses, {
 	            store: storeName,
 	            label: 'Text field',
 	            name: 'name'
 	          })),
-	          React.createElement(_nocmsForms.Input, _extends({}, inputClasses, {
+	          React.createElement(_nocmsForms.Field, _extends({}, inputClasses, {
 	            dependOn: 'name',
 	            dependencyFunc: this.getUppercaseName,
 	            store: storeName,
 	            label: 'Dependent text field',
 	            name: 'aggregatedName'
 	          })),
-	          React.createElement(_nocmsForms.Input, _extends({
+	          React.createElement(_nocmsForms.Field, _extends({
 	            required: true
 	          }, inputClasses, {
 	            label: 'Required text field with e-mail validation',
@@ -21640,29 +21643,36 @@
 	            errorText: 'Wrong e-mail',
 	            validate: 'email'
 	          })),
-	          React.createElement(_nocmsForms.Input, {
+	          React.createElement(_nocmsForms.Field, {
 	            required: true,
 	            label: 'Required text field',
 	            name: 'required',
-	            errorText: 'Error'
+	            errorText: 'Field is required',
+	            validate: 'notEmpty'
 	          }),
-	          React.createElement(_nocmsForms.RadioButtons, _extends({}, inputClasses, {
+	          React.createElement(_nocmsForms.Field, _extends({
+	            type: 'radio'
+	          }, inputClasses, {
 	            required: true,
 	            errorText: 'Oh no',
 	            label: 'Radio buttons',
 	            name: 'radio',
 	            options: radioOptions
 	          })),
-	          React.createElement(_nocmsForms.Select, _extends({}, inputClasses, {
+	          React.createElement(_nocmsForms.Field, _extends({
+	            type: 'select'
+	          }, inputClasses, {
 	            label: 'Select',
 	            options: selectOptions,
 	            name: 'select'
 	          })),
-	          React.createElement(_nocmsForms.TextArea, _extends({}, inputClasses, {
+	          React.createElement(_nocmsForms.Field, _extends({
+	            type: 'textarea'
+	          }, inputClasses, {
 	            label: 'Text area',
 	            name: 'textarea'
 	          })),
-	          React.createElement(_nocmsForms.Input, {
+	          React.createElement(_nocmsForms.Field, {
 	            type: 'hidden',
 	            name: 'hiddenName',
 	            dependOn: 'name',
@@ -21710,7 +21720,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
+	exports.Field = exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
 	
 	var _Form2 = __webpack_require__(180);
 	
@@ -21736,6 +21746,10 @@
 	
 	var _Wizard3 = _interopRequireDefault(_Wizard2);
 	
+	var _Field2 = __webpack_require__(197);
+	
+	var _Field3 = _interopRequireDefault(_Field2);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.Form = _Form3.default;
@@ -21744,6 +21758,7 @@
 	exports.Select = _Select3.default;
 	exports.TextArea = _TextArea3.default;
 	exports.Wizard = _Wizard3.default;
+	exports.Field = _Field3.default;
 
 /***/ },
 /* 180 */
@@ -21859,7 +21874,7 @@
 	            return;
 	          }
 	          if (!prop.isValidated) {
-	            isValid = isValid && prop.validate();
+	            isValid = prop.validate();
 	          }
 	          if (prop.isValidated) {
 	            isValid = isValid && prop.isValid;
@@ -22227,31 +22242,17 @@
 /* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
-	
-	var _nocmsValidation = __webpack_require__(185);
-	
-	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
-	
-	var _nocmsUtils = __webpack_require__(183);
-	
-	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
-	
-	var _nocmsStores = __webpack_require__(181);
-	
-	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22264,162 +22265,13 @@
 	var Input = function (_Component) {
 	  _inherits(Input, _Component);
 	
-	  function Input(props) {
+	  function Input() {
 	    _classCallCheck(this, Input);
 	
-	    var _this = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
-	
-	    _this.handleStoreChange = _this.handleStoreChange.bind(_this);
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.handleEnterKey = _this.handleEnterKey.bind(_this);
-	    _this.handleBlur = _this.handleBlur.bind(_this);
-	    _this.validate = _this.validate.bind(_this);
-	    _this.state = {
-	      value: props.value || '',
-	      isValid: true,
-	      isValidated: false,
-	      convertDate: props.type === 'date'
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).apply(this, arguments));
 	  }
 	
 	  _createClass(Input, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
-	        var store = _nocmsStores2.default.getStore(this.context.store);
-	        var initialState = store[this.props.name];
-	        var inputState = {};
-	        inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
-	
-	        if (typeof initialState === 'undefined' || initialState === null) {
-	          inputState[this.props.name].value = this.props.value || '';
-	        } else if ((typeof initialState === 'undefined' ? 'undefined' : _typeof(initialState)) !== 'object') {
-	          inputState[this.props.name].value = initialState;
-	        } else {
-	          inputState = initialState;
-	        }
-	
-	        _nocmsStores2.default.update(this.context.store, inputState);
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (global.environment !== 'server') {
-	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
-	        if (this.props.deleteOnUnmount) {
-	          var inputState = {};
-	          inputState[this.props.name] = undefined;
-	          _nocmsStores2.default.update(this.context.store, inputState);
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'handleDependentState',
-	    value: function handleDependentState(store, changes) {
-	      var _this2 = this;
-	
-	      if (this.props.dependOn) {
-	        var _ret = function () {
-	          var fields = _this2.props.dependOn.split(',').map(function (f) {
-	            return f.trim();
-	          });
-	          var values = {};
-	
-	          // Check if any of the changed values are in the dependOn list
-	          var doUpdate = fields.reduce(function (val, f) {
-	            values[f] = store[f];
-	            if (changes[f]) {
-	              return true;
-	            }
-	            return val;
-	          }, false);
-	
-	          if (!doUpdate) {
-	            return {
-	              v: false
-	            };
-	          }
-	
-	          var aggregatedValue = _this2.props.dependencyFunc(values);
-	          var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
-	
-	          _this2.setState(aggregatedState);
-	          _this2.updateStore(aggregatedValue, true, true);
-	          return {
-	            v: true
-	          };
-	        }();
-	
-	        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-	      }
-	      return false;
-	    }
-	  }, {
-	    key: 'handleStoreChange',
-	    value: function handleStoreChange(store, changes) {
-	      if (this.handleDependentState(store, changes)) {
-	        return;
-	      }
-	      var newState = store[this.props.name];
-	      if ((typeof newState === 'undefined' ? 'undefined' : _typeof(newState)) !== 'object') {
-	        // Upgrade simple data values to input state in store
-	        newState = {
-	          value: newState,
-	          isValid: true,
-	          isValidated: false
-	        };
-	      }
-	      this.setState(newState);
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      var value = this.props.type === 'checkbox' ? e.currentTarget.checked : e.currentTarget.value;
-	      this.updateStore(value, true, this.state.isValidated);
-	    }
-	  }, {
-	    key: 'handleEnterKey',
-	    value: function handleEnterKey(e) {
-	      if (e.keyCode === 13) {
-	        // Enter
-	        this.validate();
-	      }
-	    }
-	  }, {
-	    key: 'handleBlur',
-	    value: function handleBlur(e) {
-	      e.stopPropagation();
-	      this.validate();
-	    }
-	  }, {
-	    key: 'updateStore',
-	    value: function updateStore(value, isValid, isValidated) {
-	      var state = {};
-	      state[this.props.name] = {
-	        value: value,
-	        isValid: isValid,
-	        isValidated: isValidated,
-	        validate: this.validate,
-	        convertDate: this.props.type === 'date'
-	      };
-	
-	      _nocmsStores2.default.update(this.context.store, state);
-	    }
-	  }, {
-	    key: 'validate',
-	    value: function validate() {
-	      if (this.props.validate || this.props.required) {
-	        var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
-	        this.updateStore(this.state.value, isValid, true);
-	
-	        return isValid;
-	      }
-	      return true;
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
@@ -22445,14 +22297,14 @@
 	
 	
 	      if (type === 'hidden') {
-	        return _react2.default.createElement('input', { type: 'hidden', value: this.state.value, name: name });
+	        return _react2.default.createElement('input', { type: 'hidden', value: this.props.value, name: name });
 	      }
 	
 	      var containerClasses = controlGroupClass;
-	      if (this.state.isValid && this.state.isValidated) {
+	      if (this.props.isValid && this.props.isValidated) {
 	        containerClasses += ' ' + successWrapperClass;
 	      }
-	      if (!this.state.isValid) {
+	      if (!this.props.isValid) {
 	        containerClasses += ' ' + errorWrapperClass;
 	      }
 	      if (inlineLabel) {
@@ -22487,17 +22339,17 @@
 	            autoComplete: 'off',
 	            maxLength: maxLength,
 	            name: name,
-	            value: this.state.value,
+	            value: this.props.value,
 	            disabled: disabled,
 	            placeholder: placeholder,
-	            'aria-invalid': !this.state.isValid,
+	            'aria-invalid': !this.props.isValid,
 	            'aria-required': required,
-	            onChange: this.handleChange,
-	            onClick: type === 'checkbox' ? this.handleChange : null,
-	            onKeyDown: this.handleEnterKey,
-	            onBlur: this.handleBlur
+	            onChange: this.props.handleChange,
+	            onClick: type === 'checkbox' ? this.props.handleChange : null,
+	            onKeyDown: this.props.handleKeyDown,
+	            onBlur: this.props.validate
 	          }),
-	          !inlineLabel && errorText && !this.state.isValid ? _react2.default.createElement(
+	          !inlineLabel && errorText && !this.props.isValid ? _react2.default.createElement(
 	            'div',
 	            { className: ' ' + errorTextClass },
 	            errorText
@@ -22511,6 +22363,9 @@
 	}(_react.Component);
 	
 	Input.propTypes = {
+	  handleChange: _react.PropTypes.func,
+	  isValid: _react.PropTypes.bool,
+	  isValidated: _react.PropTypes.bool,
 	  name: _react.PropTypes.string.isRequired,
 	  type: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
@@ -22521,8 +22376,8 @@
 	  controlGroupClass: _react.PropTypes.string,
 	  required: _react.PropTypes.bool,
 	  requiredClass: _react.PropTypes.string,
-	  deleteOnUnmount: _react.PropTypes.bool,
-	  validate: _react.PropTypes.string,
+	  validate: _react.PropTypes.func,
+	  handleKeyDown: _react.PropTypes.func,
 	  inlineLabel: _react.PropTypes.bool,
 	  inlineLabelClass: _react.PropTypes.string,
 	  checkboxClass: _react.PropTypes.string,
@@ -22532,9 +22387,7 @@
 	  maxLength: _react.PropTypes.number,
 	  disabled: _react.PropTypes.bool,
 	  placeholder: _react.PropTypes.string,
-	  labelId: _react.PropTypes.string,
-	  dependOn: _react.PropTypes.string,
-	  dependencyFunc: _react.PropTypes.func
+	  labelId: _react.PropTypes.string
 	};
 	
 	Input.defaultProps = {
@@ -22557,7 +22410,6 @@
 	
 	exports.default = Input;
 	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 185 */
@@ -22752,25 +22604,11 @@
 	  value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
-	
-	var _nocmsValidation = __webpack_require__(185);
-	
-	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
-	
-	var _nocmsUtils = __webpack_require__(183);
-	
-	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
-	
-	var _nocmsStores = __webpack_require__(181);
-	
-	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22783,98 +22621,13 @@
 	var RadioButtons = function (_Component) {
 	  _inherits(RadioButtons, _Component);
 	
-	  function RadioButtons(props) {
+	  function RadioButtons() {
 	    _classCallCheck(this, RadioButtons);
 	
-	    var _this = _possibleConstructorReturn(this, (RadioButtons.__proto__ || Object.getPrototypeOf(RadioButtons)).call(this, props));
-	
-	    _this.handleStoreChange = _this.handleStoreChange.bind(_this);
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.handleEnterKey = _this.handleEnterKey.bind(_this);
-	    _this.validate = _this.validate.bind(_this);
-	
-	    _this.state = {
-	      value: props.value,
-	      isValid: true,
-	      isValidated: false,
-	      validate: _this.validate
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (RadioButtons.__proto__ || Object.getPrototypeOf(RadioButtons)).apply(this, arguments));
 	  }
 	
 	  _createClass(RadioButtons, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
-	        var store = _nocmsStores2.default.getStore(this.context.store);
-	        var initialState = store[this.props.name];
-	        var inputState = {};
-	        inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
-	
-	        if (typeof initialState === 'undefined') {
-	          inputState[this.props.name].value = this.props.value;
-	        } else if ((typeof initialState === 'undefined' ? 'undefined' : _typeof(initialState)) !== 'object') {
-	          inputState[this.props.name].value = initialState;
-	        } else {
-	          inputState = initialState;
-	        }
-	        _nocmsStores2.default.update(this.context.store, inputState);
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
-	      }
-	    }
-	  }, {
-	    key: 'handleStoreChange',
-	    value: function handleStoreChange(store) {
-	      this.setState(store[this.props.name]);
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      var state = {};
-	      state[this.props.name] = {
-	        value: e.currentTarget.value,
-	        isValid: true,
-	        isValidated: this.state.isValidated,
-	        validate: this.validate
-	      };
-	      _nocmsStores2.default.update(this.context.store, state);
-	      if (this.props.onChange) {
-	        this.props.onChange(e, e.currentTarget.value);
-	      }
-	    }
-	  }, {
-	    key: 'handleEnterKey',
-	    value: function handleEnterKey(e) {
-	      if (e.keyCode === 13) {
-	        // Enter
-	        this.validate();
-	      }
-	    }
-	  }, {
-	    key: 'validate',
-	    value: function validate() {
-	      if (this.props.validate || this.props.required) {
-	        var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
-	        var state = {};
-	        state[this.props.name] = {
-	          value: this.state.value,
-	          isValid: isValid,
-	          isValidated: true,
-	          validate: this.validate
-	        };
-	        _nocmsStores2.default.update(this.context.store, state);
-	        return isValid;
-	      }
-	      return true;
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -22897,10 +22650,10 @@
 	
 	
 	      var containerClasses = ' ' + controlGroupClass + ' ' + radioClass;
-	      if (this.state.isValid && this.state.isValidated) {
+	      if (this.props.isValid && this.props.isValidated) {
 	        containerClasses += ' ' + successWrapperClass;
 	      }
-	      if (!this.state.isValid) {
+	      if (!this.props.isValid) {
 	        containerClasses += ' ' + errorWrapperClass;
 	      }
 	      var radios = options.map(function (o, index) {
@@ -22916,14 +22669,14 @@
 	          'label',
 	          { key: name + '_' + index, className: labelClasses },
 	          _react2.default.createElement('input', {
-	            checked: _this2.state.value === option.value,
+	            checked: _this2.props.value === option.value,
 	            type: 'radio',
 	            value: option.value,
 	            name: name,
 	            disabled: option.disabled,
-	            onChange: _this2.handleChange,
-	            onClick: _this2.handleChange,
-	            onKeyDown: _this2.handleEnterKey
+	            onChange: _this2.props.onChange,
+	            onClick: _this2.props.handleChange,
+	            onKeyDown: _this2.props.handleKeyDown
 	          }),
 	          _react2.default.createElement(
 	            'span',
@@ -22949,7 +22702,7 @@
 	            ) : null
 	          ),
 	          radios,
-	          errorText && !this.state.isValid ? _react2.default.createElement(
+	          errorText && !this.props.isValid ? _react2.default.createElement(
 	            'div',
 	            { className: errorTextClass },
 	            this.props.errorText
@@ -22969,6 +22722,8 @@
 	  store: _react2.default.PropTypes.string };
 	
 	RadioButtons.propTypes = {
+	  isValid: _react.PropTypes.bool,
+	  isValidated: _react.PropTypes.bool,
 	  name: _react.PropTypes.string.isRequired,
 	  successWrapperClass: _react.PropTypes.string,
 	  errorTextClass: _react.PropTypes.string,
@@ -22978,9 +22733,9 @@
 	  requiredClass: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
 	  errorText: _react.PropTypes.string,
-	  onChange: _react.PropTypes.func,
+	  handleChange: _react.PropTypes.func,
+	  handleKeyDown: _react.PropTypes.func,
 	  required: _react.PropTypes.bool,
-	  validate: _react.PropTypes.string,
 	  options: _react.PropTypes.array,
 	  label: _react.PropTypes.string,
 	  requiredMark: _react.PropTypes.string,
@@ -23006,13 +22761,11 @@
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -23023,145 +22776,46 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var React = __webpack_require__(1);
-	var stores = __webpack_require__(181);
-	var utils = __webpack_require__(183);
-	var Validator = __webpack_require__(185);
 	
 	var Select = function (_React$Component) {
 	  _inherits(Select, _React$Component);
 	
-	  function Select(props) {
+	  function Select() {
 	    _classCallCheck(this, Select);
 	
-	    var _this = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
-	
-	    _this.handleStoreChange = _this.handleStoreChange.bind(_this);
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.handleEnterKey = _this.handleEnterKey.bind(_this);
-	    _this.handleBlur = _this.handleBlur.bind(_this);
-	    _this.validate = _this.validate.bind(_this);
-	
-	    _this.state = {
-	      value: props.value,
-	      isValid: true,
-	      isValidated: false,
-	      validate: _this.validate
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
 	  }
 	
 	  _createClass(Select, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      var _props = this.props,
-	          name = _props.name,
-	          value = _props.value,
-	          required = _props.required;
-	
-	      if (utils.isBrowser()) {
-	        stores.subscribe(this.context.store, this.handleStoreChange);
-	        var storeObj = stores.getStore(this.context.store);
-	        var initialState = storeObj[name];
-	        var inputState = {};
-	        inputState[name] = { isValid: true, isValidated: !required, validate: this.validate };
-	        if (typeof initialState === 'undefined') {
-	          inputState[name].value = value;
-	        } else if ((typeof initialState === 'undefined' ? 'undefined' : _typeof(initialState)) !== 'object') {
-	          inputState[name].value = initialState;
-	        } else {
-	          inputState = initialState;
-	        }
-	        stores.update(this.context.store, inputState);
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (utils.isBrowser()) {
-	        stores.unsubscribe(this.context.store, this.handleStoreChange);
-	      }
-	    }
-	  }, {
-	    key: 'handleStoreChange',
-	    value: function handleStoreChange(store) {
-	      this.setState(store[this.props.name]);
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      var state = {};
-	      state[this.props.name] = {
-	        value: e.currentTarget.value,
-	        isValid: true,
-	        isValidated: this.state.isValidated,
-	        validate: this.validate
-	      };
-	      stores.update(this.context.store, state);
-	      if (this.props.onChange) {
-	        this.props.onChange(e, e.currentTarget.value);
-	      }
-	    }
-	  }, {
-	    key: 'handleEnterKey',
-	    value: function handleEnterKey(e) {
-	      if (e.keyCode === 13) {
-	        // Enter
-	        this.validate();
-	      }
-	    }
-	  }, {
-	    key: 'handleBlur',
-	    value: function handleBlur(e) {
-	      e.stopPropagation();
-	      this.validate();
-	    }
-	  }, {
-	    key: 'validate',
-	    value: function validate() {
-	      if (this.props.validate || this.props.required) {
-	        var isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
-	        var state = {};
-	        state[this.props.name] = {
-	          value: this.state.value,
-	          isValid: isValid,
-	          isValidated: true,
-	          validate: this.validate
-	        };
-	        stores.update(this.context.store, state);
-	        return isValid;
-	      }
-	      return true;
-	    }
-	  }, {
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
-	      var _props2 = this.props,
-	          controlGroupClass = _props2.controlGroupClass,
-	          successWrapperClass = _props2.successWrapperClass,
-	          errorText = _props2.errorText,
-	          errorTextClass = _props2.errorTextClass,
-	          errorWrapperClass = _props2.errorWrapperClass,
-	          labelClass = _props2.labelClass,
-	          label = _props2.label,
-	          name = _props2.name,
-	          options = _props2.options,
-	          required = _props2.required,
-	          requiredClass = _props2.requiredClass,
-	          requiredMark = _props2.requiredMark,
-	          emptyLabel = _props2.emptyLabel;
+	      var _props = this.props,
+	          controlGroupClass = _props.controlGroupClass,
+	          successWrapperClass = _props.successWrapperClass,
+	          errorText = _props.errorText,
+	          errorTextClass = _props.errorTextClass,
+	          errorWrapperClass = _props.errorWrapperClass,
+	          labelClass = _props.labelClass,
+	          label = _props.label,
+	          name = _props.name,
+	          options = _props.options,
+	          required = _props.required,
+	          requiredClass = _props.requiredClass,
+	          requiredMark = _props.requiredMark,
+	          emptyLabel = _props.emptyLabel;
 	
 	
 	      var containerClasses = controlGroupClass;
-	      if (this.state.isValid && this.state.isValidated) {
-	        containerClasses += ' ' + successWrapperClass;
+	      if (this.props.isValid && this.props.isValidated) {
+	        containerClasses += " " + successWrapperClass;
 	      }
-	      if (!this.state.isValid) {
-	        containerClasses += ' ' + errorWrapperClass;
+	      if (!this.props.isValid) {
+	        containerClasses += " " + errorWrapperClass;
 	      }
 	
 	      var emptyOption = emptyLabel ? [React.createElement(
-	        'option',
-	        { key: 'empty', value: '' },
+	        "option",
+	        { key: "empty", value: "" },
 	        emptyLabel
 	      )] : [];
 	      var optionsList = emptyOption.concat(options.map(function (o, index) {
@@ -23170,43 +22824,43 @@
 	          option = { label: option, value: option };
 	        }
 	        return React.createElement(
-	          'option',
+	          "option",
 	          { key: index, value: option.value },
 	          option.label
 	        );
 	      }));
 	
 	      return React.createElement(
-	        'div',
+	        "div",
 	        { className: containerClasses },
 	        React.createElement(
-	          'label',
+	          "label",
 	          null,
 	          React.createElement(
-	            'span',
+	            "span",
 	            { className: labelClass },
 	            label,
 	            required ? React.createElement(
-	              'span',
+	              "span",
 	              { className: requiredClass },
 	              requiredMark
 	            ) : null
 	          ),
 	          React.createElement(
-	            'select',
+	            "select",
 	            {
 	              name: name,
-	              value: this.state.value,
-	              'aria-invalid': !this.state.isValid,
-	              'aria-required': required,
-	              onChange: this.handleChange,
-	              onKeyDown: this.handleEnterKey,
-	              onBlur: this.handleBlur
+	              value: this.props.value,
+	              "aria-invalid": !this.props.isValid,
+	              "aria-required": required,
+	              onChange: this.props.handleChange,
+	              onKeyDown: this.props.handleKeyDown,
+	              onBlur: this.props.handleChange
 	            },
 	            optionsList
 	          ),
-	          errorText && !this.state.isValid ? React.createElement(
-	            'div',
+	          errorText && !this.props.isValid ? React.createElement(
+	            "div",
 	            { className: errorTextClass },
 	            errorText
 	          ) : null
@@ -23225,6 +22879,8 @@
 	  store: React.PropTypes.string };
 	
 	Select.propTypes = {
+	  isValid: React.PropTypes.bool,
+	  isValidated: React.PropTypes.bool,
 	  requiredMark: React.PropTypes.string,
 	  value: React.PropTypes.string,
 	  errorTextClass: React.PropTypes.string,
@@ -23236,10 +22892,10 @@
 	  emptyLabel: React.PropTypes.string,
 	  options: React.PropTypes.array,
 	  errorText: React.PropTypes.string,
-	  onChange: React.PropTypes.func,
+	  handleChange: React.PropTypes.func,
 	  required: React.PropTypes.bool,
 	  requiredClass: React.PropTypes.string,
-	  validate: React.PropTypes.string,
+	  handleKeyDown: React.PropTypes.func,
 	  label: React.PropTypes.string
 	};
 	
@@ -23252,7 +22908,7 @@
 	  labelClass: 'form__label',
 	  controlGroupClass: 'form__control-group'
 	};
-	module.exports = exports['default'];
+	module.exports = exports["default"];
 
 /***/ },
 /* 189 */
@@ -23293,80 +22949,13 @@
 	var TextArea = function (_Component) {
 	  _inherits(TextArea, _Component);
 	
-	  function TextArea(props) {
+	  function TextArea() {
 	    _classCallCheck(this, TextArea);
 	
-	    var _this = _possibleConstructorReturn(this, (TextArea.__proto__ || Object.getPrototypeOf(TextArea)).call(this, props));
-	
-	    _this.handleStoreChange = _this.handleStoreChange.bind(_this);
-	    _this.handleChange = _this.handleChange.bind(_this);
-	    _this.state = {
-	      value: props.value,
-	      isValid: true,
-	      isValidated: false
-	    };
-	    _this.validate = _this.validate.bind(_this);
-	    return _this;
+	    return _possibleConstructorReturn(this, (TextArea.__proto__ || Object.getPrototypeOf(TextArea)).apply(this, arguments));
 	  }
 	
 	  _createClass(TextArea, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
-	        var initialState = {};
-	        initialState[this.props.name] = {
-	          value: this.props.value,
-	          isValid: true,
-	          isValidated: !this.props.required,
-	          validate: this.validate
-	        };
-	        _nocmsStores2.default.update(this.context.store, initialState);
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (_nocmsUtils2.default.isBrowser()) {
-	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
-	      }
-	    }
-	  }, {
-	    key: 'handleStoreChange',
-	    value: function handleStoreChange(store) {
-	      this.setState(store[this.props.name]);
-	    }
-	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(e) {
-	      var data = {};
-	      data[this.props.name] = { value: e.currentTarget.value, isValid: true };
-	      var state = {};
-	      state[this.props.name] = {
-	        value: e.currentTarget.value,
-	        isValid: true,
-	        isValidated: this.state.isValidated,
-	        validate: this.validate
-	      };
-	      _nocmsStores2.default.update(this.context.store, state);
-	    }
-	  }, {
-	    key: 'validate',
-	    value: function validate() {
-	      if (this.props.validate || this.props.required) {
-	        var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
-	        var state = {};
-	        state[this.props.name] = {
-	          value: this.state.value,
-	          isValid: isValid,
-	          isValidated: true
-	        };
-	        _nocmsStores2.default.update(this.context.store, state);
-	        return isValid;
-	      }
-	      return true;
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props,
@@ -23390,10 +22979,10 @@
 	
 	
 	      var containerClasses = controlGroupClass;
-	      if (this.state.isValid && this.state.isValidated) {
+	      if (this.props.isValid && this.props.isValidated) {
 	        containerClasses += ' ' + successWrapperClass;
 	      }
-	      if (!this.state.isValid) {
+	      if (!this.props.isValid) {
 	        containerClasses += ' ' + errorWrapperClass;
 	      }
 	      if (inlineLabel) {
@@ -23418,16 +23007,16 @@
 	          ),
 	          _react2.default.createElement('textarea', {
 	            name: name,
-	            'aria-invalid': !this.state.isValid,
+	            'aria-invalid': !this.props.isValid,
 	            'aria-required': required,
-	            onChange: this.handleChange,
-	            onBlur: this.validate,
+	            onChange: this.props.handleChange,
+	            onBlur: this.props.validate,
 	            maxLength: maxLength,
-	            value: this.state.value,
+	            value: this.props.value,
 	            disabled: disabled,
 	            placeholder: placeholder
 	          }),
-	          errorText && !this.state.isValid ? _react2.default.createElement(
+	          errorText && !this.props.isValid ? _react2.default.createElement(
 	            'div',
 	            { className: errorTextClass },
 	            errorText
@@ -23452,7 +23041,7 @@
 	  successWrapperClass: _react.PropTypes.string,
 	  errorWrapperClass: _react.PropTypes.string,
 	  controlGroupClass: _react.PropTypes.string,
-	  validate: _react.PropTypes.string,
+	  validate: _react.PropTypes.func,
 	  required: _react.PropTypes.bool,
 	  requiredClass: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
@@ -23914,8 +23503,7 @@
 	          'Step: ',
 	          this.props.name
 	        ),
-	        _react2.default.createElement(_nocmsForms.Input, { required: true,
-	          store: this.props.store,
+	        _react2.default.createElement(_nocmsForms.Field, { required: true,
 	          label: 'Label',
 	          name: this.props.name,
 	          errorText: 'Oisann',
@@ -24003,6 +23591,289 @@
 	}(_react.Component);
 	
 	exports.default = EmptyStep;
+	module.exports = exports['default'];
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsValidation = __webpack_require__(185);
+	
+	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
+	
+	var _nocmsUtils = __webpack_require__(183);
+	
+	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
+	
+	var _nocmsStores = __webpack_require__(181);
+	
+	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
+	
+	var _Input = __webpack_require__(184);
+	
+	var _Input2 = _interopRequireDefault(_Input);
+	
+	var _Select = __webpack_require__(188);
+	
+	var _Select2 = _interopRequireDefault(_Select);
+	
+	var _RadioButtons = __webpack_require__(187);
+	
+	var _RadioButtons2 = _interopRequireDefault(_RadioButtons);
+	
+	var _TextArea = __webpack_require__(189);
+	
+	var _TextArea2 = _interopRequireDefault(_TextArea);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Field = function (_Component) {
+	  _inherits(Field, _Component);
+	
+	  function Field(props) {
+	    _classCallCheck(this, Field);
+	
+	    var _this = _possibleConstructorReturn(this, (Field.__proto__ || Object.getPrototypeOf(Field)).call(this, props));
+	
+	    _this.handleStoreChange = _this.handleStoreChange.bind(_this);
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.validate = _this.validate.bind(_this);
+	    _this.handleEnterKey = _this.handleEnterKey.bind(_this);
+	    _this.applyExistingStoreValue = _this.applyExistingStoreValue.bind(_this);
+	    _this.state = {
+	      value: props.value || '',
+	      isValid: true,
+	      isValidated: false,
+	      convertDate: props.type === 'date'
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Field, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      if (_nocmsUtils2.default.isBrowser()) {
+	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
+	        this.applyExistingStoreValue();
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      if (_nocmsUtils2.default.isBrowser()) {
+	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
+	        if (this.props.deleteOnUnmount) {
+	          var inputState = {};
+	          inputState[this.props.name] = undefined;
+	          _nocmsStores2.default.update(this.context.store, inputState);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'applyExistingStoreValue',
+	    value: function applyExistingStoreValue() {
+	      var store = _nocmsStores2.default.getStore(this.context.store);
+	      var initialState = store[this.props.name];
+	      var inputState = {};
+	      inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
+	
+	      if (typeof initialState === 'undefined' || initialState === null) {
+	        inputState[this.props.name].value = this.props.value || '';
+	      } else if ((typeof initialState === 'undefined' ? 'undefined' : _typeof(initialState)) !== 'object') {
+	        inputState[this.props.name].value = initialState;
+	      } else {
+	        inputState = initialState;
+	      }
+	
+	      _nocmsStores2.default.update(this.context.store, inputState);
+	    }
+	  }, {
+	    key: 'handleDependentState',
+	    value: function handleDependentState(store, changes) {
+	      if (!this.props.dependOn) {
+	        return false;
+	      }
+	
+	      var fields = this.props.dependOn.split(',').map(function (f) {
+	        return f.trim();
+	      });
+	      var values = {};
+	
+	      // Check if any of the changed values are in the dependOn list
+	      var doUpdate = fields.reduce(function (val, f) {
+	        values[f] = store[f];
+	        if (changes[f]) {
+	          return true;
+	        }
+	        return val;
+	      }, false);
+	
+	      if (!doUpdate) {
+	        return false;
+	      }
+	
+	      var aggregatedValue = this.props.dependencyFunc(values);
+	      var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
+	
+	      this.setState(aggregatedState);
+	      this.updateStore(aggregatedValue, true, true);
+	      return true;
+	    }
+	  }, {
+	    key: 'handleStoreChange',
+	    value: function handleStoreChange(store, changes) {
+	      if (this.props.dependOn && this.handleDependentState(store, changes)) {
+	        return;
+	      }
+	      var newState = store[this.props.name];
+	      if ((typeof newState === 'undefined' ? 'undefined' : _typeof(newState)) !== 'object') {
+	        // Upgrade simple data values to input state in store
+	        newState = {
+	          value: newState,
+	          isValid: true,
+	          isValidated: false
+	        };
+	      }
+	      this.setState(newState);
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      var value = this.props.type === 'checkbox' ? e.currentTarget.checked : e.currentTarget.value;
+	      this.updateStore(value, true, this.state.isValidated);
+	      if (this.props.onChange) {
+	        this.props.onChange(e, e.currentTarget.value);
+	      }
+	    }
+	  }, {
+	    key: 'handleEnterKey',
+	    value: function handleEnterKey(e) {
+	      if (e.keyCode === 13) {
+	        // Enter
+	        e.preventDefault();
+	        this.validate();
+	      }
+	    }
+	  }, {
+	    key: 'updateStore',
+	    value: function updateStore(value, isValid, isValidated) {
+	      var state = {};
+	      state[this.props.name] = {
+	        value: value,
+	        isValid: isValid,
+	        isValidated: isValidated,
+	        validate: this.validate,
+	        convertDate: this.props.type === 'date'
+	      };
+	
+	      _nocmsStores2.default.update(this.context.store, state);
+	    }
+	  }, {
+	    key: 'validate',
+	    value: function validate() {
+	      if (!this.props.validate && !this.props.required) {
+	        return true;
+	      }
+	
+	      var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
+	      this.updateStore(this.state.value, isValid, true);
+	      return isValid;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var type = this.props.type;
+	
+	      var props = Object.assign({}, this.props, this.state);
+	
+	      props.handleChange = this.handleChange;
+	      props.handleKeyDown = this.handleEnterKey;
+	      props.validate = this.validate;
+	      props.key = this.props.name;
+	
+	      if (type === 'radio') {
+	        return _react2.default.createElement(_RadioButtons2.default, props);
+	      }
+	      if (type === 'textarea') {
+	        return _react2.default.createElement(_TextArea2.default, props);
+	      }
+	      if (type === 'select') {
+	        return _react2.default.createElement(_Select2.default, props);
+	      }
+	      return _react2.default.createElement(_Input2.default, props);
+	    }
+	  }]);
+	
+	  return Field;
+	}(_react.Component);
+	
+	Field.propTypes = {
+	  name: _react.PropTypes.string.isRequired,
+	  type: _react.PropTypes.string,
+	  value: _react.PropTypes.string,
+	  successWrapperClass: _react.PropTypes.string,
+	  errorTextClass: _react.PropTypes.string,
+	  errorWrapperClass: _react.PropTypes.string,
+	  labelClass: _react.PropTypes.string,
+	  controlGroupClass: _react.PropTypes.string,
+	  required: _react.PropTypes.bool,
+	  requiredClass: _react.PropTypes.string,
+	  deleteOnUnmount: _react.PropTypes.bool,
+	  validate: _react.PropTypes.string,
+	  inlineLabel: _react.PropTypes.bool,
+	  inlineLabelClass: _react.PropTypes.string,
+	  checkboxClass: _react.PropTypes.string,
+	  errorText: _react.PropTypes.string,
+	  label: _react.PropTypes.string,
+	  requiredMark: _react.PropTypes.string,
+	  maxLength: _react.PropTypes.number,
+	  disabled: _react.PropTypes.bool,
+	  placeholder: _react.PropTypes.string,
+	  labelId: _react.PropTypes.string,
+	  dependOn: _react.PropTypes.string,
+	  dependencyFunc: _react.PropTypes.func,
+	  onChange: _react.PropTypes.func
+	};
+	
+	Field.defaultProps = {
+	  successWrapperClass: 'form__control-group--success',
+	  errorWrapperClass: 'form__control-group--error',
+	  requiredMark: '*',
+	  type: 'text',
+	  errorTextClass: 'form__error-text',
+	  labelClass: 'form__label',
+	  controlGroupClass: 'form__control-group',
+	  inlineLabelClass: '',
+	  requiredClass: 'form__label--required',
+	  required: false,
+	  disabled: false,
+	  placeholder: ''
+	};
+	
+	Field.contextTypes = {
+	  store: _react2.default.PropTypes.string };
+	
+	exports.default = Field;
 	module.exports = exports['default'];
 
 /***/ }

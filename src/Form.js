@@ -77,7 +77,7 @@ class Form extends React.Component {
           return;
         }
         if (!prop.isValidated) {
-          isValid = isValid && prop.validate();
+          isValid = prop.validate();
         }
         if (prop.isValidated) {
           isValid = isValid && prop.isValid;

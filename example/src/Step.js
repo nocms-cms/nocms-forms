@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input } from 'nocms-forms';
+import { Form, Field } from 'nocms-forms';
 
 export default class Step extends Component {
   constructor(){
@@ -28,8 +28,7 @@ export default class Step extends Component {
         backButton={this.props.backButton}
       >
         <h2>Step: {this.props.name}</h2>
-        <Input required
-           store={this.props.store}
+        <Field required
            label="Label"
            name={this.props.name}
            errorText="Oisann"
