@@ -93,6 +93,15 @@ export default class FormExample extends React.Component {
           />
           <Field
             required
+            disabled
+            {...inputClasses}
+            label="Required disabled field"
+            name="requriedDisabled"
+            errorText="This should not happen"
+            validate="notEmpty"
+          />
+          <Field
+            required
             label="Required text field"
             name="required"
             errorText="Field is required"
