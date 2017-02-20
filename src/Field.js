@@ -132,6 +132,9 @@ class Field extends Component {
   }
 
   validate() {
+    if (this.props.disabled) {
+      return true;
+    }
     if (!this.props.validate && !this.props.required) {
       return true;
     }
@@ -167,6 +170,7 @@ Field.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
   value: PropTypes.string,
+  disabled: PropTypes.bool,
   required: PropTypes.bool,
   deleteOnUnmount: PropTypes.bool,
   validate: PropTypes.string,
