@@ -72,6 +72,10 @@ class Form extends React.Component {
         if (prop === null || skipFields.indexOf(field) >= 0) {
           return;
         }
+        if (prop.disabled) {
+          console.log('Skipping disabled', prop);
+          return;
+        }
         if (typeof prop !== 'object') {
           formData[field] = prop;
           return;

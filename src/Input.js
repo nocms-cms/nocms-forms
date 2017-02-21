@@ -42,7 +42,7 @@ const Input = (props) => {
   }
   return (
     <div className={containerClasses}>
-      {inlineLabel && errorText && !this.state.isValid ?
+      {inlineLabel && errorText && !props.isValid ?
         <div className={errorTextClass}>{errorText}</div>
       : null}
       <label id={labelId}>

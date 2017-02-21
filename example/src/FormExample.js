@@ -9,10 +9,12 @@ export default class FormExample extends React.Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.toggleDisabledField = this.toggleDisabledField.bind(this);
     this.state = {
       errorText: '',
       submitted: false,
       formData: null,
+      disabled: true,
     };
   }
 
@@ -28,7 +30,9 @@ export default class FormExample extends React.Component {
     this.setState({ submitted: true, formData });
     callback();
   }
-
+  toggleDisabledField(e) {
+    this.setState({ disabled: e.currentTarget.checked });
+  }
   render() {
     const radioOptions = [
       {
@@ -91,9 +95,10 @@ export default class FormExample extends React.Component {
             errorText="Wrong e-mail"
             validate="email"
           />
+        <label><input type="checkbox" checked={this.state.disabled} onChange={this.toggleDisabledField} /> Toggle disabled field</label>
           <Field
             required
-            disabled
+            disabled={this.state.disabled}
             {...inputClasses}
             label="Required disabled field"
             name="requriedDisabled"

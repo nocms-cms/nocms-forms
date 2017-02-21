@@ -21558,10 +21558,12 @@
 	
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
 	    _this.handleReset = _this.handleReset.bind(_this);
+	    _this.toggleDisabledField = _this.toggleDisabledField.bind(_this);
 	    _this.state = {
 	      errorText: '',
 	      submitted: false,
-	      formData: null
+	      formData: null,
+	      disabled: true
 	    };
 	    return _this;
 	  }
@@ -21581,6 +21583,11 @@
 	    value: function handleSubmit(formData, callback) {
 	      this.setState({ submitted: true, formData: formData });
 	      callback();
+	    }
+	  }, {
+	    key: 'toggleDisabledField',
+	    value: function toggleDisabledField(e) {
+	      this.setState({ disabled: e.currentTarget.checked });
 	    }
 	  }, {
 	    key: 'render',
@@ -21643,9 +21650,15 @@
 	            errorText: 'Wrong e-mail',
 	            validate: 'email'
 	          })),
+	          React.createElement(
+	            'label',
+	            null,
+	            React.createElement('input', { type: 'checkbox', checked: this.state.disabled, onChange: this.toggleDisabledField }),
+	            ' Toggle disabled field'
+	          ),
 	          React.createElement(_nocmsForms.Field, _extends({
 	            required: true,
-	            disabled: true
+	            disabled: this.state.disabled
 	          }, inputClasses, {
 	            label: 'Required disabled field',
 	            name: 'requriedDisabled',
@@ -21876,6 +21889,10 @@
 	          var prop = _this2.state.store[field];
 	          var skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
 	          if (prop === null || skipFields.indexOf(field) >= 0) {
+	            return;
+	          }
+	          if (prop.disabled) {
+	            console.log('Skipping disabled', prop);
 	            return;
 	          }
 	          if ((typeof prop === 'undefined' ? 'undefined' : _typeof(prop)) !== 'object') {
@@ -22305,7 +22322,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: containerClasses },
-	    inlineLabel && errorText && !undefined.state.isValid ? _react2.default.createElement(
+	    inlineLabel && errorText && !props.isValid ? _react2.default.createElement(
 	      'div',
 	      { className: errorTextClass },
 	      errorText
@@ -23057,7 +23074,8 @@
 	      value: props.value || '',
 	      isValid: true,
 	      isValidated: false,
-	      convertDate: props.type === 'date'
+	      convertDate: props.type === 'date',
+	      disabled: props.disabled
 	    };
 	    return _this;
 	  }
@@ -23068,6 +23086,17 @@
 	      if (_nocmsUtils2.default.isBrowser()) {
 	        _nocmsStores2.default.subscribe(this.context.store, this.handleStoreChange);
 	        this.applyExistingStoreValue();
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(props) {
+	      var _this2 = this;
+	
+	      if (props.disabled !== this.state.disabled) {
+	        this.setState({ disabled: props.disabled, isValid: true, isValidated: false }, function () {
+	          _this2.updateStore(_this2.state.value, true, false);
+	        });
 	      }
 	    }
 	  }, {
@@ -23088,7 +23117,7 @@
 	      var store = _nocmsStores2.default.getStore(this.context.store);
 	      var initialState = store[this.props.name];
 	      var inputState = {};
-	      inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
+	      inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
 	
 	      if (typeof initialState === 'undefined' || initialState === null) {
 	        inputState[this.props.name].value = this.props.value || '';
@@ -23175,6 +23204,7 @@
 	        value: value,
 	        isValid: isValid,
 	        isValidated: isValidated,
+	        disabled: this.state.disabled,
 	        validate: this.validate,
 	        convertDate: this.props.type === 'date'
 	      };

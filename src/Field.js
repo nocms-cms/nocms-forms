@@ -20,6 +20,7 @@ class Field extends Component {
       isValid: true,
       isValidated: false,
       convertDate: props.type === 'date',
+      disabled: props.disabled,
     };
   }
 
@@ -27,6 +28,14 @@ class Field extends Component {
     if (utils.isBrowser()) {
       stores.subscribe(this.context.store, this.handleStoreChange);
       this.applyExistingStoreValue();
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.disabled !== this.state.disabled) {
+      this.setState({ disabled: props.disabled, isValid: true, isValidated: false }, () => {
+        this.updateStore(this.state.value, true, false);
+      });
     }
   }
 
@@ -41,11 +50,12 @@ class Field extends Component {
     }
   }
 
+
   applyExistingStoreValue() {
     const store = stores.getStore(this.context.store);
     const initialState = store[this.props.name];
     let inputState = {};
-    inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate };
+    inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
 
     if (typeof initialState === 'undefined' || initialState === null) {
       inputState[this.props.name].value = this.props.value || '';
@@ -124,6 +134,7 @@ class Field extends Component {
       value,
       isValid,
       isValidated,
+      disabled: this.state.disabled,
       validate: this.validate,
       convertDate: this.props.type === 'date',
     };
