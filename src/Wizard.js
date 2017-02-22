@@ -65,6 +65,7 @@ export default class Wizard extends Component {
     const props = {
       store: this.getStoreForStep(),
       goNext: this.goNext,
+      handleFinish: this.handleFinish,
       wizardData: this.state.wizardData,
       backButton: this.getBackButton(),
       initialState: this.getInitialStateForStep(),
