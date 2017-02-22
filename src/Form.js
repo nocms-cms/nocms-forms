@@ -68,7 +68,7 @@ class Form extends React.Component {
     if (this.state.store) {
       Object.keys(this.state.store).forEach((field) => {
         const prop = this.state.store[field];
-        const skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
+        const skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled', 'disabled'];
         if (prop === null || skipFields.indexOf(field) >= 0) {
           return;
         }
