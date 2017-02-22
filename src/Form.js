@@ -124,7 +124,7 @@ class Form extends React.Component {
 
   render() {
     const {
-      submitButton,
+      submitButtonText,
       submitButtonClassName,
       spinner,
       submittingText,
@@ -143,7 +143,7 @@ class Form extends React.Component {
     let buttons = null;
     const buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
     if (!noSubmitButton) {
-      const buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
+      const buttonText = this.state.isSubmitting ? submitInProgress : submitButtonText || SUBMIT_BUTTON_DEFAULT;
       buttons = (<div className={buttonContainerClassName}>
         {this.props.backButton}
         <button disabled={this.state.isDisabled} type="submit" className={submitButtonClassName || 'button button__primary'}>{buttonText}</button>
@@ -172,7 +172,7 @@ Form.propTypes = {
   initialState: React.PropTypes.object,
   store: React.PropTypes.string.isRequired,
   onSubmit: React.PropTypes.func,
-  submitButton: React.PropTypes.string,
+  submitButtonText: React.PropTypes.string,
   submitButtonClassName: React.PropTypes.string,
   noSubmitButton: React.PropTypes.bool,
   children: React.PropTypes.node,
