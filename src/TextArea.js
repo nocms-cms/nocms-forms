@@ -96,6 +96,7 @@ TextArea.defaultProps = {
   controlGroupClass: 'form__control-group',
   requiredClass: 'form__label--required',
   inlineLabelClass: '',
+  value: '',
 };
 
 export default TextArea;

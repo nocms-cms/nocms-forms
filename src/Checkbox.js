@@ -71,9 +71,7 @@ Checkbox.propTypes = {
   isValidated: PropTypes.bool,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool]),
+  value: PropTypes.bool,
   successWrapperClass: PropTypes.string,
   errorTextClass: PropTypes.string,
   errorWrapperClass: PropTypes.string,
@@ -105,7 +103,7 @@ Checkbox.defaultProps = {
   requiredClass: 'form__label--required',
   required: false,
   disabled: false,
-  placeholder: '',
+  value: false,
 };
 
 export default Checkbox;

@@ -17,7 +17,7 @@ class Field extends Component {
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.applyExistingStoreValue = this.applyExistingStoreValue.bind(this);
     this.state = {
-      value: props.value || '',
+      value: props.value,
       isValid: true,
       isValidated: false,
       convertDate: props.type === 'date',

@@ -109,6 +109,7 @@ Input.defaultProps = {
   required: false,
   disabled: false,
   placeholder: '',
+  value: '',
 };
 
 export default Input;
