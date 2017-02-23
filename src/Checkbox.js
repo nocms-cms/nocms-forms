@@ -41,8 +41,9 @@ const Checkbox = (props) => {
           type={type}
           autoComplete="off"
           name={name}
+          checked={props.value ? 'checked' : null}
           value={props.value}
-          disabled={disabled}
+          disabled={props.disabled ? true : null}
           aria-invalid={!props.isValid}
           aria-required={required}
           onChange={props.handleChange}
@@ -69,7 +70,7 @@ Checkbox.propTypes = {
   isValidated: PropTypes.bool,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.bool,
   successWrapperClass: PropTypes.string,
   errorTextClass: PropTypes.string,
   errorWrapperClass: PropTypes.string,

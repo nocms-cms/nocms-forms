@@ -52,7 +52,7 @@ const Input = (props) => {
           maxLength={maxLength}
           name={name}
           value={props.value}
-          disabled={disabled}
+          disabled={props.disabled ? true : null}
           placeholder={placeholder}
           aria-invalid={!props.isValid}
           aria-required={required}
