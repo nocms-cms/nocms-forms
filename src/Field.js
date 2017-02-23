@@ -4,6 +4,7 @@ import utils from 'nocms-utils';
 import stores from 'nocms-stores';
 import Input from './Input';
 import Select from './Select';
+import Checkbox from './Checkbox';
 import RadioButtons from './RadioButtons';
 import TextArea from './TextArea';
 
@@ -172,6 +173,9 @@ class Field extends Component {
     }
     if (type === 'select') {
       return <Select {...props} />;
+    }
+    if (type === 'checkbox') {
+      return <Checkbox {...props} />;
     }
     return <Input {...props} />;
   }

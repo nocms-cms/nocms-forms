@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const Input = (props) => {
+const Checkbox = (props) => {
   const {
     controlGroupClass,
     successWrapperClass,
@@ -10,23 +10,18 @@ const Input = (props) => {
     errorTextClass,
     errorWrapperClass,
     inlineLabelClass,
+    checkboxClass,
     labelId,
     labelClass,
     label,
     required,
     requiredClass,
     requiredMark,
-    maxLength,
     name,
     disabled,
-    placeholder,
   } = props;
 
-  if (type === 'hidden') {
-    return <input type="hidden" value={props.value} name={name} />;
-  }
-
-  let containerClasses = controlGroupClass;
+  let containerClasses = `${controlGroupClass} ${checkboxClass}`;
   if (props.isValid && props.isValidated) {
     containerClasses += ` ${successWrapperClass}`;
   }
@@ -42,24 +37,23 @@ const Input = (props) => {
         <div className={errorTextClass}>{errorText}</div>
       : null}
       <label id={labelId}>
+        <input
+          type={type}
+          autoComplete="off"
+          name={name}
+          value={props.value}
+          disabled={disabled}
+          aria-invalid={!props.isValid}
+          aria-required={required}
+          onChange={props.handleChange}
+          onClick={props.handleChange}
+          onKeyDown={props.handleKeyDown}
+          onBlur={props.validate}
+        />
         <span className={labelClass}>
           {label}
           {required ? <span className={requiredClass}>{requiredMark}</span> : null}
         </span>
-        <input
-          type={type}
-          autoComplete="off"
-          maxLength={maxLength}
-          name={name}
-          value={props.value}
-          disabled={disabled}
-          placeholder={placeholder}
-          aria-invalid={!props.isValid}
-          aria-required={required}
-          onChange={props.handleChange}
-          onKeyDown={props.handleKeyDown}
-          onBlur={props.validate}
-        />
 
         {!inlineLabel && errorText && !props.isValid ?
           <div className={` ${errorTextClass}`}>{errorText}</div>
@@ -69,7 +63,7 @@ const Input = (props) => {
   );
 };
 
-Input.propTypes = {
+Checkbox.propTypes = {
   handleChange: PropTypes.func,
   isValid: PropTypes.bool,
   isValidated: PropTypes.bool,
@@ -87,16 +81,15 @@ Input.propTypes = {
   handleKeyDown: PropTypes.func,
   inlineLabel: PropTypes.bool,
   inlineLabelClass: PropTypes.string,
+  checkboxClass: PropTypes.string,
   errorText: PropTypes.string,
   label: PropTypes.string,
   requiredMark: PropTypes.string,
-  maxLength: PropTypes.number,
   disabled: PropTypes.bool,
-  placeholder: PropTypes.string,
   labelId: PropTypes.string,
 };
 
-Input.defaultProps = {
+Checkbox.defaultProps = {
   successWrapperClass: 'form__control-group--success',
   errorWrapperClass: 'form__control-group--error',
   requiredMark: '*',
@@ -111,4 +104,4 @@ Input.defaultProps = {
   placeholder: '',
 };
 
-export default Input;
+export default Checkbox;
