@@ -19,6 +19,7 @@ const Checkbox = (props) => {
     requiredMark,
     name,
     disabled,
+    value,
   } = props;
 
   let containerClasses = `${controlGroupClass} ${checkboxClass}`;
@@ -41,9 +42,9 @@ const Checkbox = (props) => {
           type={type}
           autoComplete="off"
           name={name}
-          checked={props.value === 'true' ? 'checked' : null}
+          checked={value === true ? 'checked' : null}
           value={props.value}
-          disabled={props.disabled ? true : null}
+          disabled={disabled ? true : null}
           aria-invalid={!props.isValid}
           aria-required={required}
           onChange={props.handleChange}
@@ -70,7 +71,9 @@ Checkbox.propTypes = {
   isValidated: PropTypes.bool,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool]),
   successWrapperClass: PropTypes.string,
   errorTextClass: PropTypes.string,
   errorWrapperClass: PropTypes.string,
@@ -103,7 +106,6 @@ Checkbox.defaultProps = {
   required: false,
   disabled: false,
   placeholder: '',
-  value: 'false',
 };
 
 export default Checkbox;
