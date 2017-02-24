@@ -48,7 +48,6 @@ const Select = (props) => {
           aria-required={required}
           onChange={props.handleChange}
           onKeyDown={props.handleKeyDown}
-          onBlur={props.handleChange}
         >
           {optionsList}
         </select>
