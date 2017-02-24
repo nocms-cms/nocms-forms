@@ -19,6 +19,7 @@ const Input = (props) => {
     maxLength,
     name,
     disabled,
+    readOnly,
     placeholder,
   } = props;
 
@@ -52,7 +53,8 @@ const Input = (props) => {
           maxLength={maxLength}
           name={name}
           value={props.value}
-          disabled={props.disabled ? true : null}
+          disabled={disabled ? true : null}
+          readOnly={readOnly ? true : null}
           placeholder={placeholder}
           aria-invalid={!props.isValid}
           aria-required={required}
@@ -92,6 +94,7 @@ Input.propTypes = {
   requiredMark: PropTypes.string,
   maxLength: PropTypes.number,
   disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
   placeholder: PropTypes.string,
   labelId: PropTypes.string,
 };
