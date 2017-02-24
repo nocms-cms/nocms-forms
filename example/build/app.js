@@ -57,7 +57,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var FormExample = __webpack_require__(178);
-	var WizardExample = __webpack_require__(193);
+	var WizardExample = __webpack_require__(194);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -21544,7 +21544,7 @@
 	
 	var React = __webpack_require__(1);
 	
-	var Spinner = __webpack_require__(192);
+	var Spinner = __webpack_require__(193);
 	
 	var storeName = 'test-form';
 	
@@ -21887,12 +21887,11 @@
 	      if (this.state.store) {
 	        Object.keys(this.state.store).forEach(function (field) {
 	          var prop = _this2.state.store[field];
-	          var skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled'];
+	          var skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled', 'disabled'];
 	          if (prop === null || skipFields.indexOf(field) >= 0) {
 	            return;
 	          }
 	          if (prop.disabled) {
-	            console.log('Skipping disabled', prop);
 	            return;
 	          }
 	          if ((typeof prop === 'undefined' ? 'undefined' : _typeof(prop)) !== 'object') {
@@ -21955,7 +21954,7 @@
 	      var _this4 = this;
 	
 	      var _props = this.props,
-	          submitButton = _props.submitButton,
+	          submitButtonText = _props.submitButtonText,
 	          submitButtonClassName = _props.submitButtonClassName,
 	          spinner = _props.spinner,
 	          submittingText = _props.submittingText,
@@ -21974,7 +21973,7 @@
 	      var buttons = null;
 	      var buttonContainerClassName = centerSubmitButton ? 'form__button-container form__button-container--center' : 'form__button-container';
 	      if (!noSubmitButton) {
-	        var buttonText = this.state.isSubmitting ? submitInProgress : submitButton || SUBMIT_BUTTON_DEFAULT;
+	        var buttonText = this.state.isSubmitting ? submitInProgress : submitButtonText || SUBMIT_BUTTON_DEFAULT;
 	        buttons = React.createElement(
 	          'div',
 	          { className: buttonContainerClassName },
@@ -22014,7 +22013,7 @@
 	  initialState: React.PropTypes.object,
 	  store: React.PropTypes.string.isRequired,
 	  onSubmit: React.PropTypes.func,
-	  submitButton: React.PropTypes.string,
+	  submitButtonText: React.PropTypes.string,
 	  submitButtonClassName: React.PropTypes.string,
 	  noSubmitButton: React.PropTypes.bool,
 	  children: React.PropTypes.node,
@@ -22289,7 +22288,6 @@
 	      errorTextClass = props.errorTextClass,
 	      errorWrapperClass = props.errorWrapperClass,
 	      inlineLabelClass = props.inlineLabelClass,
-	      checkboxClass = props.checkboxClass,
 	      labelId = props.labelId,
 	      labelClass = props.labelClass,
 	      label = props.label,
@@ -22299,6 +22297,7 @@
 	      maxLength = props.maxLength,
 	      name = props.name,
 	      disabled = props.disabled,
+	      readOnly = props.readOnly,
 	      placeholder = props.placeholder;
 	
 	
@@ -22315,9 +22314,6 @@
 	  }
 	  if (inlineLabel) {
 	    containerClasses += ' ' + inlineLabelClass;
-	  }
-	  if (type === 'checkbox') {
-	    containerClasses += ' ' + checkboxClass;
 	  }
 	  return _react2.default.createElement(
 	    'div',
@@ -22346,12 +22342,12 @@
 	        maxLength: maxLength,
 	        name: name,
 	        value: props.value,
-	        disabled: disabled,
+	        disabled: disabled ? true : null,
+	        readOnly: readOnly ? true : null,
 	        placeholder: placeholder,
 	        'aria-invalid': !props.isValid,
 	        'aria-required': required,
 	        onChange: props.handleChange,
-	        onClick: type === 'checkbox' ? props.handleChange : null,
 	        onKeyDown: props.handleKeyDown,
 	        onBlur: props.validate
 	      }),
@@ -22382,12 +22378,12 @@
 	  handleKeyDown: _react.PropTypes.func,
 	  inlineLabel: _react.PropTypes.bool,
 	  inlineLabelClass: _react.PropTypes.string,
-	  checkboxClass: _react.PropTypes.string,
 	  errorText: _react.PropTypes.string,
 	  label: _react.PropTypes.string,
 	  requiredMark: _react.PropTypes.string,
 	  maxLength: _react.PropTypes.number,
 	  disabled: _react.PropTypes.bool,
+	  readOnly: _react.PropTypes.bool,
 	  placeholder: _react.PropTypes.string,
 	  labelId: _react.PropTypes.string
 	};
@@ -22404,7 +22400,8 @@
 	  requiredClass: 'form__label--required',
 	  required: false,
 	  disabled: false,
-	  placeholder: ''
+	  placeholder: '',
+	  value: ''
 	};
 	
 	exports.default = Input;
@@ -22626,8 +22623,7 @@
 	          "aria-invalid": !props.isValid,
 	          "aria-required": required,
 	          onChange: props.handleChange,
-	          onKeyDown: props.handleKeyDown,
-	          onBlur: props.handleChange
+	          onKeyDown: props.handleKeyDown
 	        },
 	        optionsList
 	      ),
@@ -22793,7 +22789,8 @@
 	  labelClass: 'form__label',
 	  controlGroupClass: 'form__control-group',
 	  requiredClass: 'form__label--required',
-	  inlineLabelClass: ''
+	  inlineLabelClass: '',
+	  value: ''
 	};
 	
 	exports.default = TextArea;
@@ -22913,6 +22910,7 @@
 	      var props = {
 	        store: this.getStoreForStep(),
 	        goNext: this.goNext,
+	        handleFinish: this.handleFinish,
 	        wizardData: this.state.wizardData,
 	        backButton: this.getBackButton(),
 	        initialState: this.getInitialStateForStep()
@@ -23041,6 +23039,10 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
+	var _Checkbox = __webpack_require__(192);
+	
+	var _Checkbox2 = _interopRequireDefault(_Checkbox);
+	
 	var _RadioButtons = __webpack_require__(185);
 	
 	var _RadioButtons2 = _interopRequireDefault(_RadioButtons);
@@ -23071,7 +23073,7 @@
 	    _this.handleEnterKey = _this.handleEnterKey.bind(_this);
 	    _this.applyExistingStoreValue = _this.applyExistingStoreValue.bind(_this);
 	    _this.state = {
-	      value: props.value || '',
+	      value: props.value,
 	      isValid: true,
 	      isValidated: false,
 	      convertDate: props.type === 'date',
@@ -23245,6 +23247,9 @@
 	      }
 	      if (type === 'select') {
 	        return _react2.default.createElement(_Select2.default, props);
+	      }
+	      if (type === 'checkbox') {
+	        return _react2.default.createElement(_Checkbox2.default, props);
 	      }
 	      return _react2.default.createElement(_Input2.default, props);
 	    }
@@ -23463,6 +23468,141 @@
 /* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Checkbox = function Checkbox(props) {
+	  var controlGroupClass = props.controlGroupClass,
+	      successWrapperClass = props.successWrapperClass,
+	      inlineLabel = props.inlineLabel,
+	      type = props.type,
+	      errorText = props.errorText,
+	      errorTextClass = props.errorTextClass,
+	      errorWrapperClass = props.errorWrapperClass,
+	      inlineLabelClass = props.inlineLabelClass,
+	      checkboxClass = props.checkboxClass,
+	      labelId = props.labelId,
+	      labelClass = props.labelClass,
+	      label = props.label,
+	      required = props.required,
+	      requiredClass = props.requiredClass,
+	      requiredMark = props.requiredMark,
+	      name = props.name,
+	      disabled = props.disabled,
+	      value = props.value;
+	
+	
+	  var containerClasses = controlGroupClass + ' ' + checkboxClass;
+	  if (props.isValid && props.isValidated) {
+	    containerClasses += ' ' + successWrapperClass;
+	  }
+	  if (!props.isValid) {
+	    containerClasses += ' ' + errorWrapperClass;
+	  }
+	  if (inlineLabel) {
+	    containerClasses += ' ' + inlineLabelClass;
+	  }
+	  return _react2.default.createElement(
+	    'div',
+	    { className: containerClasses },
+	    inlineLabel && errorText && !props.isValid ? _react2.default.createElement(
+	      'div',
+	      { className: errorTextClass },
+	      errorText
+	    ) : null,
+	    _react2.default.createElement(
+	      'label',
+	      { id: labelId },
+	      _react2.default.createElement('input', {
+	        type: type,
+	        autoComplete: 'off',
+	        name: name,
+	        checked: value === true ? 'checked' : null,
+	        value: props.value,
+	        disabled: disabled ? true : null,
+	        'aria-invalid': !props.isValid,
+	        'aria-required': required,
+	        onChange: props.handleChange,
+	        onClick: props.handleChange,
+	        onKeyDown: props.handleKeyDown,
+	        onBlur: props.validate
+	      }),
+	      _react2.default.createElement(
+	        'span',
+	        { className: labelClass },
+	        label,
+	        required ? _react2.default.createElement(
+	          'span',
+	          { className: requiredClass },
+	          requiredMark
+	        ) : null
+	      ),
+	      !inlineLabel && errorText && !props.isValid ? _react2.default.createElement(
+	        'div',
+	        { className: ' ' + errorTextClass },
+	        errorText
+	      ) : null
+	    )
+	  );
+	};
+	
+	Checkbox.propTypes = {
+	  handleChange: _react.PropTypes.func,
+	  isValid: _react.PropTypes.bool,
+	  isValidated: _react.PropTypes.bool,
+	  name: _react.PropTypes.string.isRequired,
+	  type: _react.PropTypes.string,
+	  value: _react.PropTypes.bool,
+	  successWrapperClass: _react.PropTypes.string,
+	  errorTextClass: _react.PropTypes.string,
+	  errorWrapperClass: _react.PropTypes.string,
+	  labelClass: _react.PropTypes.string,
+	  controlGroupClass: _react.PropTypes.string,
+	  required: _react.PropTypes.bool,
+	  requiredClass: _react.PropTypes.string,
+	  validate: _react.PropTypes.func,
+	  handleKeyDown: _react.PropTypes.func,
+	  inlineLabel: _react.PropTypes.bool,
+	  inlineLabelClass: _react.PropTypes.string,
+	  checkboxClass: _react.PropTypes.string,
+	  errorText: _react.PropTypes.string,
+	  label: _react.PropTypes.string,
+	  requiredMark: _react.PropTypes.string,
+	  disabled: _react.PropTypes.bool,
+	  labelId: _react.PropTypes.string
+	};
+	
+	Checkbox.defaultProps = {
+	  successWrapperClass: 'form__control-group--success',
+	  errorWrapperClass: 'form__control-group--error',
+	  requiredMark: '*',
+	  type: 'text',
+	  errorTextClass: 'form__error-text',
+	  labelClass: 'form__label',
+	  controlGroupClass: 'form__control-group',
+	  inlineLabelClass: '',
+	  requiredClass: 'form__label--required',
+	  required: false,
+	  disabled: false,
+	  value: false
+	};
+	
+	exports.default = Checkbox;
+	module.exports = exports['default'];
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 	
 	var _react = __webpack_require__(1);
@@ -23482,7 +23622,7 @@
 	module.exports = Spinner;
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23499,11 +23639,11 @@
 	
 	var _nocmsForms = __webpack_require__(179);
 	
-	var _EmptyStep = __webpack_require__(194);
+	var _EmptyStep = __webpack_require__(195);
 	
 	var _EmptyStep2 = _interopRequireDefault(_EmptyStep);
 	
-	var _Step = __webpack_require__(195);
+	var _Step = __webpack_require__(196);
 	
 	var _Step2 = _interopRequireDefault(_Step);
 	
@@ -23620,7 +23760,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23694,7 +23834,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

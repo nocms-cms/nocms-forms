@@ -73,7 +73,6 @@ class Form extends React.Component {
           return;
         }
         if (prop.disabled) {
-          console.log('Skipping disabled', prop);
           return;
         }
         if (typeof prop !== 'object') {
