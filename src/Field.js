@@ -55,7 +55,7 @@ class Field extends Component {
   applyExistingStoreValue() {
     const store = stores.getStore(this.context.store);
     const initialState = store[this.props.name];
-    let inputState = {};
+    const inputState = {};
     inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
 
     if (typeof initialState === 'undefined' || initialState === null) {
@@ -63,7 +63,7 @@ class Field extends Component {
     } else if (typeof initialState !== 'object') {
       inputState[this.props.name].value = initialState;
     } else {
-      inputState = initialState;
+      inputState[this.props.name] = initialState;
     }
 
     stores.update(this.context.store, inputState);

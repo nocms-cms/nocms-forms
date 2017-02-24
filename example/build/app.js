@@ -21887,8 +21887,7 @@
 	      if (this.state.store) {
 	        Object.keys(this.state.store).forEach(function (field) {
 	          var prop = _this2.state.store[field];
-	          var skipFields = ['isValid', 'isValidated', 'value', 'convertDate', 'isSubmitting', 'isDisabled', 'disabled'];
-	          if (prop === null || skipFields.indexOf(field) >= 0) {
+	          if (prop === null) {
 	            return;
 	          }
 	          if (prop.disabled) {
@@ -23126,7 +23125,7 @@
 	      } else if ((typeof initialState === 'undefined' ? 'undefined' : _typeof(initialState)) !== 'object') {
 	        inputState[this.props.name].value = initialState;
 	      } else {
-	        inputState = initialState;
+	        inputState[this.props.name] = initialState;
 	      }
 	
 	      _nocmsStores2.default.update(this.context.store, inputState);
