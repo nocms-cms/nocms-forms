@@ -5,6 +5,7 @@ import stores from 'nocms-stores';
 import Input from './Input';
 import Select from './Select';
 import Checkbox from './Checkbox';
+import Hidden from './Hidden';
 import RadioButtons from './RadioButtons';
 import TextArea from './TextArea';
 
@@ -164,7 +165,9 @@ class Field extends Component {
     props.handleKeyDown = this.handleEnterKey;
     props.validate = this.validate;
     props.key = this.props.name;
-
+    if (type === 'hidden') {
+      return <Hidden {...props} />;
+    }
     if (type === 'radio') {
       return <RadioButtons {...props} />;
     }

@@ -95,7 +95,10 @@ export default class FormExample extends React.Component {
             errorText="Wrong e-mail"
             validate="email"
           />
-        <label><input type="checkbox" checked={this.state.disabled} onChange={this.toggleDisabledField} /> Toggle disabled field</label>
+          <label>
+            <input type="checkbox" checked={this.state.disabled} onChange={this.toggleDisabledField} />
+            Toggle disabled field
+          </label>
           <Field
             required
             disabled={this.state.disabled}

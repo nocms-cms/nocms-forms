@@ -21654,7 +21654,7 @@
 	            'label',
 	            null,
 	            React.createElement('input', { type: 'checkbox', checked: this.state.disabled, onChange: this.toggleDisabledField }),
-	            ' Toggle disabled field'
+	            'Toggle disabled field'
 	          ),
 	          React.createElement(_nocmsForms.Field, _extends({
 	            required: true,
@@ -23042,6 +23042,10 @@
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
+	var _Hidden = __webpack_require__(197);
+	
+	var _Hidden2 = _interopRequireDefault(_Hidden);
+	
 	var _RadioButtons = __webpack_require__(185);
 	
 	var _RadioButtons2 = _interopRequireDefault(_RadioButtons);
@@ -23237,7 +23241,9 @@
 	      props.handleKeyDown = this.handleEnterKey;
 	      props.validate = this.validate;
 	      props.key = this.props.name;
-	
+	      if (type === 'hidden') {
+	        return _react2.default.createElement(_Hidden2.default, props);
+	      }
 	      if (type === 'radio') {
 	        return _react2.default.createElement(_RadioButtons2.default, props);
 	      }
@@ -23914,6 +23920,42 @@
 	}(_react.Component);
 	
 	exports.default = Step;
+	module.exports = exports['default'];
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Hidden = function Hidden(props) {
+	  var name = props.name,
+	      value = props.value;
+	
+	
+	  return _react2.default.createElement('input', { type: 'hidden', value: value, name: name });
+	};
+	
+	Hidden.propTypes = {
+	  name: _react.PropTypes.string.isRequired,
+	  value: _react.PropTypes.string
+	};
+	
+	Hidden.defaultProps = {
+	  value: ''
+	};
+	
+	exports.default = Hidden;
 	module.exports = exports['default'];
 
 /***/ }
