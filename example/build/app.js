@@ -21887,7 +21887,7 @@
 	      if (this.state.store) {
 	        Object.keys(this.state.store).forEach(function (field) {
 	          var prop = _this2.state.store[field];
-	          if (prop === null) {
+	          if (prop === null || typeof prop === 'undefined') {
 	            return;
 	          }
 	          if (prop.disabled) {

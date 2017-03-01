@@ -68,7 +68,7 @@ class Form extends React.Component {
     if (this.state.store) {
       Object.keys(this.state.store).forEach((field) => {
         const prop = this.state.store[field];
-        if (prop === null) {
+        if (prop === null || typeof prop === 'undefined') {
           return;
         }
         if (prop.disabled) {
