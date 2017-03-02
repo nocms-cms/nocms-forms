@@ -20,8 +20,8 @@
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react,stage-1 --plugins babel-plugin-add-module-exports"
   },
   "dependencies": {
-    "nocms-events": "git+https://github.com/miles-no/nocms-events.git",
-    "nocms-stores": "git+https://github.com/miles-no/nocms-stores.git",
+    "nocms-events": "^0.1.2",
+    "nocms-stores": "^0.1.2",
     "nocms-utils": "^0.1.1",
     "nocms-validation": "^1.0.2"
   },
