@@ -22,8 +22,8 @@
   "dependencies": {
     "nocms-events": "git+https://github.com/miles-no/nocms-events.git",
     "nocms-stores": "git+https://github.com/miles-no/nocms-stores.git",
-    "nocms-utils": "git+https://github.com/miles-no/nocms-utils.git",
-    "nocms-validation": "git+https://github.com/miles-no/nocms-validation.git"
+    "nocms-utils": "^0.1.1",
+    "nocms-validation": "^1.0.2"
   },
   "devDependencies": {
     "babel": "^6.5.2",
