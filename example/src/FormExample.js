@@ -33,6 +33,9 @@ export default class FormExample extends React.Component {
   toggleDisabledField(e) {
     this.setState({ disabled: e.currentTarget.checked });
   }
+  validateA(value){
+    return value === 'a';
+  }
   render() {
     const radioOptions = [
       {
@@ -142,6 +145,13 @@ export default class FormExample extends React.Component {
             name="hiddenName"
             dependOn="name"
             dependencyFunc={this.getUppercaseName}
+          />
+          <Field
+            required
+            name="customValidationText"
+            label="Custom validation func (a)"
+            errorText="Field must be a"
+            validate={this.validateA}
           />
         </Form>
         { this.state.formData ?

@@ -191,7 +191,7 @@ Field.propTypes = {
   disabled: PropTypes.bool,
   required: PropTypes.bool,
   deleteOnUnmount: PropTypes.bool,
-  validate: PropTypes.string,
+  validate: React.PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   dependOn: PropTypes.string,
   dependencyFunc: PropTypes.func,
   onChange: PropTypes.func,

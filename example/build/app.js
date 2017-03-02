@@ -57,7 +57,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var FormExample = __webpack_require__(178);
-	var WizardExample = __webpack_require__(194);
+	var WizardExample = __webpack_require__(195);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -21544,7 +21544,7 @@
 	
 	var React = __webpack_require__(1);
 	
-	var Spinner = __webpack_require__(193);
+	var Spinner = __webpack_require__(194);
 	
 	var storeName = 'test-form';
 	
@@ -21588,6 +21588,11 @@
 	    key: 'toggleDisabledField',
 	    value: function toggleDisabledField(e) {
 	      this.setState({ disabled: e.currentTarget.checked });
+	    }
+	  }, {
+	    key: 'validateA',
+	    value: function validateA(value) {
+	      return value === 'a';
 	    }
 	  }, {
 	    key: 'render',
@@ -21699,6 +21704,13 @@
 	            name: 'hiddenName',
 	            dependOn: 'name',
 	            dependencyFunc: this.getUppercaseName
+	          }),
+	          React.createElement(_nocmsForms.Field, {
+	            required: true,
+	            name: 'customValidationText',
+	            label: 'Custom validation func (a)',
+	            errorText: 'Field must be a',
+	            validate: this.validateA
 	          })
 	        ),
 	        this.state.formData ? React.createElement(
@@ -23042,7 +23054,7 @@
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _Hidden = __webpack_require__(197);
+	var _Hidden = __webpack_require__(193);
 	
 	var _Hidden2 = _interopRequireDefault(_Hidden);
 	
@@ -23270,7 +23282,7 @@
 	  disabled: _react.PropTypes.bool,
 	  required: _react.PropTypes.bool,
 	  deleteOnUnmount: _react.PropTypes.bool,
-	  validate: _react.PropTypes.string,
+	  validate: _react2.default.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.func]),
 	  dependOn: _react.PropTypes.string,
 	  dependencyFunc: _react.PropTypes.func,
 	  onChange: _react.PropTypes.func
@@ -23301,74 +23313,80 @@
 	
 	    if (!value && isRequired) {
 	      return false;
-	    } else if (!value && !isRequired) {
+	    }
+	    if (!value && !isRequired) {
 	      return true;
-	    } else {
-	      if (validationRule === 'email') {
-	        var emailRegex = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
-	        return emailRegex.test(value);
-	      }
+	    }
 	
-	      if (validationRule === 'notEmpty') {
-	        return value.trim() !== '';
-	      }
+	    if (typeof validationRule === 'function') {
+	      return validationRule(value);
+	    }
 	
-	      if (validationRule === 'phone') {
-	        return (/^((0047)?|(\+47)?|(47)?)\d{8}$/.test(value.replace(/\s/g, ''))
-	        );
-	      }
+	    if (validationRule === 'email') {
+	      var emailRegex = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
+	      return emailRegex.test(value);
+	    }
 	
-	      if (validationRule === 'datetime') {
-	        if (/^\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}$/.test(value)) {
-	          try {
-	            return new Date(value).toISOString().indexOf(value) === 0;
-	          } catch (ex) {
-	            return false;
-	          }
+	    if (validationRule === 'notEmpty') {
+	      return value.trim() !== '';
+	    }
+	
+	    if (validationRule === 'phone') {
+	      return (/^((0047)?|(\+47)?|(47)?)\d{8}$/.test(value.replace(/\s/g, ''))
+	      );
+	    }
+	
+	    if (validationRule === 'datetime') {
+	      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) {
+	        try {
+	          return new Date(value).toISOString().indexOf(value) === 0;
+	        } catch (ex) {
+	          return false;
 	        }
-	      }
-	
-	      if (validationRule === 'date') {
-	        if (/^\d{4}\-\d{2}\-\d{2}$/.test(value)) {
-	          try {
-	            return new Date(value).toISOString().indexOf(value) === 0;
-	          } catch (ex) {
-	            return false;
-	          }
-	        }
-	        return false;
-	      }
-	
-	      if (validationRule === 'int') {
-	        return !isNaN(value) && function (x) {
-	          return (x | 0) === x;
-	        }(parseFloat(value));
-	      }
-	
-	      if (validationRule === 'orgNumber') {
-	        return noValidation.organizationNumber(value);
-	      }
-	
-	      if (validationRule === 'accountNumber') {
-	        return noValidation.accountNumber(value);
-	      }
-	
-	      if (validationRule === 'confirm') {
-	        return !!value;
-	      }
-	
-	      if (validationRule === 'internalUri') {
-	        return (/^\/[a-z0-9\-_\/]+$/i.test(value)
-	        );
-	      }
-	
-	      try {
-	        var patternRegex = new RegExp('^' + validationRule + '$');
-	        return patternRegex.test(value);
-	      } catch (e) {
-	        console.error('Invalid regex: ', validationRule);
 	      }
 	    }
+	
+	    if (validationRule === 'date') {
+	      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+	        try {
+	          return new Date(value).toISOString().indexOf(value) === 0;
+	        } catch (ex) {
+	          return false;
+	        }
+	      }
+	      return false;
+	    }
+	
+	    if (validationRule === 'int') {
+	      return !isNaN(value) && function (x) {
+	        return (x | 0) === x;
+	      }(parseFloat(value));
+	    }
+	
+	    if (validationRule === 'orgNumber') {
+	      return noValidation.organizationNumber(value);
+	    }
+	
+	    if (validationRule === 'accountNumber') {
+	      return noValidation.accountNumber(value);
+	    }
+	
+	    if (validationRule === 'confirm') {
+	      return !!value;
+	    }
+	
+	    if (validationRule === 'internalUri') {
+	      return (/^\/[a-z0-9\-_/]+$/i.test(value)
+	      );
+	    }
+	
+	    try {
+	      var patternRegex = new RegExp('^' + validationRule + '$');
+	      return patternRegex.test(value);
+	    } catch (e) {
+	      console.error('Invalid regex: ', validationRule);
+	    }
+	
 	    return false;
 	  }
 	};
@@ -23608,6 +23626,42 @@
 /* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Hidden = function Hidden(props) {
+	  var name = props.name,
+	      value = props.value;
+	
+	
+	  return _react2.default.createElement('input', { type: 'hidden', value: value, name: name });
+	};
+	
+	Hidden.propTypes = {
+	  name: _react.PropTypes.string.isRequired,
+	  value: _react.PropTypes.string
+	};
+	
+	Hidden.defaultProps = {
+	  value: ''
+	};
+	
+	exports.default = Hidden;
+	module.exports = exports['default'];
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 	
 	var _react = __webpack_require__(1);
@@ -23627,7 +23681,7 @@
 	module.exports = Spinner;
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23644,11 +23698,11 @@
 	
 	var _nocmsForms = __webpack_require__(179);
 	
-	var _EmptyStep = __webpack_require__(195);
+	var _EmptyStep = __webpack_require__(196);
 	
 	var _EmptyStep2 = _interopRequireDefault(_EmptyStep);
 	
-	var _Step = __webpack_require__(196);
+	var _Step = __webpack_require__(197);
 	
 	var _Step2 = _interopRequireDefault(_Step);
 	
@@ -23765,7 +23819,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23839,7 +23893,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23920,42 +23974,6 @@
 	}(_react.Component);
 	
 	exports.default = Step;
-	module.exports = exports['default'];
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Hidden = function Hidden(props) {
-	  var name = props.name,
-	      value = props.value;
-	
-	
-	  return _react2.default.createElement('input', { type: 'hidden', value: value, name: name });
-	};
-	
-	Hidden.propTypes = {
-	  name: _react.PropTypes.string.isRequired,
-	  value: _react.PropTypes.string
-	};
-	
-	Hidden.defaultProps = {
-	  value: ''
-	};
-	
-	exports.default = Hidden;
 	module.exports = exports['default'];
 
 /***/ }
