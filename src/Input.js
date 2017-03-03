@@ -16,6 +16,8 @@ const Input = (props) => {
     required,
     requiredClass,
     requiredMark,
+    notRequiredClass,
+    notRequiredMark,
     maxLength,
     name,
     disabled,
@@ -45,7 +47,8 @@ const Input = (props) => {
       <label id={labelId}>
         <span className={labelClass}>
           {label}
-          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
         <input
           type={type}
@@ -85,13 +88,15 @@ Input.propTypes = {
   controlGroupClass: PropTypes.string,
   required: PropTypes.bool,
   requiredClass: PropTypes.string,
+  requiredMark: PropTypes.string,
+  notRequiredClass: PropTypes.string,
+  notRequiredMark: PropTypes.string,
   validate: PropTypes.func,
   handleKeyDown: PropTypes.func,
   inlineLabel: PropTypes.bool,
   inlineLabelClass: PropTypes.string,
   errorText: PropTypes.string,
   label: PropTypes.string,
-  requiredMark: PropTypes.string,
   maxLength: PropTypes.number,
   disabled: PropTypes.bool,
   readOnly: PropTypes.bool,
@@ -103,12 +108,14 @@ Input.defaultProps = {
   successWrapperClass: 'form__control-group--success',
   errorWrapperClass: 'form__control-group--error',
   requiredMark: '*',
+  notRequiredMark: null,
   type: 'text',
   errorTextClass: 'form__error-text',
   labelClass: 'form__label',
   controlGroupClass: 'form__control-group',
   inlineLabelClass: '',
   requiredClass: 'form__label--required',
+  notRequiredMark: 'form__label--not-required',
   required: false,
   disabled: false,
   placeholder: '',

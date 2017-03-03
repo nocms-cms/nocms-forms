@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Wizard } from 'nocms-forms';
 import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
-
+import ComplexStep from './ComplexStep.js';
 const wizardStoreName = 'test-form-wizard';
 
 export default class WizardExample extends Component {
@@ -12,6 +12,7 @@ export default class WizardExample extends Component {
     this.state = {
       steps: [
         {title: 'Overskrift steg 1', component: <Step name="firststep" /> },
+        {title: 'Overskrift steg 1.5', component: <ComplexStep />},
         {title: 'Overskrift steg 2', overrideGoNext: this.overrideGoNext, component: <Step name="secondstep" />, initialState: { secondstep: 't2' }},
         {title: 'Overskrift steg 3', component: <Step name="thirdstep" />, initialState: { secondstep: 't3' }},
         {title: 'Overskrift steg 4', component: <EmptyStep /> },
