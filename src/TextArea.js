@@ -15,6 +15,8 @@ const TextArea = (props) => {
     required,
     requiredClass,
     requiredMark,
+    notRequiredClass,
+    notRequiredMark,
     maxLength,
     name,
     disabled,
@@ -40,7 +42,8 @@ const TextArea = (props) => {
       <label id={labelId}>
         <span className={labelClass}>
           {label}
-          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
         <textarea
           name={name}
@@ -74,6 +77,8 @@ TextArea.propTypes = {
   isValidated: PropTypes.bool,
   isValid: PropTypes.bool,
   requiredClass: PropTypes.string,
+  notRequiredClass: PropTypes.string,
+  notRequiredMark: PropTypes.string,
   value: PropTypes.string,
   errorText: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -89,12 +94,14 @@ TextArea.propTypes = {
 
 TextArea.defaultProps = {
   requiredMark: '*',
+  notRequiredMark: null,
   successWrapperClass: 'form__control-group--success',
   errorWrapperClass: 'form__control-group--error',
   errorTextClass: 'form__error-text',
   labelClass: 'form__label',
   controlGroupClass: 'form__control-group',
   requiredClass: 'form__label--required',
+  notRequiredClass: 'form__label--not-required',
   inlineLabelClass: '',
   value: '',
 };

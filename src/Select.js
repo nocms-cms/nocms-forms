@@ -14,6 +14,8 @@ const Select = (props) => {
     required,
     requiredClass,
     requiredMark,
+    notRequiredMark,
+    notRequiredClass,
     emptyLabel,
   } = props;
 
@@ -39,7 +41,8 @@ const Select = (props) => {
       <label>
         <span className={labelClass}>
           {label}
-          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
         <select
           name={name}
@@ -76,18 +79,23 @@ Select.propTypes = {
   handleChange: PropTypes.func,
   required: PropTypes.bool,
   requiredClass: PropTypes.string,
+  notRequiredClass: PropTypes.string,
+  notRequiredMark: PropTypes.string,
   handleKeyDown: PropTypes.func,
   label: PropTypes.string,
 };
 
 Select.defaultProps = {
   requiredMark: '*',
+  notRequiredMark: null,
   value: '',
   errorWrapperClass: 'form__control-group--error',
   successWrapperClass: 'form__control-group--success',
   errorTextClass: 'form__error-text',
   labelClass: 'form__label',
   controlGroupClass: 'form__control-group',
+  requiredClass: 'form__label--required',
+  notRequiredClass: 'form__label--not-required',
 };
 
 export default Select;

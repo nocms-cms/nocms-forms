@@ -17,6 +17,8 @@ const Checkbox = (props) => {
     required,
     requiredClass,
     requiredMark,
+    notRequiredClass,
+    notRequiredMark,
     name,
     disabled,
     value,
@@ -54,9 +56,9 @@ const Checkbox = (props) => {
         />
         <span className={labelClass}>
           {label}
-          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
-
         {!inlineLabel && errorText && !props.isValid ?
           <div className={` ${errorTextClass}`}>{errorText}</div>
         : null}
@@ -79,6 +81,8 @@ Checkbox.propTypes = {
   controlGroupClass: PropTypes.string,
   required: PropTypes.bool,
   requiredClass: PropTypes.string,
+  notRequiredClass: PropTypes.string,
+  notRequiredMark: PropTypes.string,
   validate: PropTypes.func,
   handleKeyDown: PropTypes.func,
   inlineLabel: PropTypes.bool,
@@ -95,12 +99,14 @@ Checkbox.defaultProps = {
   successWrapperClass: 'form__control-group--success',
   errorWrapperClass: 'form__control-group--error',
   requiredMark: '*',
+  notRequiredMark: null,
   type: 'text',
   errorTextClass: 'form__error-text',
   labelClass: 'form__label',
   controlGroupClass: 'form__control-group',
   inlineLabelClass: '',
   requiredClass: 'form__label--required',
+  notRequiredClass: 'form__label--not-required',
   required: false,
   disabled: false,
   value: false,

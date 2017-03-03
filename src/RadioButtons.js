@@ -11,6 +11,8 @@ const RadioButtons = (props) => {
     label,
     required,
     requiredMark,
+    notRequiredClass,
+    notRequiredMark,
     name,
     options,
     radioClass,
@@ -56,7 +58,8 @@ const RadioButtons = (props) => {
       <fieldset>
         <legend>
           {label}
-          {required ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
+          {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </legend>
         {radios}
         {errorText && !props.isValid ?
@@ -77,6 +80,9 @@ RadioButtons.propTypes = {
   labelClass: PropTypes.string,
   controlGroupClass: PropTypes.string,
   requiredClass: PropTypes.string,
+  requiredMark: PropTypes.string,
+  notRequiredClass: PropTypes.string,
+  notRequiredMark: PropTypes.string,
   value: PropTypes.string,
   errorText: PropTypes.string,
   handleChange: PropTypes.func,
@@ -84,7 +90,6 @@ RadioButtons.propTypes = {
   required: PropTypes.bool,
   options: PropTypes.array,
   label: PropTypes.string,
-  requiredMark: PropTypes.string,
   radioClass: PropTypes.string,
   radioLabelClass: PropTypes.string,
 };
@@ -92,6 +97,7 @@ RadioButtons.propTypes = {
 RadioButtons.defaultProps = {
   required: false,
   requiredMark: '*',
+  notRequiredMark: null,
   errorTextClass: 'form__error-text',
   controlGroupClass: 'form__control-group',
   successWrapperClass: 'form__control-group--success',
@@ -100,6 +106,7 @@ RadioButtons.defaultProps = {
   labelClass: 'form__label',
   radioLabelClass: 'form__radio-label',
   requiredClass: 'form__label--required',
+  notRequiredClass: 'form__label--not-required',
 };
 
 export default RadioButtons;

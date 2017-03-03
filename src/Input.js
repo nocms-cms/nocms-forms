@@ -115,7 +115,7 @@ Input.defaultProps = {
   controlGroupClass: 'form__control-group',
   inlineLabelClass: '',
   requiredClass: 'form__label--required',
-  notRequiredMark: 'form__label--not-required',
+  notRequiredClass: 'form__label--not-required',
   required: false,
   disabled: false,
   placeholder: '',
