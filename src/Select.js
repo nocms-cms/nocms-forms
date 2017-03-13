@@ -46,6 +46,7 @@ const Select = (props) => {
         </span>
         <select
           name={name}
+          disabled={props.disabled}
           value={props.value}
           aria-invalid={!props.isValid}
           aria-required={required}
@@ -65,6 +66,7 @@ const Select = (props) => {
 Select.propTypes = {
   isValid: PropTypes.bool,
   isValidated: PropTypes.bool,
+  disabled: PropTypes.disabled,
   requiredMark: PropTypes.string,
   value: PropTypes.string,
   errorTextClass: PropTypes.string,

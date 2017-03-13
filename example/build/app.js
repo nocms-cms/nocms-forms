@@ -22211,15 +22211,19 @@
 	};
 	
 	var createStore = function createStore(name, value, func) {
-	  var initialValue = value;
+	  var initialValue = value || {};
 	  var cb = func;
 	  if (typeof initialValue === 'function') {
 	    cb = initialValue;
 	    initialValue = {};
 	  }
+	
 	  if (!stores[name]) {
 	    stores[name] = initialValue || {};
+	  } else {
+	    stores[name] = Object.assign(initialValue, stores[name]);
 	  }
+	
 	  if (typeof cb === 'function') {
 	    subscribe(name, cb);
 	  }
@@ -22803,6 +22807,7 @@
 	        "select",
 	        {
 	          name: name,
+	          disabled: props.disabled,
 	          value: props.value,
 	          "aria-invalid": !props.isValid,
 	          "aria-required": required,
@@ -22823,6 +22828,7 @@
 	Select.propTypes = {
 	  isValid: _react.PropTypes.bool,
 	  isValidated: _react.PropTypes.bool,
+	  disabled: _react.PropTypes.disabled,
 	  requiredMark: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
 	  errorTextClass: _react.PropTypes.string,
