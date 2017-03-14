@@ -44,13 +44,12 @@ const Checkbox = (props) => {
           type={type}
           autoComplete="off"
           name={name}
-          checked={value === true ? 'checked' : null}
-          value={props.value}
+          checked={value}
+          value={props.value ? 'true' : ''}
           disabled={disabled ? true : null}
           aria-invalid={!props.isValid}
           aria-required={required}
           onChange={props.handleChange}
-          onClick={props.handleChange}
           onKeyDown={props.handleKeyDown}
           onBlur={props.validate}
         />
