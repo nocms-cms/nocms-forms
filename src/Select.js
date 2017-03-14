@@ -66,7 +66,7 @@ const Select = (props) => {
 Select.propTypes = {
   isValid: PropTypes.bool,
   isValidated: PropTypes.bool,
-  disabled: PropTypes.disabled,
+  disabled: PropTypes.bool,
   requiredMark: PropTypes.string,
   value: PropTypes.string,
   errorTextClass: PropTypes.string,
