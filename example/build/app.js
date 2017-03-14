@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/Users/wenche/Documents/Prosjekter/NoCMS/packages/nocms-forms/example";
+/******/ 	__webpack_require__.p = "/Users/jorgen/dev/nocms/packages/nocms-forms/example";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -57,7 +57,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var FormExample = __webpack_require__(178);
-	var WizardExample = __webpack_require__(179);
+	var WizardExample = __webpack_require__(195);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -21534,7 +21534,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _nocmsForms = __webpack_require__(180);
+	var _nocmsForms = __webpack_require__(179);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -21544,7 +21544,7 @@
 	
 	var React = __webpack_require__(1);
 	
-	var Spinner = __webpack_require__(198);
+	var Spinner = __webpack_require__(194);
 	
 	var storeName = 'test-form';
 	
@@ -21607,7 +21607,9 @@
 	        value: 'two'
 	      }];
 	      var selectOptions = ['Option 1', 'Option 2'];
-	      var initialData = {};
+	      var initialData = {
+	        checkbox: true
+	      };
 	
 	      var inputClasses = {
 	        controlGroupClass: 'custom-control-group',
@@ -21719,6 +21721,11 @@
 	            label: 'Custom validation func (a)',
 	            errorText: 'Field must be a',
 	            validate: this.validateA
+	          }),
+	          React.createElement(_nocmsForms.Field, {
+	            type: 'checkbox',
+	            label: 'Check me out',
+	            name: 'checkbox'
 	          })
 	        ),
 	        this.state.formData ? React.createElement(
@@ -21738,7 +21745,7 @@
 	                { key: field },
 	                field,
 	                ' : ',
-	                _this2.state.formData[field]
+	                _this2.state.formData[field] === true ? 'true' : _this2.state.formData[field]
 	              );
 	            })
 	          )
@@ -21762,175 +21769,33 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _nocmsForms = __webpack_require__(180);
-	
-	var _EmptyStep = __webpack_require__(195);
-	
-	var _EmptyStep2 = _interopRequireDefault(_EmptyStep);
-	
-	var _Step = __webpack_require__(196);
-	
-	var _Step2 = _interopRequireDefault(_Step);
-	
-	var _ComplexStep = __webpack_require__(197);
-	
-	var _ComplexStep2 = _interopRequireDefault(_ComplexStep);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var wizardStoreName = 'test-form-wizard';
-	
-	var WizardExample = function (_Component) {
-	  _inherits(WizardExample, _Component);
-	
-	  function WizardExample() {
-	    _classCallCheck(this, WizardExample);
-	
-	    var _this = _possibleConstructorReturn(this, (WizardExample.__proto__ || Object.getPrototypeOf(WizardExample)).call(this));
-	
-	    _this.state = {
-	      steps: [{ title: 'Overskrift steg 1', component: _react2.default.createElement(_Step2.default, { name: 'firststep' }) }, { title: 'Overskrift steg 1.5', component: _react2.default.createElement(_ComplexStep2.default, null) }, { title: 'Overskrift steg 2', overrideGoNext: _this.overrideGoNext, component: _react2.default.createElement(_Step2.default, { name: 'secondstep' }), initialState: { secondstep: 't2' } }, { title: 'Overskrift steg 3', component: _react2.default.createElement(_Step2.default, { name: 'thirdstep' }), initialState: { secondstep: 't3' } }, { title: 'Overskrift steg 4', component: _react2.default.createElement(_EmptyStep2.default, null) }, { title: 'Overskrift steg 5', component: _react2.default.createElement(_Step2.default, { name: 'fifthstep' }) }]
-	    };
-	    _this.progressIndicator = _this.progressIndicator.bind(_this);
-	    _this.handleFinish = _this.handleFinish.bind(_this);
-	    return _this;
-	  }
-	
-	  _createClass(WizardExample, [{
-	    key: 'overrideGoNext',
-	    value: function overrideGoNext(formData, cb) {
-	      console.log('Step goNext wrapped', formData);
-	      cb(null);
-	    }
-	  }, {
-	    key: 'handleFinish',
-	    value: function handleFinish(wizardData, cb) {
-	      console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
-	      cb(null);
-	    }
-	  }, {
-	    key: 'renderReceipt',
-	    value: function renderReceipt(data) {
-	      console.log('Receipt data', data);
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'Kvittering'
-	      );
-	    }
-	  }, {
-	    key: 'progressIndicator',
-	    value: function progressIndicator(current, numberOfSteps) {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        this.state.steps[current - 1].title,
-	        ' - steg ',
-	        current,
-	        ' av ',
-	        _react2.default.createElement(
-	          'span',
-	          null,
-	          numberOfSteps
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _React$createElement;
-	
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Wizard form example 1'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(_nocmsForms.Wizard, (_React$createElement = {
-	            receipt: this.renderReceipt,
-	            progressIndicator: this.progressIndicator,
-	            nextButtonText: 'Et steg frem',
-	            formClass: 'custom-form-class',
-	            className: 'wizard_parent',
-	            wizardStepClassName: 'Hu hei',
-	            backButtonText: 'Et steg tilbake',
-	            finishButtonText: 'Fullf\xF8r',
-	            nextButtonClassName: 'bling',
-	            store: wizardStoreName,
-	            steps: this.state.steps
-	          }, _defineProperty(_React$createElement, 'nextButtonClassName', 'knapp neste-knapp'), _defineProperty(_React$createElement, 'handleFinish', this.handleFinish), _React$createElement))
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return WizardExample;
-	}(_react.Component);
-	
-	exports.default = WizardExample;
-	;
-	
-	WizardExample.propTypes = {};
-	
-	module.exports = WizardExample;
-	module.exports = exports['default'];
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	exports.Field = exports.Wizard = exports.TextArea = exports.Select = exports.RadioButtons = exports.Input = exports.Form = undefined;
 	
-	var _Form2 = __webpack_require__(181);
+	var _Form2 = __webpack_require__(180);
 	
 	var _Form3 = _interopRequireDefault(_Form2);
 	
-	var _Input2 = __webpack_require__(185);
+	var _Input2 = __webpack_require__(184);
 	
 	var _Input3 = _interopRequireDefault(_Input2);
 	
-	var _RadioButtons2 = __webpack_require__(186);
+	var _RadioButtons2 = __webpack_require__(185);
 	
 	var _RadioButtons3 = _interopRequireDefault(_RadioButtons2);
 	
-	var _Select2 = __webpack_require__(187);
+	var _Select2 = __webpack_require__(186);
 	
 	var _Select3 = _interopRequireDefault(_Select2);
 	
-	var _TextArea2 = __webpack_require__(188);
+	var _TextArea2 = __webpack_require__(187);
 	
 	var _TextArea3 = _interopRequireDefault(_TextArea2);
 	
-	var _Wizard2 = __webpack_require__(189);
+	var _Wizard2 = __webpack_require__(188);
 	
 	var _Wizard3 = _interopRequireDefault(_Wizard2);
 	
-	var _Field2 = __webpack_require__(190);
+	var _Field2 = __webpack_require__(189);
 	
 	var _Field3 = _interopRequireDefault(_Field2);
 	
@@ -21945,7 +21810,7 @@
 	exports.Field = _Field3.default;
 
 /***/ },
-/* 181 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21965,9 +21830,9 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var React = __webpack_require__(1);
-	var stores = __webpack_require__(182);
-	var utils = __webpack_require__(184);
-	var events = __webpack_require__(183);
+	var stores = __webpack_require__(181);
+	var utils = __webpack_require__(183);
+	var events = __webpack_require__(182);
 	
 	var SUBMITTING_DEFAULT = '...';
 	var SUBMIT_BUTTON_DEFAULT = 'OK';
@@ -22092,14 +21957,20 @@
 	      setTimeout(function () {
 	        var target = _this3.formEl.querySelector('.form__error');
 	        if (target) {
-	          var targetPos = target.offsetTop;
-	          var input = target.querySelector('input');
-	          if (!input) {
-	            return;
-	          }
-	          utils.scrollTo(document.body, targetPos - 160, 400, function () {
-	            input.focus();
-	          });
+	          var _ret = function () {
+	            var targetPos = target.offsetTop;
+	            var input = target.querySelector('input');
+	            if (!input) {
+	              return {
+	                v: void 0
+	              };
+	            }
+	            utils.scrollTo(document.body, targetPos - 160, 400, function () {
+	              input.focus();
+	            });
+	          }();
+	
+	          if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	        }
 	      }, 0);
 	    }
@@ -22193,12 +22064,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 182 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var events = __webpack_require__(183);
+	var events = __webpack_require__(182);
 	
 	var stores = {};
 	
@@ -22264,7 +22135,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 183 */
+/* 182 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22310,7 +22181,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 184 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -22423,7 +22294,7 @@
 	;
 
 /***/ },
-/* 185 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22578,7 +22449,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 186 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22724,7 +22595,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 187 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22828,7 +22699,7 @@
 	Select.propTypes = {
 	  isValid: _react.PropTypes.bool,
 	  isValidated: _react.PropTypes.bool,
-	  disabled: _react.PropTypes.disabled,
+	  disabled: _react.PropTypes.bool,
 	  requiredMark: _react.PropTypes.string,
 	  value: _react.PropTypes.string,
 	  errorTextClass: _react.PropTypes.string,
@@ -22866,7 +22737,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 188 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23003,7 +22874,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 189 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23018,11 +22889,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsStores = __webpack_require__(182);
+	var _nocmsStores = __webpack_require__(181);
 	
 	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
 	
-	var _nocmsUtils = __webpack_require__(184);
+	var _nocmsUtils = __webpack_require__(183);
 	
 	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
 	
@@ -23208,7 +23079,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 190 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23225,39 +23096,39 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsValidation = __webpack_require__(191);
+	var _nocmsValidation = __webpack_require__(190);
 	
 	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
 	
-	var _nocmsUtils = __webpack_require__(184);
+	var _nocmsUtils = __webpack_require__(183);
 	
 	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
 	
-	var _nocmsStores = __webpack_require__(182);
+	var _nocmsStores = __webpack_require__(181);
 	
 	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
 	
-	var _Input = __webpack_require__(185);
+	var _Input = __webpack_require__(184);
 	
 	var _Input2 = _interopRequireDefault(_Input);
 	
-	var _Select = __webpack_require__(187);
+	var _Select = __webpack_require__(186);
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _Checkbox = __webpack_require__(193);
+	var _Checkbox = __webpack_require__(192);
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _Hidden = __webpack_require__(194);
+	var _Hidden = __webpack_require__(193);
 	
 	var _Hidden2 = _interopRequireDefault(_Hidden);
 	
-	var _RadioButtons = __webpack_require__(186);
+	var _RadioButtons = __webpack_require__(185);
 	
 	var _RadioButtons2 = _interopRequireDefault(_RadioButtons);
 	
-	var _TextArea = __webpack_require__(188);
+	var _TextArea = __webpack_require__(187);
 	
 	var _TextArea2 = _interopRequireDefault(_TextArea);
 	
@@ -23494,12 +23365,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 191 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var noValidation = __webpack_require__(192);
+	var noValidation = __webpack_require__(191);
 	
 	module.exports = {
 	  validate: function validate(value) {
@@ -23508,81 +23379,87 @@
 	
 	    if (!value && isRequired) {
 	      return false;
-	    } else if (!value && !isRequired) {
+	    }
+	    if (!value && !isRequired) {
 	      return true;
-	    } else {
-	      if (validationRule === 'email') {
-	        var emailRegex = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
-	        return emailRegex.test(value);
-	      }
+	    }
 	
-	      if (validationRule === 'notEmpty') {
-	        return value.trim() !== '';
-	      }
+	    if (typeof validationRule === 'function') {
+	      return validationRule(value);
+	    }
 	
-	      if (validationRule === 'phone') {
-	        return (/^((0047)?|(\+47)?|(47)?)\d{8}$/.test(value.replace(/\s/g, ''))
-	        );
-	      }
+	    if (validationRule === 'email') {
+	      var emailRegex = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
+	      return emailRegex.test(value);
+	    }
 	
-	      if (validationRule === 'datetime') {
-	        if (/^\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}$/.test(value)) {
-	          try {
-	            return new Date(value).toISOString().indexOf(value) === 0;
-	          } catch (ex) {
-	            return false;
-	          }
+	    if (validationRule === 'notEmpty') {
+	      return value.trim() !== '';
+	    }
+	
+	    if (validationRule === 'phone') {
+	      return (/^((0047)?|(\+47)?|(47)?)\d{8}$/.test(value.replace(/\s/g, ''))
+	      );
+	    }
+	
+	    if (validationRule === 'datetime') {
+	      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)) {
+	        try {
+	          return new Date(value).toISOString().indexOf(value) === 0;
+	        } catch (ex) {
+	          return false;
 	        }
-	      }
-	
-	      if (validationRule === 'date') {
-	        if (/^\d{4}\-\d{2}\-\d{2}$/.test(value)) {
-	          try {
-	            return new Date(value).toISOString().indexOf(value) === 0;
-	          } catch (ex) {
-	            return false;
-	          }
-	        }
-	        return false;
-	      }
-	
-	      if (validationRule === 'int') {
-	        return !isNaN(value) && function (x) {
-	          return (x | 0) === x;
-	        }(parseFloat(value));
-	      }
-	
-	      if (validationRule === 'orgNumber') {
-	        return noValidation.organizationNumber(value);
-	      }
-	
-	      if (validationRule === 'accountNumber') {
-	        return noValidation.accountNumber(value);
-	      }
-	
-	      if (validationRule === 'confirm') {
-	        return !!value;
-	      }
-	
-	      if (validationRule === 'internalUri') {
-	        return (/^\/[a-z0-9\-_\/]+$/i.test(value)
-	        );
-	      }
-	
-	      try {
-	        var patternRegex = new RegExp('^' + validationRule + '$');
-	        return patternRegex.test(value);
-	      } catch (e) {
-	        console.error('Invalid regex: ', validationRule);
 	      }
 	    }
+	
+	    if (validationRule === 'date') {
+	      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+	        try {
+	          return new Date(value).toISOString().indexOf(value) === 0;
+	        } catch (ex) {
+	          return false;
+	        }
+	      }
+	      return false;
+	    }
+	
+	    if (validationRule === 'int') {
+	      return !isNaN(value) && function (x) {
+	        return (x | 0) === x;
+	      }(parseFloat(value));
+	    }
+	
+	    if (validationRule === 'orgNumber') {
+	      return noValidation.organizationNumber(value);
+	    }
+	
+	    if (validationRule === 'accountNumber') {
+	      return noValidation.accountNumber(value);
+	    }
+	
+	    if (validationRule === 'confirm') {
+	      return !!value;
+	    }
+	
+	    if (validationRule === 'internalUri') {
+	      return (/^\/[a-z0-9\-_/]+$/i.test(value)
+	      );
+	    }
+	
+	    try {
+	      var patternRegex = new RegExp('^' + validationRule + '$');
+	      return patternRegex.test(value);
+	    } catch (e) {
+	      console.error('Invalid regex: ', validationRule);
+	    }
+	
 	    return false;
 	  }
 	};
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 192 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23677,7 +23554,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 193 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23740,13 +23617,12 @@
 	        type: type,
 	        autoComplete: 'off',
 	        name: name,
-	        checked: value === true ? 'checked' : null,
-	        value: props.value,
+	        checked: value,
+	        value: props.value ? 'true' : '',
 	        disabled: disabled ? true : null,
 	        'aria-invalid': !props.isValid,
 	        'aria-required': required,
 	        onChange: props.handleChange,
-	        onClick: props.handleChange,
 	        onKeyDown: props.handleKeyDown,
 	        onBlur: props.validate
 	      }),
@@ -23823,7 +23699,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 194 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23859,6 +23735,28 @@
 	module.exports = exports['default'];
 
 /***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Spinner = function Spinner() {
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "spinner__circle-scale" },
+	    "Sender inn..."
+	  );
+	};
+	
+	module.exports = Spinner;
+
+/***/ },
 /* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -23874,7 +23772,149 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsForms = __webpack_require__(180);
+	var _nocmsForms = __webpack_require__(179);
+	
+	var _EmptyStep = __webpack_require__(196);
+	
+	var _EmptyStep2 = _interopRequireDefault(_EmptyStep);
+	
+	var _Step = __webpack_require__(197);
+	
+	var _Step2 = _interopRequireDefault(_Step);
+	
+	var _ComplexStep = __webpack_require__(198);
+	
+	var _ComplexStep2 = _interopRequireDefault(_ComplexStep);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var wizardStoreName = 'test-form-wizard';
+	
+	var WizardExample = function (_Component) {
+	  _inherits(WizardExample, _Component);
+	
+	  function WizardExample() {
+	    _classCallCheck(this, WizardExample);
+	
+	    var _this = _possibleConstructorReturn(this, (WizardExample.__proto__ || Object.getPrototypeOf(WizardExample)).call(this));
+	
+	    _this.state = {
+	      steps: [{ title: 'Overskrift steg 1', component: _react2.default.createElement(_Step2.default, { name: 'firststep' }) }, { title: 'Overskrift steg 1.5', component: _react2.default.createElement(_ComplexStep2.default, null) }, { title: 'Overskrift steg 2', overrideGoNext: _this.overrideGoNext, component: _react2.default.createElement(_Step2.default, { name: 'secondstep' }), initialState: { secondstep: 't2' } }, { title: 'Overskrift steg 3', component: _react2.default.createElement(_Step2.default, { name: 'thirdstep' }), initialState: { secondstep: 't3' } }, { title: 'Overskrift steg 4', component: _react2.default.createElement(_EmptyStep2.default, null) }, { title: 'Overskrift steg 5', component: _react2.default.createElement(_Step2.default, { name: 'fifthstep' }) }]
+	    };
+	    _this.progressIndicator = _this.progressIndicator.bind(_this);
+	    _this.handleFinish = _this.handleFinish.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(WizardExample, [{
+	    key: 'overrideGoNext',
+	    value: function overrideGoNext(formData, cb) {
+	      console.log('Step goNext wrapped', formData);
+	      cb(null);
+	    }
+	  }, {
+	    key: 'handleFinish',
+	    value: function handleFinish(wizardData, cb) {
+	      console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
+	      cb(null);
+	    }
+	  }, {
+	    key: 'renderReceipt',
+	    value: function renderReceipt(data) {
+	      console.log('Receipt data', data);
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Kvittering'
+	      );
+	    }
+	  }, {
+	    key: 'progressIndicator',
+	    value: function progressIndicator(current, numberOfSteps) {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.state.steps[current - 1].title,
+	        ' - steg ',
+	        current,
+	        ' av ',
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          numberOfSteps
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _React$createElement;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Wizard form example 1'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_nocmsForms.Wizard, (_React$createElement = {
+	            receipt: this.renderReceipt,
+	            progressIndicator: this.progressIndicator,
+	            nextButtonText: 'Et steg frem',
+	            formClass: 'custom-form-class',
+	            className: 'wizard_parent',
+	            wizardStepClassName: 'Hu hei',
+	            backButtonText: 'Et steg tilbake',
+	            finishButtonText: 'Fullf\xF8r',
+	            nextButtonClassName: 'bling',
+	            store: wizardStoreName,
+	            steps: this.state.steps
+	          }, _defineProperty(_React$createElement, 'nextButtonClassName', 'knapp neste-knapp'), _defineProperty(_React$createElement, 'handleFinish', this.handleFinish), _React$createElement))
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return WizardExample;
+	}(_react.Component);
+	
+	exports.default = WizardExample;
+	;
+	
+	WizardExample.propTypes = {};
+	
+	module.exports = WizardExample;
+	module.exports = exports['default'];
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsForms = __webpack_require__(179);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23933,7 +23973,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23948,7 +23988,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsForms = __webpack_require__(180);
+	var _nocmsForms = __webpack_require__(179);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -24017,7 +24057,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24032,13 +24072,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsForms = __webpack_require__(180);
+	var _nocmsForms = __webpack_require__(179);
 	
-	var _nocmsStores = __webpack_require__(182);
+	var _nocmsStores = __webpack_require__(181);
 	
 	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
 	
-	var _nocmsUtils = __webpack_require__(184);
+	var _nocmsUtils = __webpack_require__(183);
 	
 	var _nocmsUtils2 = _interopRequireDefault(_nocmsUtils);
 	
@@ -24118,28 +24158,6 @@
 	
 	exports.default = ComplexStep;
 	module.exports = exports['default'];
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Spinner = function Spinner() {
-	  return _react2.default.createElement(
-	    "div",
-	    { className: "spinner__circle-scale" },
-	    "Sender inn..."
-	  );
-	};
-	
-	module.exports = Spinner;
 
 /***/ }
 /******/ ]);

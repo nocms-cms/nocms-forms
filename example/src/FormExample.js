@@ -51,7 +51,7 @@ export default class FormExample extends React.Component {
       'Option 1', 'Option 2',
     ];
     const initialData = {
-
+      checkbox: true
     };
 
     const inputClasses = {
@@ -161,13 +161,18 @@ export default class FormExample extends React.Component {
             errorText="Field must be a"
             validate={this.validateA}
           />
+          <Field
+            type="checkbox"
+            label="Check me out"
+            name="checkbox"
+          />
         </Form>
         { this.state.formData ?
           <div>
             <h2>Form result</h2>
             <ul>
               { Object.keys(this.state.formData).map((field) => {
-                return <li key={field}>{field} : {this.state.formData[field]}</li>;
+                return <li key={field}>{field} : {this.state.formData[field] === true ? 'true': this.state.formData[field]}</li>;
               })}
             </ul>
           </div>
