@@ -36,6 +36,15 @@ export default class FormExample extends React.Component {
   validateA(value){
     return value === 'a';
   }
+
+  parseNoDate(value) {
+    const parts = value.match(/^(\d\d)\.(\d\d)\.(\d{4})$/);
+    if (!parts) {
+      return '-';
+    }
+    return `${parts[3]}-${parts[2]}-${parts[1]}`;
+  }
+
   render() {
     const radioOptions = [
       {
@@ -165,6 +174,14 @@ export default class FormExample extends React.Component {
             type="checkbox"
             label="Check me out"
             name="checkbox"
+          />
+          <Field
+            label="Some date"
+            name="date"
+            type="date"
+            errorText="Invalid date format"
+            validate="date"
+            dateParser={this.parseNoDate}
           />
         </Form>
         { this.state.formData ?
