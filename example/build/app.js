@@ -21595,6 +21595,15 @@
 	      return value === 'a';
 	    }
 	  }, {
+	    key: 'parseNoDate',
+	    value: function parseNoDate(value) {
+	      var parts = value.match(/^(\d\d)\.(\d\d)\.(\d{4})$/);
+	      if (!parts) {
+	        return '-';
+	      }
+	      return parts[3] + '-' + parts[2] + '-' + parts[1];
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -21726,6 +21735,14 @@
 	            type: 'checkbox',
 	            label: 'Check me out',
 	            name: 'checkbox'
+	          }),
+	          React.createElement(_nocmsForms.Field, {
+	            label: 'Some date',
+	            name: 'date',
+	            type: 'date',
+	            errorText: 'Invalid date format',
+	            validate: 'date',
+	            dateParser: this.parseNoDate
 	          })
 	        ),
 	        this.state.formData ? React.createElement(
@@ -22374,7 +22391,7 @@
 	        ) : null
 	      ),
 	      _react2.default.createElement('input', {
-	        type: type,
+	        type: type === 'date' ? 'text' : type,
 	        autoComplete: 'off',
 	        maxLength: maxLength,
 	        name: name,
@@ -23025,11 +23042,12 @@
 	    }
 	  }, {
 	    key: 'handleFinish',
-	    value: function handleFinish(formData) {
+	    value: function handleFinish(formData, cb) {
 	      var _this3 = this;
 	
 	      var wizardData = Object.assign(this.state.wizardData, formData);
 	      this.props.handleFinish(wizardData, function (err) {
+	        cb();
 	        if (!err) {
 	          _this3.setState({ showReceipt: true });
 	        }
@@ -23303,8 +23321,11 @@
 	      if (!this.props.validate && !this.props.required) {
 	        return true;
 	      }
-	
-	      var isValid = _nocmsValidation2.default.validate(this.state.value, this.props.validate, this.props.required);
+	      var value = this.state.value;
+	      if (this.props.type === 'date' && this.props.dateParser) {
+	        value = this.props.dateParser(value);
+	      }
+	      var isValid = _nocmsValidation2.default.validate(value, this.props.validate, this.props.required);
 	      this.updateStore(this.state.value, isValid, true);
 	      return isValid;
 	    }
@@ -23351,6 +23372,7 @@
 	  validate: _react2.default.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.func]),
 	  dependOn: _react.PropTypes.string,
 	  dependencyFunc: _react.PropTypes.func,
+	  dateParser: _react.PropTypes.func,
 	  onChange: _react.PropTypes.func
 	};
 	
@@ -23413,6 +23435,7 @@
 	    }
 	
 	    if (validationRule === 'date') {
+	      console.log(value);
 	      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
 	        try {
 	          return new Date(value).toISOString().indexOf(value) === 0;
@@ -23457,6 +23480,7 @@
 	  }
 	};
 	//# sourceMappingURL=index.js.map
+
 
 /***/ },
 /* 191 */
