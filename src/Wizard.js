@@ -100,9 +100,10 @@ export default class Wizard extends Component {
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
   }
 
-  handleFinish(formData) {
+  handleFinish(formData, cb) {
     const wizardData = Object.assign(this.state.wizardData, formData);
     this.props.handleFinish(wizardData, (err) => {
+      cb();
       if (!err) {
         this.setState({ showReceipt: true });
       }
