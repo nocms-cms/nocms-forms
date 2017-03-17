@@ -151,8 +151,11 @@ class Field extends Component {
     if (!this.props.validate && !this.props.required) {
       return true;
     }
-
-    const isValid = Validator.validate(this.state.value, this.props.validate, this.props.required);
+    let value = this.state.value;
+    if (this.props.type === 'date' && this.props.dateParser) {
+      value = this.props.dateParser(value);
+    }
+    const isValid = Validator.validate(value, this.props.validate, this.props.required);
     this.updateStore(this.state.value, isValid, true);
     return isValid;
   }
@@ -194,6 +197,7 @@ Field.propTypes = {
   validate: React.PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   dependOn: PropTypes.string,
   dependencyFunc: PropTypes.func,
+  dateParser: PropTypes.func,
   onChange: PropTypes.func,
 };
 
