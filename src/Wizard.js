@@ -25,8 +25,8 @@ export default class Wizard extends Component {
     }
   }
 
-  getStoreForStep() {
-    return `${this.props.store}-step-${this.state.currentStep}`;
+  getStoreForStep(step) {
+    return `${this.props.store}-step-${step || this.state.currentStep}`;
   }
 
   getInitialStateForStep() {
@@ -41,7 +41,7 @@ export default class Wizard extends Component {
     return {
       index: current,
       component: this.applyWizardProps(stepComponent),
-      store: this.getStoreForStep(current),
+      store: this.getStoreForStep(),
       isFirst: current === 0,
       isLast: current === this.props.steps.length - 1,
       initialState: this.state.initialStates[current],
