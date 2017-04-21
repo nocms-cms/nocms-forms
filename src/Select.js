@@ -52,6 +52,7 @@ const Select = (props) => {
           aria-required={required}
           onChange={props.handleChange}
           onKeyDown={props.handleKeyDown}
+          onBlur={props.validate}
         >
           {optionsList}
         </select>
@@ -85,6 +86,7 @@ Select.propTypes = {
   notRequiredMark: PropTypes.string,
   handleKeyDown: PropTypes.func,
   label: PropTypes.string,
+  validate: PropTypes.func,
 };
 
 Select.defaultProps = {

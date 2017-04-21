@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/Users/jorgen/dev/nocms/packages/nocms-forms/example";
+/******/ 	__webpack_require__.p = "/Users/wenche/Documents/Prosjekter/NoCMS/packages/nocms-forms/example";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -18321,10 +18321,10 @@
 	 */
 	
 	function getUnboundedScrollPosition(scrollable) {
-	  if (scrollable === window) {
+	  if (scrollable.Window && scrollable instanceof scrollable.Window) {
 	    return {
-	      x: window.pageXOffset || document.documentElement.scrollLeft,
-	      y: window.pageYOffset || document.documentElement.scrollTop
+	      x: scrollable.pageXOffset || scrollable.document.documentElement.scrollLeft,
+	      y: scrollable.pageYOffset || scrollable.document.documentElement.scrollTop
 	    };
 	  }
 	  return {
@@ -19073,7 +19073,9 @@
 	 * @return {boolean} Whether or not the object is a DOM node.
 	 */
 	function isNode(object) {
-	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	  var doc = object ? object.ownerDocument || object : document;
+	  var defaultView = doc.defaultView || window;
+	  return !!(object && (typeof defaultView.Node === 'function' ? object instanceof defaultView.Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
 	}
 	
 	module.exports = isNode;
@@ -19103,15 +19105,19 @@
 	 *
 	 * The activeElement will be null only if the document or document body is not
 	 * yet defined.
+	 *
+	 * @param {?DOMDocument} doc Defaults to current document.
+	 * @return {?DOMElement}
 	 */
-	function getActiveElement() /*?DOMElement*/{
-	  if (typeof document === 'undefined') {
+	function getActiveElement(doc) /*?DOMElement*/{
+	  doc = doc || (typeof document !== 'undefined' ? document : undefined);
+	  if (typeof doc === 'undefined') {
 	    return null;
 	  }
 	  try {
-	    return document.activeElement || document.body;
+	    return doc.activeElement || doc.body;
 	  } catch (e) {
-	    return document.body;
+	    return doc.body;
 	  }
 	}
 	
@@ -21710,7 +21716,9 @@
 	          }, inputClasses, {
 	            label: 'Select',
 	            options: selectOptions,
-	            name: 'select'
+	            name: 'select',
+	            emptyLabel: 'Velg noe g\xF8y',
+	            required: true
 	          })),
 	          React.createElement(_nocmsForms.Field, _extends({
 	            type: 'textarea'
@@ -21974,20 +21982,14 @@
 	      setTimeout(function () {
 	        var target = _this3.formEl.querySelector('.form__error');
 	        if (target) {
-	          var _ret = function () {
-	            var targetPos = target.offsetTop;
-	            var input = target.querySelector('input');
-	            if (!input) {
-	              return {
-	                v: void 0
-	              };
-	            }
-	            utils.scrollTo(document.body, targetPos - 160, 400, function () {
-	              input.focus();
-	            });
-	          }();
-	
-	          if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	          var targetPos = target.offsetTop;
+	          var input = target.querySelector('input');
+	          if (!input) {
+	            return;
+	          }
+	          utils.scrollTo(document.body, targetPos - 160, 400, function () {
+	            input.focus();
+	          });
 	        }
 	      }, 0);
 	    }
@@ -22391,7 +22393,7 @@
 	        ) : null
 	      ),
 	      _react2.default.createElement('input', {
-	        type: type === 'date' ? 'text' : type,
+	        type: type,
 	        autoComplete: 'off',
 	        maxLength: maxLength,
 	        name: name,
@@ -22700,7 +22702,8 @@
 	          "aria-invalid": !props.isValid,
 	          "aria-required": required,
 	          onChange: props.handleChange,
-	          onKeyDown: props.handleKeyDown
+	          onKeyDown: props.handleKeyDown,
+	          onBlur: props.validate
 	        },
 	        optionsList
 	      ),
@@ -22734,7 +22737,8 @@
 	  notRequiredClass: _react.PropTypes.string,
 	  notRequiredMark: _react.PropTypes.string,
 	  handleKeyDown: _react.PropTypes.func,
-	  label: _react.PropTypes.string
+	  label: _react.PropTypes.string,
+	  validate: _react.PropTypes.func
 	};
 	
 	Select.defaultProps = {
@@ -22958,8 +22962,8 @@
 	    }
 	  }, {
 	    key: 'getStoreForStep',
-	    value: function getStoreForStep() {
-	      return this.props.store + '-step-' + this.state.currentStep;
+	    value: function getStoreForStep(step) {
+	      return this.props.store + '-step-' + (step || this.state.currentStep);
 	    }
 	  }, {
 	    key: 'getInitialStateForStep',
@@ -22976,7 +22980,7 @@
 	      return {
 	        index: current,
 	        component: this.applyWizardProps(stepComponent),
-	        store: this.getStoreForStep(current),
+	        store: this.getStoreForStep(),
 	        isFirst: current === 0,
 	        isLast: current === this.props.steps.length - 1,
 	        initialState: this.state.initialStates[current],
@@ -23042,12 +23046,11 @@
 	    }
 	  }, {
 	    key: 'handleFinish',
-	    value: function handleFinish(formData, cb) {
+	    value: function handleFinish(formData) {
 	      var _this3 = this;
 	
 	      var wizardData = Object.assign(this.state.wizardData, formData);
 	      this.props.handleFinish(wizardData, function (err) {
-	        cb();
 	        if (!err) {
 	          _this3.setState({ showReceipt: true });
 	        }
@@ -23435,7 +23438,6 @@
 	    }
 	
 	    if (validationRule === 'date') {
-	      console.log(value);
 	      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
 	        try {
 	          return new Date(value).toISOString().indexOf(value) === 0;
@@ -23480,7 +23482,6 @@
 	  }
 	};
 	//# sourceMappingURL=index.js.map
-
 
 /***/ },
 /* 191 */

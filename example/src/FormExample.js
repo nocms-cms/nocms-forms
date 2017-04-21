@@ -150,6 +150,8 @@ export default class FormExample extends React.Component {
             label="Select"
             options={selectOptions}
             name="select"
+            emptyLabel="Velg noe gøy"
+            required
           />
           <Field
             type="textarea"
