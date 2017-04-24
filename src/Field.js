@@ -60,7 +60,9 @@ class Field extends Component {
     inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
 
     if (typeof initialState === 'undefined' || initialState === null) {
-      inputState[this.props.name].value = this.props.value || '';
+      if (this.props.type === 'text' || this.props.type === 'textarea' || this.props.type === 'hidden') {
+        inputState[this.props.name].value = this.props.value || '';
+      }
     } else if (typeof initialState !== 'object') {
       inputState[this.props.name].value = initialState;
     } else {
@@ -116,7 +118,14 @@ class Field extends Component {
   }
 
   handleChange(e) {
-    const value = this.props.type === 'checkbox' ? e.currentTarget.checked : e.currentTarget.value;
+    let value;
+    if (this.props.type === 'checkbox') {
+      value = e.currentTarget.checked;
+    } else if (this.props.type === 'select' && this.props.multiple) {
+      value = [...e.target.options].filter(o => o.selected).map(o => o.value);
+    } else {
+      value = e.currentTarget.value;
+    }
     this.updateStore(value, true, this.state.isValidated);
     if (this.props.onChange) {
       this.props.onChange(e, e.currentTarget.value);
@@ -190,7 +199,10 @@ class Field extends Component {
 Field.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]),
   disabled: PropTypes.bool,
   required: PropTypes.bool,
   deleteOnUnmount: PropTypes.bool,
@@ -199,6 +211,7 @@ Field.propTypes = {
   dependencyFunc: PropTypes.func,
   dateParser: PropTypes.func,
   onChange: PropTypes.func,
+  multiple: PropTypes.bool,
 };
 
 Field.defaultProps = {
