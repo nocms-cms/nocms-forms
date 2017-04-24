@@ -21622,6 +21622,7 @@
 	        value: 'two'
 	      }];
 	      var selectOptions = ['Option 1', 'Option 2'];
+	      var multiSelectOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6'];
 	      var initialData = {
 	        checkbox: true
 	      };
@@ -21719,6 +21720,15 @@
 	            name: 'select',
 	            emptyLabel: 'Velg noe g\xF8y',
 	            required: true
+	          })),
+	          React.createElement(_nocmsForms.Field, _extends({
+	            type: 'select'
+	          }, inputClasses, {
+	            label: 'Select',
+	            options: multiSelectOptions,
+	            name: 'multiselect',
+	            emptyLabel: 'Velg flere g\xF8ye ting',
+	            multiple: true
 	          })),
 	          React.createElement(_nocmsForms.Field, _extends({
 	            type: 'textarea'
@@ -22617,7 +22627,7 @@
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22626,6 +22636,10 @@
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _MultipleSelect = __webpack_require__(199);
+	
+	var _MultipleSelect2 = _interopRequireDefault(_MultipleSelect);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22638,26 +22652,33 @@
 	      labelClass = props.labelClass,
 	      label = props.label,
 	      name = props.name,
+	      value = props.value,
+	      isValid = props.isValid,
+	      disabled = props.disabled,
 	      options = props.options,
 	      required = props.required,
 	      requiredClass = props.requiredClass,
 	      requiredMark = props.requiredMark,
 	      notRequiredMark = props.notRequiredMark,
 	      notRequiredClass = props.notRequiredClass,
-	      emptyLabel = props.emptyLabel;
+	      emptyLabel = props.emptyLabel,
+	      multiple = props.multiple,
+	      handleChange = props.handleChange,
+	      handleKeyDown = props.handleKeyDown,
+	      validate = props.validate;
 	
 	
 	  var containerClasses = controlGroupClass;
 	  if (props.isValid && props.isValidated) {
-	    containerClasses += " " + successWrapperClass;
+	    containerClasses += ' ' + successWrapperClass;
 	  }
 	  if (!props.isValid) {
-	    containerClasses += " " + errorWrapperClass;
+	    containerClasses += ' ' + errorWrapperClass;
 	  }
 	
-	  var emptyOption = emptyLabel ? [_react2.default.createElement(
-	    "option",
-	    { key: "empty", value: "" },
+	  var emptyOption = emptyLabel && !multiple ? [_react2.default.createElement(
+	    'option',
+	    { key: 'empty', value: '' },
 	    emptyLabel
 	  )] : [];
 	  var optionsList = emptyOption.concat(options.map(function (o, index) {
@@ -22666,49 +22687,53 @@
 	      option = { label: option, value: option };
 	    }
 	    return _react2.default.createElement(
-	      "option",
+	      'option',
 	      { key: index, value: option.value },
 	      option.label
 	    );
 	  }));
 	
 	  return _react2.default.createElement(
-	    "div",
+	    'div',
 	    { className: containerClasses },
 	    _react2.default.createElement(
-	      "label",
+	      'label',
 	      null,
 	      _react2.default.createElement(
-	        "span",
+	        'span',
 	        { className: labelClass },
 	        label,
 	        required && requiredMark ? _react2.default.createElement(
-	          "span",
+	          'span',
 	          { className: requiredClass },
 	          requiredMark
 	        ) : null,
 	        !required && notRequiredMark ? _react2.default.createElement(
-	          "span",
+	          'span',
 	          { className: notRequiredClass },
 	          notRequiredMark
 	        ) : null
 	      ),
-	      _react2.default.createElement(
-	        "select",
+	      multiple ? _react2.default.createElement(
+	        _MultipleSelect2.default,
+	        { name: name, disabled: disabled, value: value, handleChange: props.handleChange, onKeyDown: handleKeyDown, onBlur: props.validate },
+	        optionsList
+	      ) : _react2.default.createElement(
+	        'select',
 	        {
 	          name: name,
-	          disabled: props.disabled,
-	          value: props.value,
-	          "aria-invalid": !props.isValid,
-	          "aria-required": required,
-	          onChange: props.handleChange,
-	          onKeyDown: props.handleKeyDown,
-	          onBlur: props.validate
+	          disabled: disabled,
+	          value: value,
+	          'aria-invalid': !isValid,
+	          'aria-required': required,
+	          onChange: handleChange,
+	          onKeyDown: handleKeyDown,
+	          onBlur: validate
 	        },
 	        optionsList
 	      ),
-	      errorText && !props.isValid ? _react2.default.createElement(
-	        "div",
+	      errorText && !isValid ? _react2.default.createElement(
+	        'div',
 	        { className: errorTextClass },
 	        errorText
 	      ) : null
@@ -22721,7 +22746,7 @@
 	  isValidated: _react.PropTypes.bool,
 	  disabled: _react.PropTypes.bool,
 	  requiredMark: _react.PropTypes.string,
-	  value: _react.PropTypes.string,
+	  value: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.array]),
 	  errorTextClass: _react.PropTypes.string,
 	  errorWrapperClass: _react.PropTypes.string,
 	  successWrapperClass: _react.PropTypes.string,
@@ -22738,13 +22763,13 @@
 	  notRequiredMark: _react.PropTypes.string,
 	  handleKeyDown: _react.PropTypes.func,
 	  label: _react.PropTypes.string,
-	  validate: _react.PropTypes.func
+	  validate: _react.PropTypes.func,
+	  multiple: _react.PropTypes.bool
 	};
 	
 	Select.defaultProps = {
 	  requiredMark: '*',
 	  notRequiredMark: null,
-	  value: '',
 	  errorWrapperClass: 'form__control-group--error',
 	  successWrapperClass: 'form__control-group--success',
 	  errorTextClass: 'form__error-text',
@@ -22755,7 +22780,7 @@
 	};
 	
 	exports.default = Select;
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 187 */
@@ -23155,6 +23180,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -23224,7 +23251,9 @@
 	      inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
 	
 	      if (typeof initialState === 'undefined' || initialState === null) {
-	        inputState[this.props.name].value = this.props.value || '';
+	        if (this.props.type === 'text' || this.props.type === 'textarea' || this.props.type === 'hidden') {
+	          inputState[this.props.name].value = this.props.value || '';
+	        }
 	      } else if ((typeof initialState === 'undefined' ? 'undefined' : _typeof(initialState)) !== 'object') {
 	        inputState[this.props.name].value = initialState;
 	      } else {
@@ -23285,7 +23314,18 @@
 	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(e) {
-	      var value = this.props.type === 'checkbox' ? e.currentTarget.checked : e.currentTarget.value;
+	      var value = void 0;
+	      if (this.props.type === 'checkbox') {
+	        value = e.currentTarget.checked;
+	      } else if (this.props.type === 'select' && this.props.multiple) {
+	        value = [].concat(_toConsumableArray(e.target.options)).filter(function (o) {
+	          return o.selected;
+	        }).map(function (o) {
+	          return o.value;
+	        });
+	      } else {
+	        value = e.currentTarget.value;
+	      }
 	      this.updateStore(value, true, this.state.isValidated);
 	      if (this.props.onChange) {
 	        this.props.onChange(e, e.currentTarget.value);
@@ -23368,7 +23408,7 @@
 	Field.propTypes = {
 	  name: _react.PropTypes.string.isRequired,
 	  type: _react.PropTypes.string,
-	  value: _react.PropTypes.string,
+	  value: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.array]),
 	  disabled: _react.PropTypes.bool,
 	  required: _react.PropTypes.bool,
 	  deleteOnUnmount: _react.PropTypes.bool,
@@ -23376,7 +23416,8 @@
 	  dependOn: _react.PropTypes.string,
 	  dependencyFunc: _react.PropTypes.func,
 	  dateParser: _react.PropTypes.func,
-	  onChange: _react.PropTypes.func
+	  onChange: _react.PropTypes.func,
+	  multiple: _react.PropTypes.bool
 	};
 	
 	Field.defaultProps = {
@@ -24182,6 +24223,69 @@
 	}(_react.Component);
 	
 	exports.default = ComplexStep;
+	module.exports = exports['default'];
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var MultipleSelect = function MultipleSelect(props) {
+	  var name = props.name,
+	      disabled = props.disabled,
+	      value = props.value,
+	      isValid = props.isValid,
+	      required = props.required,
+	      handleChange = props.handleChange,
+	      handleKeyDown = props.handleKeyDown,
+	      validate = props.validate,
+	      children = props.children;
+	
+	  return _react2.default.createElement(
+	    'select',
+	    {
+	      name: name,
+	      disabled: disabled,
+	      value: value,
+	      'aria-invalid': !isValid,
+	      'aria-required': required,
+	      onChange: handleChange,
+	      onKeyDown: handleKeyDown,
+	      onBlur: validate,
+	      multiple: true
+	    },
+	    children
+	  );
+	};
+	
+	MultipleSelect.propTypes = {
+	  name: _react.PropTypes.string,
+	  disabled: _react.PropTypes.bool,
+	  value: _react.PropTypes.array,
+	  isValid: _react.PropTypes.bool,
+	  handleChange: _react.PropTypes.func,
+	  handleKeyDown: _react.PropTypes.func,
+	  validate: _react.PropTypes.func,
+	  required: _react.PropTypes.bool,
+	  children: _react.PropTypes.array
+	};
+	
+	MultipleSelect.defaultProps = {
+	  value: []
+	};
+	
+	exports.default = MultipleSelect;
 	module.exports = exports['default'];
 
 /***/ }

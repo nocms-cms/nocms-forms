@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import MultipleSelect from './MultipleSelect.jsx';
 
 const Select = (props) => {
   const {
@@ -10,6 +11,9 @@ const Select = (props) => {
     labelClass,
     label,
     name,
+    value,
+    isValid,
+    disabled,
     options,
     required,
     requiredClass,
@@ -17,6 +21,10 @@ const Select = (props) => {
     notRequiredMark,
     notRequiredClass,
     emptyLabel,
+    multiple,
+    handleChange,
+    handleKeyDown,
+    validate,
   } = props;
 
   let containerClasses = controlGroupClass;
@@ -27,7 +35,7 @@ const Select = (props) => {
     containerClasses += ` ${errorWrapperClass}`;
   }
 
-  const emptyOption = emptyLabel ? [<option key="empty" value="">{emptyLabel}</option>] : [];
+  const emptyOption = emptyLabel && !multiple ? [<option key="empty" value="">{emptyLabel}</option>] : [];
   const optionsList = emptyOption.concat(options.map((o, index) => {
     let option = o;
     if (typeof option === 'string') {
@@ -44,19 +52,22 @@ const Select = (props) => {
           {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
           {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
+        { multiple ? <MultipleSelect name={name} disabled={disabled} value={value} handleChange={props.handleChange} onKeyDown={handleKeyDown} onBlur={props.validate}>
+          {optionsList}
+        </MultipleSelect> :
         <select
           name={name}
-          disabled={props.disabled}
-          value={props.value}
-          aria-invalid={!props.isValid}
+          disabled={disabled}
+          value={value}
+          aria-invalid={!isValid}
           aria-required={required}
-          onChange={props.handleChange}
-          onKeyDown={props.handleKeyDown}
-          onBlur={props.validate}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onBlur={validate}
         >
           {optionsList}
-        </select>
-        {errorText && !props.isValid ?
+        </select> }
+        {errorText && !isValid ?
           <div className={errorTextClass}>{errorText}</div>
         : null}
       </label>
@@ -69,7 +80,10 @@ Select.propTypes = {
   isValidated: PropTypes.bool,
   disabled: PropTypes.bool,
   requiredMark: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]),
   errorTextClass: PropTypes.string,
   errorWrapperClass: PropTypes.string,
   successWrapperClass: PropTypes.string,
@@ -87,12 +101,12 @@ Select.propTypes = {
   handleKeyDown: PropTypes.func,
   label: PropTypes.string,
   validate: PropTypes.func,
+  multiple: PropTypes.bool,
 };
 
 Select.defaultProps = {
   requiredMark: '*',
   notRequiredMark: null,
-  value: '',
   errorWrapperClass: 'form__control-group--error',
   successWrapperClass: 'form__control-group--success',
   errorTextClass: 'form__error-text',

@@ -59,6 +59,9 @@ export default class FormExample extends React.Component {
     const selectOptions = [
       'Option 1', 'Option 2',
     ];
+    const multiSelectOptions = [
+      'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6',
+    ];
     const initialData = {
       checkbox: true
     };
@@ -152,6 +155,15 @@ export default class FormExample extends React.Component {
             name="select"
             emptyLabel="Velg noe gøy"
             required
+          />
+          <Field
+            type="select"
+            {...inputClasses}
+            label="Select"
+            options={multiSelectOptions}
+            name="multiselect"
+            emptyLabel="Velg flere gøye ting"
+            multiple
           />
           <Field
             type="textarea"
