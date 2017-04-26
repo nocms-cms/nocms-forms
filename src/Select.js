@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import MultipleSelect from './MultipleSelect.jsx';
+import MultipleSelect from './MultipleSelect.js';
 
 const Select = (props) => {
   const {
