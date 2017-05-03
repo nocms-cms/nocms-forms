@@ -16,6 +16,6 @@ deployment:
     branch: master
     commands:
       - npm run bump-version
-      - git commit -am "Bumped version to $PACKAGE_VERSION [skip ci]"
       - npm publish --registry https://miles.jfrog.io/miles/api/npm/npm-virtual
+      - git commit -am "Bumped version to $PACKAGE_VERSION [skip ci]"
       - git push origin master
