@@ -57,7 +57,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var FormExample = __webpack_require__(178);
-	var WizardExample = __webpack_require__(195);
+	var WizardExample = __webpack_require__(196);
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -21550,7 +21550,7 @@
 	
 	var React = __webpack_require__(1);
 	
-	var Spinner = __webpack_require__(194);
+	var Spinner = __webpack_require__(195);
 	
 	var storeName = 'test-form';
 	
@@ -21621,8 +21621,38 @@
 	        label: 'Option 2',
 	        value: 'two'
 	      }];
+	      var multiCheckbox = [{
+	        label: 'Fiskekake',
+	        value: 'fish'
+	      }, {
+	        label: 'Sjokoladekake',
+	        value: 'chocolate'
+	      }, {
+	        label: 'Kjøttkake',
+	        value: 'meat'
+	      }, {
+	        label: 'Bløtkake',
+	        value: 'soft'
+	      }];
 	      var selectOptions = ['Option 1', 'Option 2'];
-	      var multiSelectOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6'];
+	      var multiSelectOptions = [{ label: 'Option 1',
+	        value: 'opt1'
+	      }, {
+	        label: 'Option 2',
+	        value: 'opt2'
+	      }, {
+	        label: 'Option 3',
+	        value: 'opt3'
+	      }, {
+	        label: 'Option 4',
+	        value: 'opt4'
+	      }, {
+	        label: 'Option 5',
+	        value: 'opt5'
+	      }, {
+	        label: 'Option 6',
+	        value: 'opt6'
+	      }];
 	      var initialData = {
 	        checkbox: true
 	      };
@@ -21681,12 +21711,13 @@
 	            errorText: 'Wrong e-mail',
 	            validate: 'email'
 	          })),
-	          React.createElement(
-	            'label',
-	            null,
-	            React.createElement('input', { type: 'checkbox', checked: this.state.disabled, onChange: this.toggleDisabledField }),
-	            'Toggle disabled field'
-	          ),
+	          React.createElement(_nocmsForms.Field, _extends({
+	            label: 'Toggle disabled field',
+	            name: 'disabledToggler'
+	          }, inputClasses, {
+	            type: 'checkbox',
+	            onChange: this.toggleDisabledField
+	          })),
 	          React.createElement(_nocmsForms.Field, _extends({
 	            required: true,
 	            disabled: this.state.disabled
@@ -21724,11 +21755,13 @@
 	          React.createElement(_nocmsForms.Field, _extends({
 	            type: 'select'
 	          }, inputClasses, {
-	            label: 'Select',
+	            label: 'Select multiple',
 	            options: multiSelectOptions,
 	            name: 'multiselect',
 	            emptyLabel: 'Velg flere g\xF8ye ting',
-	            multiple: true
+	            multiple: true,
+	            required: true,
+	            errorText: 'Du m\xE5 gj\xF8re et valg'
 	          })),
 	          React.createElement(_nocmsForms.Field, _extends({
 	            type: 'textarea'
@@ -21761,6 +21794,13 @@
 	            errorText: 'Invalid date format',
 	            validate: 'date',
 	            dateParser: this.parseNoDate
+	          }),
+	          React.createElement(_nocmsForms.Field, {
+	            label: 'Check all your favourite cakes that applies',
+	            name: 'cakes',
+	            type: 'checkbox',
+	            options: multiCheckbox,
+	            multiple: true
 	          })
 	        ),
 	        this.state.formData ? React.createElement(
@@ -21822,15 +21862,15 @@
 	
 	var _Select3 = _interopRequireDefault(_Select2);
 	
-	var _TextArea2 = __webpack_require__(187);
+	var _TextArea2 = __webpack_require__(188);
 	
 	var _TextArea3 = _interopRequireDefault(_TextArea2);
 	
-	var _Wizard2 = __webpack_require__(188);
+	var _Wizard2 = __webpack_require__(189);
 	
 	var _Wizard3 = _interopRequireDefault(_Wizard2);
 	
-	var _Field2 = __webpack_require__(189);
+	var _Field2 = __webpack_require__(190);
 	
 	var _Field3 = _interopRequireDefault(_Field2);
 	
@@ -22637,7 +22677,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _MultipleSelect = __webpack_require__(199);
+	var _MultipleSelect = __webpack_require__(187);
 	
 	var _MultipleSelect2 = _interopRequireDefault(_MultipleSelect);
 	
@@ -22798,6 +22838,69 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var MultipleSelect = function MultipleSelect(props) {
+	  var name = props.name,
+	      disabled = props.disabled,
+	      value = props.value,
+	      isValid = props.isValid,
+	      required = props.required,
+	      handleChange = props.handleChange,
+	      handleKeyDown = props.handleKeyDown,
+	      validate = props.validate,
+	      children = props.children;
+	
+	  return _react2.default.createElement(
+	    'select',
+	    {
+	      name: name,
+	      disabled: disabled,
+	      value: value,
+	      'aria-invalid': !isValid,
+	      'aria-required': required,
+	      onChange: handleChange,
+	      onKeyDown: handleKeyDown,
+	      onBlur: validate,
+	      multiple: true
+	    },
+	    children
+	  );
+	};
+	
+	MultipleSelect.propTypes = {
+	  name: _react.PropTypes.string,
+	  disabled: _react.PropTypes.bool,
+	  value: _react.PropTypes.array,
+	  isValid: _react.PropTypes.bool,
+	  handleChange: _react.PropTypes.func,
+	  handleKeyDown: _react.PropTypes.func,
+	  validate: _react.PropTypes.func,
+	  required: _react.PropTypes.bool,
+	  children: _react.PropTypes.array
+	};
+	
+	MultipleSelect.defaultProps = {
+	  value: []
+	};
+	
+	exports.default = MultipleSelect;
+	module.exports = exports['default'];
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var TextArea = function TextArea(props) {
 	  var controlGroupClass = props.controlGroupClass,
 	      successWrapperClass = props.successWrapperClass,
@@ -22920,7 +23023,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23125,7 +23228,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23142,7 +23245,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _nocmsValidation = __webpack_require__(190);
+	var _nocmsValidation = __webpack_require__(191);
 	
 	var _nocmsValidation2 = _interopRequireDefault(_nocmsValidation);
 	
@@ -23162,11 +23265,11 @@
 	
 	var _Select2 = _interopRequireDefault(_Select);
 	
-	var _Checkbox = __webpack_require__(192);
+	var _Checkbox = __webpack_require__(193);
 	
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 	
-	var _Hidden = __webpack_require__(193);
+	var _Hidden = __webpack_require__(194);
 	
 	var _Hidden2 = _interopRequireDefault(_Hidden);
 	
@@ -23174,9 +23277,13 @@
 	
 	var _RadioButtons2 = _interopRequireDefault(_RadioButtons);
 	
-	var _TextArea = __webpack_require__(187);
+	var _TextArea = __webpack_require__(188);
 	
 	var _TextArea2 = _interopRequireDefault(_TextArea);
+	
+	var _MultipleCheckbox = __webpack_require__(200);
+	
+	var _MultipleCheckbox2 = _interopRequireDefault(_MultipleCheckbox);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23316,7 +23423,18 @@
 	    value: function handleChange(e) {
 	      var value = void 0;
 	      if (this.props.type === 'checkbox') {
-	        value = e.currentTarget.checked;
+	        if (this.props.multiple) {
+	          var oldValue = this.state.value || [];
+	          if (e.target.checked) {
+	            value = [].concat(_toConsumableArray(oldValue), [e.target.value]);
+	          } else {
+	            value = oldValue.filter(function (v) {
+	              return v !== e.target.value;
+	            });
+	          }
+	        } else {
+	          value = e.currentTarget.checked;
+	        }
 	      } else if (this.props.type === 'select' && this.props.multiple) {
 	        value = [].concat(_toConsumableArray(e.target.options)).filter(function (o) {
 	          return o.selected;
@@ -23375,7 +23493,9 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var type = this.props.type;
+	      var _props = this.props,
+	          type = _props.type,
+	          options = _props.options;
 	
 	      var props = Object.assign({}, this.props, this.state);
 	
@@ -23396,7 +23516,7 @@
 	        return _react2.default.createElement(_Select2.default, props);
 	      }
 	      if (type === 'checkbox') {
-	        return _react2.default.createElement(_Checkbox2.default, props);
+	        return options ? _react2.default.createElement(_MultipleCheckbox2.default, props) : _react2.default.createElement(_Checkbox2.default, props);
 	      }
 	      return _react2.default.createElement(_Input2.default, props);
 	    }
@@ -23431,12 +23551,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var noValidation = __webpack_require__(191);
+	var noValidation = __webpack_require__(192);
 	
 	module.exports = {
 	  validate: function validate(value) {
@@ -23525,7 +23645,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -23620,7 +23740,7 @@
 	//# sourceMappingURL=index.js.map
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23765,7 +23885,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23801,7 +23921,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23823,7 +23943,7 @@
 	module.exports = Spinner;
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23840,15 +23960,15 @@
 	
 	var _nocmsForms = __webpack_require__(179);
 	
-	var _EmptyStep = __webpack_require__(196);
+	var _EmptyStep = __webpack_require__(197);
 	
 	var _EmptyStep2 = _interopRequireDefault(_EmptyStep);
 	
-	var _Step = __webpack_require__(197);
+	var _Step = __webpack_require__(198);
 	
 	var _Step2 = _interopRequireDefault(_Step);
 	
-	var _ComplexStep = __webpack_require__(198);
+	var _ComplexStep = __webpack_require__(199);
 	
 	var _ComplexStep2 = _interopRequireDefault(_ComplexStep);
 	
@@ -23965,7 +24085,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24039,7 +24159,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24123,7 +24243,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24226,7 +24346,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24239,54 +24359,139 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _Checkbox = __webpack_require__(202);
+	
+	var _Checkbox2 = _interopRequireDefault(_Checkbox);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var MultipleSelect = function MultipleSelect(props) {
-	  var name = props.name,
-	      disabled = props.disabled,
-	      value = props.value,
-	      isValid = props.isValid,
-	      required = props.required,
-	      handleChange = props.handleChange,
-	      handleKeyDown = props.handleKeyDown,
-	      validate = props.validate,
-	      children = props.children;
+	var MultipleCheckbox = function MultipleCheckbox(props) {
+	  var controlGroupClass = props.controlGroupClass,
+	      inlineLabel = props.inlineLabel,
+	      inlineLabelClass = props.inlineLabelClass,
+	      checkboxClass = props.checkboxClass,
+	      labelId = props.labelId,
+	      labelClass = props.labelClass,
+	      label = props.label,
+	      handleChange = props.handleChange;
+	
+	
+	  var containerClasses = controlGroupClass + ' ' + checkboxClass;
+	  if (inlineLabel) {
+	    containerClasses += ' ' + inlineLabelClass;
+	  }
+	
+	  var toggleCheckbox = function toggleCheckbox(e) {
+	    handleChange(e);
+	  };
+	  var createCheckboxes = props.options.map(function (option, idx) {
+	    return _react2.default.createElement(_Checkbox2.default, {
+	      label: option.label,
+	      value: option.value,
+	      checkedValues: props.value,
+	      name: props.name,
+	      handleCheckboxChange: toggleCheckbox, key: idx
+	    });
+	  });
 	
 	  return _react2.default.createElement(
-	    'select',
-	    {
-	      name: name,
-	      disabled: disabled,
-	      value: value,
-	      'aria-invalid': !isValid,
-	      'aria-required': required,
-	      onChange: handleChange,
-	      onKeyDown: handleKeyDown,
-	      onBlur: validate,
-	      multiple: true
-	    },
-	    children
+	    'div',
+	    { className: containerClasses },
+	    _react2.default.createElement(
+	      'fieldset',
+	      null,
+	      _react2.default.createElement(
+	        'legend',
+	        { id: labelId, className: labelClass },
+	        label
+	      ),
+	      createCheckboxes
+	    )
 	  );
 	};
 	
-	MultipleSelect.propTypes = {
-	  name: _react.PropTypes.string,
-	  disabled: _react.PropTypes.bool,
-	  value: _react.PropTypes.array,
-	  isValid: _react.PropTypes.bool,
-	  handleChange: _react.PropTypes.func,
-	  handleKeyDown: _react.PropTypes.func,
-	  validate: _react.PropTypes.func,
-	  required: _react.PropTypes.bool,
-	  children: _react.PropTypes.array
+	MultipleCheckbox.propTypes = {
+	  handleChange: _react.PropTypes.func.isRequired,
+	  name: _react.PropTypes.string.isRequired,
+	  labelClass: _react.PropTypes.string,
+	  controlGroupClass: _react.PropTypes.string,
+	  inlineLabel: _react.PropTypes.bool,
+	  inlineLabelClass: _react.PropTypes.string,
+	  checkboxClass: _react.PropTypes.string,
+	  label: _react.PropTypes.string,
+	  labelId: _react.PropTypes.string,
+	  options: _react.PropTypes.array
 	};
 	
-	MultipleSelect.defaultProps = {
-	  value: []
+	MultipleCheckbox.defaultProps = {
+	  labelClass: 'form__label',
+	  controlGroupClass: 'form__control-group',
+	  inlineLabelClass: '',
+	  checkboxClass: 'form__multi-checkbox'
 	};
 	
-	exports.default = MultipleSelect;
+	exports.default = MultipleCheckbox;
 	module.exports = exports['default'];
+
+/***/ },
+/* 201 */,
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Checkbox = function Checkbox(props) {
+	  var label = props.label,
+	      value = props.value,
+	      name = props.name,
+	      checkedValues = props.checkedValues,
+	      handleCheckboxChange = props.handleCheckboxChange;
+	
+	
+	  var toggleCheckboxChange = function toggleCheckboxChange(e) {
+	    handleCheckboxChange(e);
+	  };
+	
+	  var isChecked = checkedValues.indexOf(value) >= 0;
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "checkbox" },
+	    _react2.default.createElement(
+	      "label",
+	      null,
+	      _react2.default.createElement("input", {
+	        type: "checkbox",
+	        autoComplete: "off",
+	        value: value,
+	        name: name,
+	        checked: isChecked,
+	        onChange: toggleCheckboxChange
+	      }),
+	      label
+	    )
+	  );
+	};
+	
+	Checkbox.propTypes = {
+	  label: _react.PropTypes.string.isRequired,
+	  handleCheckboxChange: _react.PropTypes.func.isRequired,
+	  value: _react.PropTypes.string,
+	  name: _react.PropTypes.string,
+	  checkedValues: _react.PropTypes.array
+	};
+	
+	exports.default = Checkbox;
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ]);

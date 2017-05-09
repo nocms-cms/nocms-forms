@@ -8,6 +8,7 @@ import Checkbox from './Checkbox';
 import Hidden from './Hidden';
 import RadioButtons from './RadioButtons';
 import TextArea from './TextArea';
+import MultipleCheckbox from './MultipleCheckbox';
 
 class Field extends Component {
   constructor(props) {
@@ -120,7 +121,16 @@ class Field extends Component {
   handleChange(e) {
     let value;
     if (this.props.type === 'checkbox') {
-      value = e.currentTarget.checked;
+      if (this.props.multiple) {
+        const oldValue = this.state.value || [];
+        if (e.target.checked) {
+          value = [...oldValue, e.target.value];
+        } else {
+          value = oldValue.filter(v => v !== e.target.value);
+        }
+      } else {
+        value = e.currentTarget.checked;
+      }
     } else if (this.props.type === 'select' && this.props.multiple) {
       value = [...e.target.options].filter(o => o.selected).map(o => o.value);
     } else {
@@ -170,7 +180,7 @@ class Field extends Component {
   }
 
   render() {
-    const { type } = this.props;
+    const { type, options } = this.props;
     const props = Object.assign({}, this.props, this.state);
 
     props.handleChange = this.handleChange;
@@ -190,7 +200,7 @@ class Field extends Component {
       return <Select {...props} />;
     }
     if (type === 'checkbox') {
-      return <Checkbox {...props} />;
+      return options ? <MultipleCheckbox {...props} /> : <Checkbox {...props} />;
     }
     return <Input {...props} />;
   }

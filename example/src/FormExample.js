@@ -56,11 +56,51 @@ export default class FormExample extends React.Component {
         value: 'two',
       },
     ];
+    const multiCheckbox = [
+      {
+        label: 'Fiskekake',
+        value: 'fish',
+      },
+      {
+        label: 'Sjokoladekake',
+        value: 'chocolate',
+      },
+      {
+        label: 'Kjøttkake',
+        value: 'meat',
+      },
+      {
+        label: 'Bløtkake',
+        value: 'soft',
+      },
+    ];
     const selectOptions = [
       'Option 1', 'Option 2',
     ];
     const multiSelectOptions = [
-      'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6',
+      {label: 'Option 1',
+        value: 'opt1',
+      },
+      {
+        label: 'Option 2',
+        value: 'opt2',
+      },
+      {
+        label: 'Option 3',
+        value: 'opt3',
+      },
+      {
+        label: 'Option 4',
+        value: 'opt4',
+      },
+      {
+        label: 'Option 5',
+        value: 'opt5',
+      },
+      {
+        label: 'Option 6',
+        value: 'opt6',
+      }
     ];
     const initialData = {
       checkbox: true
@@ -118,10 +158,13 @@ export default class FormExample extends React.Component {
             errorText="Wrong e-mail"
             validate="email"
           />
-          <label>
-            <input type="checkbox" checked={this.state.disabled} onChange={this.toggleDisabledField} />
-            Toggle disabled field
-          </label>
+          <Field
+            label="Toggle disabled field"
+            name="disabledToggler"
+            {...inputClasses}
+            type="checkbox"
+            onChange={this.toggleDisabledField}
+          />
           <Field
             required
             disabled={this.state.disabled}
@@ -159,11 +202,13 @@ export default class FormExample extends React.Component {
           <Field
             type="select"
             {...inputClasses}
-            label="Select"
+            label="Select multiple"
             options={multiSelectOptions}
             name="multiselect"
             emptyLabel="Velg flere gøye ting"
             multiple
+            required
+            errorText="Du må gjøre et valg"
           />
           <Field
             type="textarea"
@@ -196,6 +241,13 @@ export default class FormExample extends React.Component {
             errorText="Invalid date format"
             validate="date"
             dateParser={this.parseNoDate}
+          />
+          <Field
+            label="Check all your favourite cakes that applies"
+            name="cakes"
+            type="checkbox"
+            options={multiCheckbox}
+            multiple
           />
         </Form>
         { this.state.formData ?
