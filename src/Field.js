@@ -181,7 +181,7 @@ class Field extends Component {
   }
 
   render() {
-    const { type, options } = this.props;
+    const { type, options, multiple } = this.props;
     const props = Object.assign({}, this.props, this.state);
 
     props.handleChange = this.handleChange;
@@ -201,7 +201,7 @@ class Field extends Component {
       return <Select {...props} />;
     }
     if (type === 'checkbox') {
-      return options ? <MultipleCheckbox {...props} /> : <Checkbox {...props} />;
+      return options && multiple ? <MultipleCheckbox {...props} /> : <Checkbox {...props} />;
     }
     return <Input {...props} />;
   }
@@ -223,6 +223,7 @@ Field.propTypes = {
   dateParser: PropTypes.func,
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
+  options: PropTypes.array,
 };
 
 Field.defaultProps = {

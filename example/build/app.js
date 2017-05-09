@@ -23219,7 +23219,8 @@
 	    value: function render() {
 	      var _props = this.props,
 	          type = _props.type,
-	          options = _props.options;
+	          options = _props.options,
+	          multiple = _props.multiple;
 	
 	      var props = Object.assign({}, this.props, this.state);
 	
@@ -23240,7 +23241,7 @@
 	        return _react2.default.createElement(_Select2.default, props);
 	      }
 	      if (type === 'checkbox') {
-	        return options ? _react2.default.createElement(_MultipleCheckbox2.default, props) : _react2.default.createElement(_Checkbox2.default, props);
+	        return options && multiple ? _react2.default.createElement(_MultipleCheckbox2.default, props) : _react2.default.createElement(_Checkbox2.default, props);
 	      }
 	      return _react2.default.createElement(_Input2.default, props);
 	    }
@@ -23261,7 +23262,8 @@
 	  dependencyFunc: _propTypes2.default.func,
 	  dateParser: _propTypes2.default.func,
 	  onChange: _propTypes2.default.func,
-	  multiple: _propTypes2.default.bool
+	  multiple: _propTypes2.default.bool,
+	  options: _propTypes2.default.array
 	};
 	
 	Field.defaultProps = {
