@@ -1,7 +1,8 @@
-const React = require('react');
-const stores = require('nocms-stores');
-const utils = require('nocms-utils');
-const events = require('nocms-events');
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import stores from 'nocms-stores';
+import utils from 'nocms-utils';
+import events from 'nocms-events';
 
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
@@ -17,7 +18,7 @@ const convertDate = (date) => {
   return date;
 };
 
-class Form extends React.Component {
+class Form extends Component {
   constructor(props) {
     super(props);
     this.handleStoreChange = this.handleStoreChange.bind(this);
@@ -167,20 +168,20 @@ class Form extends React.Component {
 }
 
 Form.propTypes = {
-  initialState: React.PropTypes.object,
-  store: React.PropTypes.string.isRequired,
-  onSubmit: React.PropTypes.func,
-  submitButtonText: React.PropTypes.string,
-  submitButtonClassName: React.PropTypes.string,
-  noSubmitButton: React.PropTypes.bool,
-  children: React.PropTypes.node,
-  className: React.PropTypes.string,
-  centerSubmitButton: React.PropTypes.bool,
-  spinner: React.PropTypes.object,
-  backButton: React.PropTypes.object,
-  submittingText: React.PropTypes.string,
-  wizardStep: React.PropTypes.bool,
-  scrollDuration: React.PropTypes.number,
+  initialState: PropTypes.object,
+  store: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func,
+  submitButtonText: PropTypes.string,
+  submitButtonClassName: PropTypes.string,
+  noSubmitButton: PropTypes.bool,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  centerSubmitButton: PropTypes.bool,
+  spinner: PropTypes.object,
+  backButton: PropTypes.object,
+  submittingText: PropTypes.string,
+  wizardStep: PropTypes.bool,
+  scrollDuration: PropTypes.number,
 };
 
 Form.defaultProps = {
@@ -190,7 +191,7 @@ Form.defaultProps = {
 };
 
 Form.childContextTypes = {
-  store: React.PropTypes.string,
+  store: PropTypes.string,
 };
 
 export default Form;

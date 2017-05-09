@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Validator from 'nocms-validation';
 import utils from 'nocms-utils';
 import stores from 'nocms-stores';
@@ -216,7 +217,7 @@ Field.propTypes = {
   disabled: PropTypes.bool,
   required: PropTypes.bool,
   deleteOnUnmount: PropTypes.bool,
-  validate: React.PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  validate: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   dependOn: PropTypes.string,
   dependencyFunc: PropTypes.func,
   dateParser: PropTypes.func,
@@ -229,7 +230,7 @@ Field.defaultProps = {
 };
 
 Field.contextTypes = {
-  store: React.PropTypes.string, // we get this from Form.js
+  store: PropTypes.string, // we get this from Form.js
 };
 
 export default Field;
