@@ -110,7 +110,6 @@ export default class FormExample extends React.Component {
       controlGroupClass: 'custom-control-group',
       successWrapperClass: 'custom-success',
       errorWrapperClass: 'error',
-      errorTextClass: 'custom-error',
       labelClass: 'custom-label',
     }
 
@@ -125,6 +124,7 @@ export default class FormExample extends React.Component {
           onSubmit={this.handleSubmit}
           spinner={<Spinner />}
           submittingText='Vent litt'
+          errorTextClass='custom-error'
         >
           <Field
             required
@@ -215,6 +215,8 @@ export default class FormExample extends React.Component {
             {...inputClasses}
             label="Text area"
             name="textarea"
+            required
+            errorText="Du må gjøre et valg"
           />
           <Field
             type="hidden"

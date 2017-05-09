@@ -27,7 +27,7 @@ const RadioButtons = (props) => {
     containerClasses += ` ${successWrapperClass}`;
   }
   if (!props.isValid) {
-    containerClasses += ` ${errorWrapperClass}`;
+    containerClasses += ` error-node ${errorWrapperClass}`;
   }
   const radios = options.map((o, index) => {
     let option = o;

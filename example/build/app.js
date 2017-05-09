@@ -21661,7 +21661,6 @@
 	        controlGroupClass: 'custom-control-group',
 	        successWrapperClass: 'custom-success',
 	        errorWrapperClass: 'error',
-	        errorTextClass: 'custom-error',
 	        labelClass: 'custom-label'
 	      };
 	
@@ -21678,7 +21677,8 @@
 	            errorText: this.state.errorText,
 	            onSubmit: this.handleSubmit,
 	            spinner: React.createElement(Spinner, null),
-	            submittingText: 'Vent litt'
+	            submittingText: 'Vent litt',
+	            errorTextClass: 'custom-error'
 	          },
 	          React.createElement(_nocmsForms.Field, _extends({
 	            required: true,
@@ -21767,7 +21767,9 @@
 	            type: 'textarea'
 	          }, inputClasses, {
 	            label: 'Text area',
-	            name: 'textarea'
+	            name: 'textarea',
+	            required: true,
+	            errorText: 'Du m\xE5 gj\xF8re et valg'
 	          })),
 	          React.createElement(_nocmsForms.Field, {
 	            type: 'hidden',
@@ -22030,10 +22032,10 @@
 	      var _this3 = this;
 	
 	      setTimeout(function () {
-	        var target = _this3.formEl.querySelector('.form__error');
+	        var target = _this3.formEl.querySelector('.error-node');
 	        if (target) {
 	          var targetPos = target.offsetTop;
-	          var input = target.querySelector('input');
+	          var input = target.querySelector('select, textarea, radio, input');
 	          if (!input) {
 	            return;
 	          }
@@ -22117,6 +22119,7 @@
 	  spinner: React.PropTypes.object,
 	  backButton: React.PropTypes.object,
 	  submittingText: React.PropTypes.string,
+	  errorTextClass: React.PropTypes.string,
 	  wizardStep: React.PropTypes.bool
 	};
 	
@@ -22411,7 +22414,7 @@
 	    containerClasses += ' ' + successWrapperClass;
 	  }
 	  if (!props.isValid) {
-	    containerClasses += ' ' + errorWrapperClass;
+	    containerClasses += ' error-node ' + errorWrapperClass;
 	  }
 	  if (inlineLabel) {
 	    containerClasses += ' ' + inlineLabelClass;
@@ -22459,7 +22462,7 @@
 	      }),
 	      !inlineLabel && errorText && !props.isValid ? _react2.default.createElement(
 	        'div',
-	        { className: ' ' + errorTextClass },
+	        { className: errorTextClass },
 	        errorText
 	      ) : null
 	    )
@@ -22559,7 +22562,7 @@
 	    containerClasses += ' ' + successWrapperClass;
 	  }
 	  if (!props.isValid) {
-	    containerClasses += ' ' + errorWrapperClass;
+	    containerClasses += ' error-node ' + errorWrapperClass;
 	  }
 	  var radios = options.map(function (o, index) {
 	    var option = o;
@@ -22713,7 +22716,7 @@
 	    containerClasses += ' ' + successWrapperClass;
 	  }
 	  if (!props.isValid) {
-	    containerClasses += ' ' + errorWrapperClass;
+	    containerClasses += ' error-node ' + errorWrapperClass;
 	  }
 	
 	  var emptyOption = emptyLabel && !multiple ? [_react2.default.createElement(
@@ -22931,7 +22934,7 @@
 	    containerClasses += ' ' + successWrapperClass;
 	  }
 	  if (!props.isValid) {
-	    containerClasses += ' ' + errorWrapperClass;
+	    containerClasses += ' error-node ' + errorWrapperClass;
 	  }
 	  if (inlineLabel) {
 	    containerClasses += ' ' + inlineLabelClass;
@@ -23783,7 +23786,7 @@
 	    containerClasses += ' ' + successWrapperClass;
 	  }
 	  if (!props.isValid) {
-	    containerClasses += ' ' + errorWrapperClass;
+	    containerClasses += ' error-node ' + errorWrapperClass;
 	  }
 	  if (inlineLabel) {
 	    containerClasses += ' ' + inlineLabelClass;
@@ -23829,7 +23832,7 @@
 	      ),
 	      !inlineLabel && errorText && !props.isValid ? _react2.default.createElement(
 	        'div',
-	        { className: ' ' + errorTextClass },
+	        { className: errorTextClass },
 	        errorText
 	      ) : null
 	    )
@@ -24373,7 +24376,8 @@
 	      labelId = props.labelId,
 	      labelClass = props.labelClass,
 	      label = props.label,
-	      handleChange = props.handleChange;
+	      handleChange = props.handleChange,
+	      value = props.value;
 	
 	
 	  var containerClasses = controlGroupClass + ' ' + checkboxClass;
@@ -24388,7 +24392,7 @@
 	    return _react2.default.createElement(_Checkbox2.default, {
 	      label: option.label,
 	      value: option.value,
-	      checkedValues: props.value,
+	      checkedValues: value,
 	      name: props.name,
 	      handleCheckboxChange: toggleCheckbox, key: idx
 	    });
@@ -24420,14 +24424,16 @@
 	  checkboxClass: _react.PropTypes.string,
 	  label: _react.PropTypes.string,
 	  labelId: _react.PropTypes.string,
-	  options: _react.PropTypes.array
+	  options: _react.PropTypes.array,
+	  value: _react.PropTypes.array
 	};
 	
 	MultipleCheckbox.defaultProps = {
 	  labelClass: 'form__label',
 	  controlGroupClass: 'form__control-group',
 	  inlineLabelClass: '',
-	  checkboxClass: 'form__multi-checkbox'
+	  checkboxClass: 'form__multi-checkbox',
+	  value: []
 	};
 	
 	exports.default = MultipleCheckbox;

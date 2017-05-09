@@ -31,7 +31,7 @@ const TextArea = (props) => {
     containerClasses += ` ${successWrapperClass}`;
   }
   if (!props.isValid) {
-    containerClasses += ` ${errorWrapperClass}`;
+    containerClasses += ` error-node ${errorWrapperClass}`;
   }
   if (inlineLabel) {
     containerClasses += ` ${inlineLabelClass}`;

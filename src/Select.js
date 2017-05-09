@@ -32,7 +32,7 @@ const Select = (props) => {
     containerClasses += ` ${successWrapperClass}`;
   }
   if (!props.isValid) {
-    containerClasses += ` ${errorWrapperClass}`;
+    containerClasses += ` error-node ${errorWrapperClass}`;
   }
 
   const emptyOption = emptyLabel && !multiple ? [<option key="empty" value="">{emptyLabel}</option>] : [];

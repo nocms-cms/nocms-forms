@@ -29,7 +29,7 @@ const Checkbox = (props) => {
     containerClasses += ` ${successWrapperClass}`;
   }
   if (!props.isValid) {
-    containerClasses += ` ${errorWrapperClass}`;
+    containerClasses += ` error-node ${errorWrapperClass}`;
   }
   if (inlineLabel) {
     containerClasses += ` ${inlineLabelClass}`;
@@ -59,7 +59,7 @@ const Checkbox = (props) => {
           {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
         {!inlineLabel && errorText && !props.isValid ?
-          <div className={` ${errorTextClass}`}>{errorText}</div>
+          <div className={errorTextClass}>{errorText}</div>
         : null}
       </label>
     </div>

@@ -34,7 +34,7 @@ const Input = (props) => {
     containerClasses += ` ${successWrapperClass}`;
   }
   if (!props.isValid) {
-    containerClasses += ` ${errorWrapperClass}`;
+    containerClasses += ` error-node ${errorWrapperClass}`;
   }
   if (inlineLabel) {
     containerClasses += ` ${inlineLabelClass}`;
@@ -66,7 +66,7 @@ const Input = (props) => {
           onBlur={props.validate}
         />
         {!inlineLabel && errorText && !props.isValid ?
-          <div className={` ${errorTextClass}`}>{errorText}</div>
+          <div className={errorTextClass}>{errorText}</div>
         : null}
       </label>
     </div>

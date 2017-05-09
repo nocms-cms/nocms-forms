@@ -106,10 +106,10 @@ class Form extends React.Component {
 
   scrollToError() {
     setTimeout(() => {
-      const target = this.formEl.querySelector('.form__error');
+      const target = this.formEl.querySelector('.error-node');
       if (target) {
         const targetPos = target.offsetTop;
-        const input = target.querySelector('input');
+        const input = target.querySelector('select, textarea, radio, input');
         if (!input) {
           return;
         }
@@ -179,6 +179,7 @@ Form.propTypes = {
   spinner: React.PropTypes.object,
   backButton: React.PropTypes.object,
   submittingText: React.PropTypes.string,
+  errorTextClass: React.PropTypes.string,
   wizardStep: React.PropTypes.bool,
 };
 
