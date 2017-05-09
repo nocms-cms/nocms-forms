@@ -24,6 +24,8 @@ const TextArea = (props) => {
     handleChange,
     isValid,
     isValidated,
+    cols,
+    rows,
   } = props;
 
   let containerClasses = controlGroupClass;
@@ -55,6 +57,8 @@ const TextArea = (props) => {
           value={props.value}
           disabled={disabled}
           placeholder={placeholder}
+          rows={rows}
+          cols={cols}
         />
 
         {errorText && !props.isValid ?
@@ -90,6 +94,8 @@ TextArea.propTypes = {
   inlineLabelClass: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
+  cols: PropTypes.number,
+  rows: PropTypes.number,
 };
 
 TextArea.defaultProps = {

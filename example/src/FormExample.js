@@ -218,6 +218,8 @@ export default class FormExample extends React.Component {
             name="textarea"
             required
             errorText="Du må gjøre et valg"
+            rows={7}
+            cols={30}
           />
           <Field
             type="hidden"

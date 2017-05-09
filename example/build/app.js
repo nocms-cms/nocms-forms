@@ -21770,7 +21770,9 @@
 	            label: 'Text area',
 	            name: 'textarea',
 	            required: true,
-	            errorText: 'Du m\xE5 gj\xF8re et valg'
+	            errorText: 'Du m\xE5 gj\xF8re et valg',
+	            rows: 7,
+	            cols: 30
 	          })),
 	          React.createElement(_nocmsForms.Field, {
 	            type: 'hidden',
@@ -22928,7 +22930,9 @@
 	      placeholder = props.placeholder,
 	      handleChange = props.handleChange,
 	      isValid = props.isValid,
-	      isValidated = props.isValidated;
+	      isValidated = props.isValidated,
+	      cols = props.cols,
+	      rows = props.rows;
 	
 	
 	  var containerClasses = controlGroupClass;
@@ -22972,7 +22976,9 @@
 	        maxLength: maxLength,
 	        value: props.value,
 	        disabled: disabled,
-	        placeholder: placeholder
+	        placeholder: placeholder,
+	        rows: rows,
+	        cols: cols
 	      }),
 	      errorText && !props.isValid ? _react2.default.createElement(
 	        'div',
@@ -23007,7 +23013,9 @@
 	  inlineLabel: _react.PropTypes.string,
 	  inlineLabelClass: _react.PropTypes.string,
 	  disabled: _react.PropTypes.bool,
-	  placeholder: _react.PropTypes.string
+	  placeholder: _react.PropTypes.string,
+	  cols: _react.PropTypes.number,
+	  rows: _react.PropTypes.number
 	};
 	
 	TextArea.defaultProps = {
