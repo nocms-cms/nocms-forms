@@ -32,7 +32,7 @@ Checkbox.propTypes = {
   value: PropTypes.string,
   name: PropTypes.string,
   checkedValues: PropTypes.array,
-  labelClass: PropTypes.array,
+  labelClass: PropTypes.string,
 };
 
 Checkbox.defaultProps = {
