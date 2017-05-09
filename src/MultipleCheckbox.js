@@ -29,14 +29,16 @@ const MultipleCheckbox = (props) => {
     value={option.value}
     checkedValues={value}
     name={props.name}
-    handleCheckboxChange={toggleCheckbox} key={idx}
+    handleCheckboxChange={toggleCheckbox}
+    key={idx}
+    labelClass={labelClass}
   />),
   );
 
   return (
     <div className={containerClasses}>
       <fieldset>
-        <legend id={labelId} className={labelClass}>
+        <legend id={labelId}>
           {label}
         </legend>
         {createCheckboxes}
