@@ -113,7 +113,7 @@ class Form extends React.Component {
         if (!input) {
           return;
         }
-        utils.scrollTo(document.body, targetPos - 160, 400, () => {
+        utils.scrollTo(document.body, targetPos - 160, this.props.scrollDuration, () => {
           input.focus();
         });
       }
@@ -179,13 +179,14 @@ Form.propTypes = {
   spinner: React.PropTypes.object,
   backButton: React.PropTypes.object,
   submittingText: React.PropTypes.string,
-  errorTextClass: React.PropTypes.string,
   wizardStep: React.PropTypes.bool,
+  scrollDuration: React.PropTypes.number,
 };
 
 Form.defaultProps = {
   centerSubmitButton: true,
   className: 'form',
+  scrollDuration: 400,
 };
 
 Form.childContextTypes = {

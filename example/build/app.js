@@ -21678,7 +21678,8 @@
 	            onSubmit: this.handleSubmit,
 	            spinner: React.createElement(Spinner, null),
 	            submittingText: 'Vent litt',
-	            errorTextClass: 'custom-error'
+	            errorTextClass: 'custom-error',
+	            scrollDuration: 0
 	          },
 	          React.createElement(_nocmsForms.Field, _extends({
 	            required: true,
@@ -22039,7 +22040,7 @@
 	          if (!input) {
 	            return;
 	          }
-	          utils.scrollTo(document.body, targetPos - 160, 400, function () {
+	          utils.scrollTo(document.body, targetPos - 160, _this3.props.scrollDuration, function () {
 	            input.focus();
 	          });
 	        }
@@ -22119,13 +22120,14 @@
 	  spinner: React.PropTypes.object,
 	  backButton: React.PropTypes.object,
 	  submittingText: React.PropTypes.string,
-	  errorTextClass: React.PropTypes.string,
-	  wizardStep: React.PropTypes.bool
+	  wizardStep: React.PropTypes.bool,
+	  scrollDuration: React.PropTypes.number
 	};
 	
 	Form.defaultProps = {
 	  centerSubmitButton: true,
-	  className: 'form'
+	  className: 'form',
+	  scrollDuration: 400
 	};
 	
 	Form.childContextTypes = {

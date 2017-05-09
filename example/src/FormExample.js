@@ -125,6 +125,7 @@ export default class FormExample extends React.Component {
           spinner={<Spinner />}
           submittingText='Vent litt'
           errorTextClass='custom-error'
+          scrollDuration={0}
         >
           <Field
             required
