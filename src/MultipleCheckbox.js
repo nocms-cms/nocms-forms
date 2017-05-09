@@ -11,6 +11,7 @@ const MultipleCheckbox = (props) => {
     labelClass,
     label,
     handleChange,
+    value,
   } = props;
 
 
@@ -25,7 +26,7 @@ const MultipleCheckbox = (props) => {
   const createCheckboxes = props.options.map((option, idx) => (<Checkbox
     label={option.label}
     value={option.value}
-    checkedValues={props.value}
+    checkedValues={value}
     name={props.name}
     handleCheckboxChange={toggleCheckbox} key={idx}
   />),
@@ -54,6 +55,7 @@ MultipleCheckbox.propTypes = {
   label: PropTypes.string,
   labelId: PropTypes.string,
   options: PropTypes.array,
+  value: PropTypes.array,
 };
 
 MultipleCheckbox.defaultProps = {
@@ -61,6 +63,7 @@ MultipleCheckbox.defaultProps = {
   controlGroupClass: 'form__control-group',
   inlineLabelClass: '',
   checkboxClass: 'form__multi-checkbox',
+  value: [],
 };
 
 export default MultipleCheckbox;
