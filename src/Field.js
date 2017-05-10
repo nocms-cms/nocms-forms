@@ -65,7 +65,7 @@ class Field extends Component {
       if (this.props.type === 'text' || this.props.type === 'textarea' || this.props.type === 'hidden') {
         inputState[this.props.name].value = this.props.value || '';
       }
-    } else if (typeof initialState !== 'object') {
+    } else if (typeof initialState !== 'object' || initialState instanceof Array) {
       inputState[this.props.name].value = initialState;
     } else {
       inputState[this.props.name] = initialState;

@@ -103,7 +103,8 @@ export default class FormExample extends React.Component {
       }
     ];
     const initialData = {
-      checkbox: true
+      checkbox: true,
+      multiselect_initial: ['opt1', 'opt3'],
     };
 
     const inputClasses = {
@@ -206,6 +207,17 @@ export default class FormExample extends React.Component {
             label="Select multiple"
             options={multiSelectOptions}
             name="multiselect"
+            emptyLabel="Velg flere gøye ting"
+            multiple
+            required
+            errorText="Du må gjøre et valg"
+          />
+          <Field
+            type="select"
+            {...inputClasses}
+            label="Select multiple with initial state"
+            options={multiSelectOptions}
+            name="multiselect_initial"
             emptyLabel="Velg flere gøye ting"
             multiple
             required

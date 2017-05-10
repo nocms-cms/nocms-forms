@@ -75,7 +75,7 @@ class Form extends Component {
         if (prop.disabled) {
           return;
         }
-        if (typeof prop !== 'object') {
+        if (typeof prop !== 'object' || prop instanceof Array) {
           formData[field] = prop;
           return;
         }
