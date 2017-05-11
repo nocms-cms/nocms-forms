@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+const React = require('react');
 import { Form, Field } from 'nocms-forms';
 const Spinner = require('./Spinner');
 
@@ -56,61 +56,21 @@ export default class FormExample extends React.Component {
         value: 'two',
       },
     ];
-    const multiCheckbox = [
-      {
-        label: 'Fiskekake',
-        value: 'fish',
-      },
-      {
-        label: 'Sjokoladekake',
-        value: 'chocolate',
-      },
-      {
-        label: 'Kjøttkake',
-        value: 'meat',
-      },
-      {
-        label: 'Bløtkake',
-        value: 'soft',
-      },
-    ];
     const selectOptions = [
       'Option 1', 'Option 2',
     ];
     const multiSelectOptions = [
-      {label: 'Option 1',
-        value: 'opt1',
-      },
-      {
-        label: 'Option 2',
-        value: 'opt2',
-      },
-      {
-        label: 'Option 3',
-        value: 'opt3',
-      },
-      {
-        label: 'Option 4',
-        value: 'opt4',
-      },
-      {
-        label: 'Option 5',
-        value: 'opt5',
-      },
-      {
-        label: 'Option 6',
-        value: 'opt6',
-      }
+      'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6',
     ];
     const initialData = {
-      checkbox: true,
-      multiselect_initial: ['opt1', 'opt3'],
+      checkbox: true
     };
 
     const inputClasses = {
       controlGroupClass: 'custom-control-group',
       successWrapperClass: 'custom-success',
       errorWrapperClass: 'error',
+      errorTextClass: 'custom-error',
       labelClass: 'custom-label',
     }
 
@@ -125,8 +85,6 @@ export default class FormExample extends React.Component {
           onSubmit={this.handleSubmit}
           spinner={<Spinner />}
           submittingText='Vent litt'
-          errorTextClass='custom-error'
-          scrollDuration={0}
         >
           <Field
             required
@@ -160,13 +118,10 @@ export default class FormExample extends React.Component {
             errorText="Wrong e-mail"
             validate="email"
           />
-          <Field
-            label="Toggle disabled field"
-            name="disabledToggler"
-            {...inputClasses}
-            type="checkbox"
-            onChange={this.toggleDisabledField}
-          />
+          <label>
+            <input type="checkbox" checked={this.state.disabled} onChange={this.toggleDisabledField} />
+            Toggle disabled field
+          </label>
           <Field
             required
             disabled={this.state.disabled}
@@ -204,34 +159,17 @@ export default class FormExample extends React.Component {
           <Field
             type="select"
             {...inputClasses}
-            label="Select multiple"
+            label="Select"
             options={multiSelectOptions}
             name="multiselect"
             emptyLabel="Velg flere gøye ting"
             multiple
-            required
-            errorText="Du må gjøre et valg"
-          />
-          <Field
-            type="select"
-            {...inputClasses}
-            label="Select multiple with initial state"
-            options={multiSelectOptions}
-            name="multiselect_initial"
-            emptyLabel="Velg flere gøye ting"
-            multiple
-            required
-            errorText="Du må gjøre et valg"
           />
           <Field
             type="textarea"
             {...inputClasses}
             label="Text area"
             name="textarea"
-            required
-            errorText="Du må gjøre et valg"
-            rows={7}
-            cols={30}
           />
           <Field
             type="hidden"
@@ -258,13 +196,6 @@ export default class FormExample extends React.Component {
             errorText="Invalid date format"
             validate="date"
             dateParser={this.parseNoDate}
-          />
-          <Field
-            label="Check all your favourite cakes that applies"
-            name="cakes"
-            type="checkbox"
-            options={multiCheckbox}
-            multiple
           />
         </Form>
         { this.state.formData ?

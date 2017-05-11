@@ -62,7 +62,7 @@ class Field extends Component {
     inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
 
     if (typeof initialState === 'undefined' || initialState === null) {
-      if (this.props.type === 'text' || this.props.type === 'textarea' || this.props.type === 'hidden') {
+      if (this.props.type === 'text' || this.props.type === 'textarea' || this.props.type === 'hidden' || (this.props.type === 'select' && !this.props.multiple)) {
         inputState[this.props.name].value = this.props.value || '';
       }
     } else if (typeof initialState !== 'object' || initialState instanceof Array) {
