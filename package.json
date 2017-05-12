@@ -1,6 +1,6 @@
 {
-  "name": "nocms-forms",
-  "version": "1.0.5",
+  "name": "@miles-web-team/nocms-forms",
+  "version": "1.0.4",
   "description": "React forms for NoCMS",
   "main": "lib/index.js",
   "author": "Miles",
@@ -20,10 +20,10 @@
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,react,stage-1 --plugins babel-plugin-add-module-exports"
   },
   "dependencies": {
-    "nocms-events": "^0.1.2",
-    "nocms-stores": "^0.1.2",
-    "nocms-utils": "^0.1.1",
-    "nocms-validation": "^1.0.3"
+    "@miles-web-team/nocms-events": "^0.1.2",
+    "@miles-web-team/nocms-stores": "^0.1.2",
+    "@miles-web-team/nocms-utils": "^0.1.1",
+    "@miles-web-team/nocms-validation": "^1.0.3"
   },
   "devDependencies": {
     "babel": "^6.5.2",
