@@ -23,7 +23,8 @@
     "nocms-events": "^0.1.2",
     "nocms-stores": "^0.1.2",
     "nocms-utils": "^0.1.1",
-    "nocms-validation": "^1.0.3"
+    "nocms-validation": "^1.0.3",
+    "prop-types": "^15.5.8",
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -42,7 +43,6 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.8.0",
-    "prop-types": "^15.5.8",
     "react": "15.4.0",
     "react-dom": "15.4.0",
     "watch": "^0.19.1",
