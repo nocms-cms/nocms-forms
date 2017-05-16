@@ -16,7 +16,7 @@ const MultipleCheckbox = (props) => {
   } = props;
 
 
-  let containerClasses = `${controlGroupClass} ${checkboxClass}`;
+  let containerClasses = `${controlGroupClass} ${checkboxClass} ${checkboxClass}--multiple`;
   if (inlineLabel) {
     containerClasses += ` ${inlineLabelClass}`;
   }
@@ -65,7 +65,7 @@ MultipleCheckbox.defaultProps = {
   labelClass: 'form__label',
   controlGroupClass: 'form__control-group',
   inlineLabelClass: '',
-  checkboxClass: 'form__multi-checkbox',
+  checkboxClass: 'form__checkbox',
   value: [],
 };
 

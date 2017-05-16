@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Checkbox = (props) => {
-  const { label, value, name, checkedValues, handleCheckboxChange } = props;
+  const { label, value, name, checkedValues, handleCheckboxChange, labelClass } = props;
 
   const toggleCheckboxChange = (e) => {
     handleCheckboxChange(e);
@@ -20,7 +20,9 @@ const Checkbox = (props) => {
           checked={isChecked}
           onChange={toggleCheckboxChange}
         />
-        {label}
+        <span className={labelClass}>
+          {label}
+        </span>
       </label>
     </div>
   );
@@ -32,6 +34,7 @@ Checkbox.propTypes = {
   value: PropTypes.string,
   name: PropTypes.string,
   checkedValues: PropTypes.array,
+  labelClass: PropTypes.string,
 };
 
 export default Checkbox;

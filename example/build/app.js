@@ -21913,6 +21913,13 @@
 	        checkbox: true
 	      };
 	
+	      var multiCheck = [{
+	        label: 'Carrot',
+	        value: 'one'
+	      }, {
+	        label: 'Apple',
+	        value: 'two'
+	      }];
 	      var inputClasses = {
 	        controlGroupClass: 'custom-control-group',
 	        successWrapperClass: 'custom-success',
@@ -22040,6 +22047,15 @@
 	            label: 'Check me out',
 	            name: 'checkbox'
 	          }),
+	          React.createElement(_nocmsForms.Field, _extends({
+	            type: 'checkbox'
+	          }, inputClasses, {
+	            label: 'Check',
+	            options: multiCheck,
+	            name: 'multicheck',
+	            emptyLabel: 'Velg flere g\xF8ye ting',
+	            multiple: true
+	          })),
 	          React.createElement(_nocmsForms.Field, {
 	            label: 'Some date',
 	            name: 'date',
@@ -24362,7 +24378,7 @@
 	      value = props.value;
 	
 	
-	  var containerClasses = controlGroupClass + ' ' + checkboxClass;
+	  var containerClasses = controlGroupClass + ' ' + checkboxClass + ' ' + checkboxClass + '--multiple';
 	  if (inlineLabel) {
 	    containerClasses += ' ' + inlineLabelClass;
 	  }
@@ -24416,7 +24432,7 @@
 	  labelClass: 'form__label',
 	  controlGroupClass: 'form__control-group',
 	  inlineLabelClass: '',
-	  checkboxClass: 'form__multi-checkbox',
+	  checkboxClass: 'form__checkbox',
 	  value: []
 	};
 	
@@ -24448,7 +24464,8 @@
 	      value = props.value,
 	      name = props.name,
 	      checkedValues = props.checkedValues,
-	      handleCheckboxChange = props.handleCheckboxChange;
+	      handleCheckboxChange = props.handleCheckboxChange,
+	      labelClass = props.labelClass;
 	
 	
 	  var toggleCheckboxChange = function toggleCheckboxChange(e) {
@@ -24470,7 +24487,11 @@
 	        checked: isChecked,
 	        onChange: toggleCheckboxChange
 	      }),
-	      label
+	      _react2.default.createElement(
+	        'span',
+	        { className: labelClass },
+	        label
+	      )
 	    )
 	  );
 	};
@@ -24480,7 +24501,8 @@
 	  handleCheckboxChange: _propTypes2.default.func.isRequired,
 	  value: _propTypes2.default.string,
 	  name: _propTypes2.default.string,
-	  checkedValues: _propTypes2.default.array
+	  checkedValues: _propTypes2.default.array,
+	  labelClass: _propTypes2.default.string
 	};
 	
 	exports.default = Checkbox;

@@ -66,6 +66,16 @@ export default class FormExample extends React.Component {
       checkbox: true
     };
 
+    const multiCheck = [
+      {
+        label: 'Carrot',
+        value: 'one',
+      },
+      {
+        label: 'Apple',
+        value: 'two',
+      },
+    ]
     const inputClasses = {
       controlGroupClass: 'custom-control-group',
       successWrapperClass: 'custom-success',
@@ -188,6 +198,15 @@ export default class FormExample extends React.Component {
             type="checkbox"
             label="Check me out"
             name="checkbox"
+          />
+          <Field
+            type="checkbox"
+            {...inputClasses}
+            label="Check"
+            options={multiCheck}
+            name="multicheck"
+            emptyLabel="Velg flere gøye ting"
+            multiple
           />
           <Field
             label="Some date"
