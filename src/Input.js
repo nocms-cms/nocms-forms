@@ -65,6 +65,8 @@ const Input = (props) => {
           onChange={props.handleChange}
           onKeyDown={props.handleKeyDown}
           onBlur={props.validate}
+          min={props.min}
+          max={props.max}
         />
         {!inlineLabel && errorText && !props.isValid ?
           <div className={errorTextClass}>{errorText}</div>

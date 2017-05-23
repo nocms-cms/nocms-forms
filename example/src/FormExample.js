@@ -215,6 +215,8 @@ export default class FormExample extends React.Component {
             errorText="Invalid date format"
             validate="date"
             dateParser={this.parseNoDate}
+            min="2017-01-01"
+            max="2017-06-01"
           />
         </Form>
         { this.state.formData ?
