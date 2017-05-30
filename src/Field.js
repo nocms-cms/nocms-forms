@@ -176,7 +176,7 @@ class Field extends Component {
       value = this.props.dateParser(value);
     }
     const isValid = Validator.validate(value, this.props.validate, this.props.required);
-    this.updateStore(this.state.value, isValid, true);
+    this.updateStore(value, isValid, true);
     return isValid;
   }
 
