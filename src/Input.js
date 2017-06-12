@@ -104,6 +104,8 @@ Input.propTypes = {
   readOnly: PropTypes.bool,
   placeholder: PropTypes.string,
   labelId: PropTypes.string,
+  min: PropTypes.string,
+  max: PropTypes.string,
 };
 
 Input.defaultProps = {

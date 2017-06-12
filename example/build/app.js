@@ -22894,7 +22894,9 @@
 	  disabled: _propTypes2.default.bool,
 	  readOnly: _propTypes2.default.bool,
 	  placeholder: _propTypes2.default.string,
-	  labelId: _propTypes2.default.string
+	  labelId: _propTypes2.default.string,
+	  min: _propTypes2.default.string,
+	  max: _propTypes2.default.string
 	};
 	
 	Input.defaultProps = {
