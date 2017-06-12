@@ -1,3 +1,4 @@
+/* eslint arrow-body-style: "off" */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MultipleSelect from './MultipleSelect';
@@ -23,10 +24,27 @@ const Select = (props) => {
     notRequiredClass,
     emptyLabel,
     multiple,
+    groupedOptions,
     handleChange,
     handleKeyDown,
     validate,
   } = props;
+
+  const getOptionsList = (optionsArr) => {
+    return optionsArr.map((o, index) => {
+      let option = o;
+      if (typeof option === 'string') {
+        option = { label: option, value: option };
+      }
+      return <option key={index} value={option.value}>{option.label}</option>;
+    });
+  };
+
+  const getGroupedOptionsList = (optionsArr) => {
+    return optionsArr.map((o, index) => {
+      return <optgroup label={o.groupLabel} key={index}>{ getOptionsList(o.options) }</optgroup>;
+    });
+  };
 
   let containerClasses = controlGroupClass;
   if (props.isValid && props.isValidated) {
@@ -37,13 +55,8 @@ const Select = (props) => {
   }
 
   const emptyOption = emptyLabel && !multiple ? [<option key="empty" value="">{emptyLabel}</option>] : [];
-  const optionsList = emptyOption.concat(options.map((o, index) => {
-    let option = o;
-    if (typeof option === 'string') {
-      option = { label: option, value: option };
-    }
-    return <option key={index} value={option.value}>{option.label}</option>;
-  }));
+  const optionsList = groupedOptions ? getGroupedOptionsList(options) : getOptionsList(options);
+  const optionsListCompleted = emptyOption.concat(optionsList);
 
   return (
     <div className={containerClasses}>
@@ -54,7 +67,7 @@ const Select = (props) => {
           {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
         { multiple ? <MultipleSelect name={name} disabled={disabled} value={value} handleChange={props.handleChange} onKeyDown={handleKeyDown} onBlur={props.validate}>
-          {optionsList}
+          {optionsListCompleted}
         </MultipleSelect> :
         <select
           name={name}
@@ -66,7 +79,7 @@ const Select = (props) => {
           onKeyDown={handleKeyDown}
           onBlur={validate}
         >
-          {optionsList}
+          {optionsListCompleted}
         </select> }
         {errorText && !isValid ?
           <div className={errorTextClass}>{errorText}</div>
@@ -103,6 +116,7 @@ Select.propTypes = {
   label: PropTypes.string,
   validate: PropTypes.func,
   multiple: PropTypes.bool,
+  groupedOptions: PropTypes.bool,
 };
 
 Select.defaultProps = {

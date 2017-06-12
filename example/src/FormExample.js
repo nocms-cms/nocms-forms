@@ -62,6 +62,16 @@ export default class FormExample extends React.Component {
     const multiSelectOptions = [
       'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6',
     ];
+    const groupedSelectOptions = [
+      {
+        groupLabel: 'Fruit',
+        options: [{label: 'Apple', value: 'apple'}, {label: 'Banana', value: 'banana'}]
+      },
+      {
+        groupLabel: 'Vegetable',
+        options: [{label: 'Carrot', value: 'carrot'}, {label: 'Potato', value: 'potato'}, {label: 'Garlic', value: 'garlic'}]
+      }
+    ]
     const initialData = {
       checkbox: true
     };
@@ -169,11 +179,19 @@ export default class FormExample extends React.Component {
           <Field
             type="select"
             {...inputClasses}
-            label="Select"
+            label="Select multiple"
             options={multiSelectOptions}
             name="multiselect"
-            emptyLabel="Velg flere gøye ting"
             multiple
+          />
+          <Field
+            type="select"
+            {...inputClasses}
+            label="Select from groups"
+            options={groupedSelectOptions}
+            name="groupedselect"
+            emptyLabel="Velg noe gøy"
+            groupedOptions
           />
           <Field
             type="textarea"
