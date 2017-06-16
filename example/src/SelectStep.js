@@ -19,6 +19,16 @@ export default class SelectStep extends Component {
     const singleSelectOptions = [
       'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6',
     ];
+    const radioOptions = [
+      {
+        label: 'Ja',
+        value: 'yes'
+      },
+      {
+        label: 'Nei',
+        value: 'no',
+      }
+    ];
     return (
       <Form
         wizardStep
@@ -40,6 +50,26 @@ export default class SelectStep extends Component {
           type="select"
           options={singleSelectOptions}
          />
+         <Field
+           required
+           label="Radio"
+           name="radio"
+           errorText="Oisann"
+           validate="notEmpty"
+           type="radio"
+           required
+           options={radioOptions}
+          />
+          <Field
+            required
+            label="Radio"
+            name="radio2"
+            errorText="Oisann igjen"
+            validate="notEmpty"
+            type="radio"
+            required
+            options={radioOptions}
+           />
       </Form>
     );
   }
