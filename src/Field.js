@@ -23,7 +23,7 @@ class Field extends Component {
       value: props.value,
       isValid: true,
       isValidated: false,
-      convertDate: props.type === 'date',
+      convertDate: props.convertDate && props.type === 'date',
       disabled: props.disabled,
     };
   }
@@ -224,10 +224,12 @@ Field.propTypes = {
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
   options: PropTypes.array,
+  convertDate: PropTypes.bool,
 };
 
 Field.defaultProps = {
   type: 'text',
+  convertDate: true,
 };
 
 Field.contextTypes = {
