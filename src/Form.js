@@ -8,17 +8,6 @@ import events from 'nocms-events';
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
 
-const convertDate = (date) => {
-  if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
-    return date;
-  }
-  const dateMatch = date.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-  if (dateMatch) {
-    return `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`;
-  }
-  return date;
-};
-
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -88,7 +77,7 @@ class Form extends Component {
           thisOneIsValid = prop.isValid;
         }
         if (formIsValid) {
-          formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
+          formData[field] = prop.value;
         }
 
         formIsValid = formIsValid && thisOneIsValid;

@@ -37,14 +37,6 @@ export default class FormExample extends React.Component {
     return value === 'a';
   }
 
-  parseNoDate(value) {
-    const parts = value.match(/^(\d\d)\.(\d\d)\.(\d{4})$/);
-    if (!parts) {
-      return '-';
-    }
-    return `${parts[3]}-${parts[2]}-${parts[1]}`;
-  }
-
   render() {
     const radioOptions = [
       {
@@ -227,12 +219,10 @@ export default class FormExample extends React.Component {
             multiple
           />
           <Field
-            label="Some date"
+            label="Some date.."
             name="date"
             type="date"
             errorText="Invalid date format"
-            validate="date"
-            dateParser={this.parseNoDate}
             min="2017-01-01"
             max="2017-06-01"
           />

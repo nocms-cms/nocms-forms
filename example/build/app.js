@@ -21571,15 +21571,6 @@
 	      return value === 'a';
 	    }
 	  }, {
-	    key: 'parseNoDate',
-	    value: function parseNoDate(value) {
-	      var parts = value.match(/^(\d\d)\.(\d\d)\.(\d{4})$/);
-	      if (!parts) {
-	        return '-';
-	      }
-	      return parts[3] + '-' + parts[2] + '-' + parts[1];
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -21756,12 +21747,10 @@
 	            multiple: true
 	          })),
 	          React.createElement(_nocmsForms.Field, {
-	            label: 'Some date',
+	            label: 'Some date..',
 	            name: 'date',
 	            type: 'date',
 	            errorText: 'Invalid date format',
-	            validate: 'date',
-	            dateParser: this.parseNoDate,
 	            min: '2017-01-01',
 	            max: '2017-06-01'
 	          })
@@ -21892,17 +21881,6 @@
 	var SUBMITTING_DEFAULT = '...';
 	var SUBMIT_BUTTON_DEFAULT = 'OK';
 	
-	var convertDate = function convertDate(date) {
-	  if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
-	    return date;
-	  }
-	  var dateMatch = date.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-	  if (dateMatch) {
-	    return dateMatch[3] + '-' + dateMatch[2] + '-' + dateMatch[1];
-	  }
-	  return date;
-	};
-	
 	var Form = function (_Component) {
 	  _inherits(Form, _Component);
 	
@@ -21987,7 +21965,7 @@
 	            thisOneIsValid = prop.isValid;
 	          }
 	          if (formIsValid) {
-	            formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
+	            formData[field] = prop.value;
 	          }
 	
 	          formIsValid = formIsValid && thisOneIsValid;
@@ -24062,7 +24040,6 @@
 	      value: props.value,
 	      isValid: true,
 	      isValidated: false,
-	      convertDate: props.type === 'date',
 	      disabled: props.disabled
 	    };
 	    return _this;
@@ -24217,8 +24194,7 @@
 	        isValid: isValid,
 	        isValidated: isValidated,
 	        disabled: this.state.disabled,
-	        validate: this.validate,
-	        convertDate: this.props.type === 'date'
+	        validate: this.validate
 	      };
 	
 	      _nocmsStores2.default.update(this.context.store, state);
