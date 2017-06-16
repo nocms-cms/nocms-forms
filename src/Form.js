@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
@@ -64,7 +65,7 @@ class Form extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const formData = {};
-    let isValid = true;
+    let formIsValid = true;
 
     if (this.state.store) {
       Object.keys(this.state.store).forEach((field) => {
@@ -79,21 +80,24 @@ class Form extends Component {
           formData[field] = prop;
           return;
         }
+        let thisOneIsValid = false;
         if (!prop.isValidated) {
-          isValid = prop.validate();
+          thisOneIsValid = prop.validate();
         }
         if (prop.isValidated) {
-          isValid = isValid && prop.isValid;
+          thisOneIsValid = prop.isValid;
         }
-        if (isValid) {
+        if (formIsValid) {
           formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
         }
+
+        formIsValid = formIsValid && thisOneIsValid;
       });
     }
 
-    this.setState({ isValid });
+    this.setState({ isValid: formIsValid });
 
-    if (!isValid) {
+    if (!formIsValid) {
       this.scrollToError();
       return;
     }
