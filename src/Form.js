@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
@@ -6,17 +7,6 @@ import events from 'nocms-events';
 
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
-
-const convertDate = (date) => {
-  if (/^\d{4}-\d{2}-\d{2}/.test(date)) {
-    return date;
-  }
-  const dateMatch = date.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-  if (dateMatch) {
-    return `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`;
-  }
-  return date;
-};
 
 class Form extends Component {
   constructor(props) {
@@ -64,7 +54,7 @@ class Form extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const formData = {};
-    let isValid = true;
+    let formIsValid = true;
 
     if (this.state.store) {
       Object.keys(this.state.store).forEach((field) => {
@@ -79,21 +69,24 @@ class Form extends Component {
           formData[field] = prop;
           return;
         }
+        let thisOneIsValid = false;
         if (!prop.isValidated) {
-          isValid = prop.validate();
+          thisOneIsValid = prop.validate();
         }
         if (prop.isValidated) {
-          isValid = isValid && prop.isValid;
+          thisOneIsValid = prop.isValid;
         }
-        if (isValid) {
-          formData[field] = prop.convertDate ? convertDate(prop.value) : prop.value;
+        if (formIsValid) {
+          formData[field] = prop.value;
         }
+
+        formIsValid = formIsValid && thisOneIsValid;
       });
     }
 
-    this.setState({ isValid });
+    this.setState({ isValid: formIsValid });
 
-    if (!isValid) {
+    if (!formIsValid) {
       this.scrollToError();
       return;
     }

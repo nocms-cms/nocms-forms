@@ -23,7 +23,6 @@ class Field extends Component {
       value: props.value,
       isValid: true,
       isValidated: false,
-      convertDate: props.type === 'date',
       disabled: props.disabled,
     };
   }
@@ -160,7 +159,6 @@ class Field extends Component {
       isValidated,
       disabled: this.state.disabled,
       validate: this.validate,
-      convertDate: this.props.type === 'date',
     };
 
     stores.update(this.context.store, state);
