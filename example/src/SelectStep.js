@@ -24,7 +24,6 @@ export default class SelectStep extends Component {
         wizardStep
         key={this.props.store}
         onSubmit={this.handleSubmit}
-        initialState={this.props.initialState}
         className={this.props.formClass}
         store={this.props.store}
         errorText={this.state.errorText}
@@ -39,7 +38,15 @@ export default class SelectStep extends Component {
           validate="notEmpty"
           type="select"
           options={singleSelectOptions}
+          emptyLabel="Gjør et valg"
          />
+         <Field
+           required
+           label="Hey, I'm required, and if I'm OK, I will override isValid even if you haven't selected anything above"
+           name="text"
+           errorText="Oisann"
+           validate="notEmpty"
+          />
       </Form>
     );
   }

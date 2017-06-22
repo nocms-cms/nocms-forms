@@ -23793,6 +23793,8 @@
 	    value: function componentWillUnmount() {
 	      if (_nocmsUtils2.default.isBrowser()) {
 	        _nocmsStores2.default.unsubscribe(this.context.store, this.handleStoreChange);
+	        // Tryner ved wizard og neste-klikk
+	        // Slettes ikke fra wizard-data
 	        if (this.props.deleteOnUnmount) {
 	          var inputState = {};
 	          inputState[this.props.name] = undefined;
@@ -23845,7 +23847,7 @@
 	        return false;
 	      }
 	
-	      var aggregatedValue = this.props.dependencyFunc(values);
+	      var aggregatedValue = this.props.dependencyFunc(values, store[this.props.name].value);
 	      var aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
 	
 	      this.setState(aggregatedState);
@@ -24599,11 +24601,11 @@
 	
 	var _Step2 = _interopRequireDefault(_Step);
 	
-	var _SelectStep = __webpack_require__(208);
+	var _SelectStep = __webpack_require__(207);
 	
 	var _SelectStep2 = _interopRequireDefault(_SelectStep);
 	
-	var _ComplexStep = __webpack_require__(207);
+	var _ComplexStep = __webpack_require__(208);
 	
 	var _ComplexStep2 = _interopRequireDefault(_ComplexStep);
 	
@@ -24895,6 +24897,101 @@
 	
 	var _nocmsForms = __webpack_require__(183);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SelectStep = function (_Component) {
+	  _inherits(SelectStep, _Component);
+	
+	  function SelectStep() {
+	    _classCallCheck(this, SelectStep);
+	
+	    var _this = _possibleConstructorReturn(this, (SelectStep.__proto__ || Object.getPrototypeOf(SelectStep)).call(this));
+	
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.state = {
+	      errorText: null
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(SelectStep, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(formData, cb) {
+	      cb();
+	      this.props.goNext(formData);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var singleSelectOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6'];
+	      return _react2.default.createElement(
+	        _nocmsForms.Form,
+	        {
+	          wizardStep: true,
+	          key: this.props.store,
+	          onSubmit: this.handleSubmit,
+	          className: this.props.formClass,
+	          store: this.props.store,
+	          errorText: this.state.errorText,
+	          backButton: this.props.backButton
+	        },
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Step: ',
+	          this.props.name
+	        ),
+	        _react2.default.createElement(_nocmsForms.Field, {
+	          required: true,
+	          label: 'Label',
+	          name: 'select',
+	          errorText: 'Oisann',
+	          validate: 'notEmpty',
+	          type: 'select',
+	          options: singleSelectOptions,
+	          emptyLabel: 'Gj\xF8r et valg'
+	        }),
+	        _react2.default.createElement(_nocmsForms.Field, {
+	          required: true,
+	          label: 'Hey, I\'m required, and if I\'m OK, I will override isValid even if you haven\'t selected anything above',
+	          name: 'text',
+	          errorText: 'Oisann',
+	          validate: 'notEmpty'
+	        })
+	      );
+	    }
+	  }]);
+	
+	  return SelectStep;
+	}(_react.Component);
+	
+	exports.default = SelectStep;
+	module.exports = exports['default'];
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _nocmsForms = __webpack_require__(183);
+	
 	var _nocmsStores = __webpack_require__(187);
 	
 	var _nocmsStores2 = _interopRequireDefault(_nocmsStores);
@@ -24978,94 +25075,6 @@
 	}(_react.Component);
 	
 	exports.default = ComplexStep;
-	module.exports = exports['default'];
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _nocmsForms = __webpack_require__(183);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var SelectStep = function (_Component) {
-	  _inherits(SelectStep, _Component);
-	
-	  function SelectStep() {
-	    _classCallCheck(this, SelectStep);
-	
-	    var _this = _possibleConstructorReturn(this, (SelectStep.__proto__ || Object.getPrototypeOf(SelectStep)).call(this));
-	
-	    _this.handleSubmit = _this.handleSubmit.bind(_this);
-	    _this.state = {
-	      errorText: null
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(SelectStep, [{
-	    key: 'handleSubmit',
-	    value: function handleSubmit(formData, cb) {
-	      cb();
-	      this.props.goNext(formData);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var singleSelectOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6'];
-	      return _react2.default.createElement(
-	        _nocmsForms.Form,
-	        {
-	          wizardStep: true,
-	          key: this.props.store,
-	          onSubmit: this.handleSubmit,
-	          initialState: this.props.initialState,
-	          className: this.props.formClass,
-	          store: this.props.store,
-	          errorText: this.state.errorText,
-	          backButton: this.props.backButton
-	        },
-	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Step: ',
-	          this.props.name
-	        ),
-	        _react2.default.createElement(_nocmsForms.Field, {
-	          required: true,
-	          label: 'Label',
-	          name: 'select',
-	          errorText: 'Oisann',
-	          validate: 'notEmpty',
-	          type: 'select',
-	          options: singleSelectOptions
-	        })
-	      );
-	    }
-	  }]);
-	
-	  return SelectStep;
-	}(_react.Component);
-	
-	exports.default = SelectStep;
 	module.exports = exports['default'];
 
 /***/ }
