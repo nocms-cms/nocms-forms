@@ -46,6 +46,8 @@ class Field extends Component {
   componentWillUnmount() {
     if (utils.isBrowser()) {
       stores.unsubscribe(this.context.store, this.handleStoreChange);
+      // Tryner ved wizard og neste-klikk
+      // Slettes ikke fra wizard-data
       if (this.props.deleteOnUnmount) {
         const inputState = {};
         inputState[this.props.name] = undefined;
@@ -95,7 +97,7 @@ class Field extends Component {
       return false;
     }
 
-    const aggregatedValue = this.props.dependencyFunc(values);
+    const aggregatedValue = this.props.dependencyFunc(values, store[this.props.name].value);
     const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
 
     this.setState(aggregatedState);
