@@ -13,9 +13,9 @@ export default class WizardExample extends Component {
     super();
     this.state = {
       steps: [
+        {title: 'Overskrift steg 1.5', component: <ComplexStep />},
         {title: 'Overskrift steg 1', component: <Step name="firststep" /> },
         {title: 'Overskrift steg 1.25', component: <SelectStep />},
-        {title: 'Overskrift steg 1.5', component: <ComplexStep />},
         {title: 'Overskrift steg 2', overrideGoNext: this.overrideGoNext, component: <Step name="secondstep" />, initialState: { secondstep: 't2' }},
         {title: 'Overskrift steg 3', component: <Step name="thirdstep" />, initialState: { secondstep: 't3' }},
         {title: 'Overskrift steg 4', component: <EmptyStep /> },

@@ -19,6 +19,7 @@ class Field extends Component {
     this.validate = this.validate.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.applyExistingStoreValue = this.applyExistingStoreValue.bind(this);
+    this.didDependentOnValueChanged = this.didDependentOnValueChanged.bind(this);
     this.state = {
       value: props.value,
       isValid: true,
@@ -75,11 +76,35 @@ class Field extends Component {
     stores.update(this.context.store, inputState);
   }
 
-  handleDependentState(store, changes) {
-    if (!this.props.dependOn) {
-      return false;
+  handleStoreChange(store, changes) {
+    if (this.props.dependOn && this.props.dependencyFunc && this.handleDependentState(store, changes)) {
+      return;
     }
+    if (this.props.dependOn && this.props.deleteOnDependencyChange && this.clearFromStore(store, changes)) {
+      return;
+    }
+    let newState = store[this.props.name];
+    if (typeof newState !== 'object') {
+      // Upgrade simple data values to input state in store
+      newState = {
+        value: newState,
+        isValid: true,
+        isValidated: false,
+      };
+    }
+    this.setState(newState);
+  }
 
+  clearFromStore(store, changes) {
+    const { name } = this.props;
+    if (this.didDependentOnValueChanged(store, changes)) {
+      if (store[name] && this.props.deleteOnDependencyChange(changes, store[name].value)) {
+        stores.update(this.context.store, { [this.props.name]: undefined });
+      }
+    }
+  }
+
+  didDependentOnValueChanged(store, changes) {
     const fields = this.props.dependOn.split(',').map(f => f.trim());
     const values = {};
 
@@ -95,30 +120,21 @@ class Field extends Component {
     if (!doUpdate) {
       return false;
     }
-
-    const aggregatedValue = this.props.dependencyFunc(values, store[this.props.name].value);
-    const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
-
-    this.setState(aggregatedState);
-    this.updateStore(aggregatedValue, true, true);
     return true;
   }
 
-  handleStoreChange(store, changes) {
-    if (this.props.dependOn && this.handleDependentState(store, changes)) {
-      return;
+  handleDependentState(store, changes) {
+    if (this.didDependentOnValueChanged(store, changes)) {
+      const aggregatedValue = this.props.dependencyFunc(changes, store[this.props.name].value);
+      const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
+
+      this.setState(aggregatedState);
+      this.updateStore(aggregatedValue, true, true);
+      return true;
     }
-    let newState = store[this.props.name];
-    if (typeof newState !== 'object') {
-      // Upgrade simple data values to input state in store
-      newState = {
-        value: newState,
-        isValid: true,
-        isValidated: false,
-      };
-    }
-    this.setState(newState);
+    return false;
   }
+
 
   handleChange(e) {
     let value;
@@ -220,6 +236,7 @@ Field.propTypes = {
   validate: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   dependOn: PropTypes.string,
   dependencyFunc: PropTypes.func,
+  deleteOnDependencyChange: PropTypes.func,
   dateParser: PropTypes.func,
   onChange: PropTypes.func,
   multiple: PropTypes.bool,

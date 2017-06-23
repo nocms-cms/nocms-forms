@@ -8,11 +8,15 @@ export default class ComplexStep extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStoreChange = this.handleStoreChange.bind(this);
+    this.depFunc = this.depFunc.bind(this);
+
+    this.onClick = this.onClick.bind(this);
     if (utils.isBrowser()) {
       stores.subscribe(props.store, this.handleStoreChange);
     }
     this.state = {
       errorText: null,
+      radio: null,
     };
   }
 
@@ -21,6 +25,13 @@ export default class ComplexStep extends Component {
       const store = stores.getStore(this.props.store);
       const initialState = store['complexText'];
     }
+  }
+
+  depFunc(changes, value) {
+    if (changes.selector.value === 'yes') {
+      return false;
+    }
+    return true;
   }
 
   handleSubmit(formData, cb){
@@ -32,7 +43,21 @@ export default class ComplexStep extends Component {
     console.log('change');
   }
 
+  onClick(event) {
+    this.setState({ radio: event.currentTarget.value });
+  }
+
   render(){
+    const radioOptions = [
+      {
+        label: 'Ja',
+        value: 'yes'
+      },
+      {
+        label: 'Nei',
+        value: 'no',
+      }
+    ];
     return (
       <Form
         wizardStep
@@ -44,12 +69,21 @@ export default class ComplexStep extends Component {
         errorText={this.state.errorText}
         backButton={this.props.backButton}
       >
-        <Field required
-           label="Noe vanvittig komplekst"
-           name="complexText"
-           errorText="Oisann"
-           validate="notEmpty"
-         />
+        <Field
+          type="radio"
+          label="Velg ja eller nei"
+          name="selector"
+          options={radioOptions}
+          onChange={this.onClick}
+          required
+        />
+        <Field
+          type="text"
+          dependOn="selector"
+          deleteOnDependencyChange={this.depFunc}
+          name="dependent"
+          label="Jeg er avhengig"
+        />
       </Form>
     );
   }
