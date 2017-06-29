@@ -89,13 +89,13 @@ export default class Wizard extends Component {
     const wizardData = Object.assign(this.state.wizardData, formData);
     this.setState({ wizardData });
 
-    if (this.props.goNext) {
-      this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
-      return;
-    }
     if (this.state.currentStep === this.state.lastStepIndex) {
       this.handleFinish(formData);
       this.setState({ showReceipt: true });
+      return;
+    }
+    if (this.props.goNext) {
+      this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
       return;
     }
     this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
