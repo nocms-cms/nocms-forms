@@ -34,7 +34,7 @@ export default class ComplexStep extends Component {
     return true;
   }
 
-  handleSubmit(formData, cb){
+  handleSubmit(formData, cb) {
     cb();
     this.props.goNext(formData);
   }
