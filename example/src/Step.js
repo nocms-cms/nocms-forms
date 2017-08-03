@@ -28,11 +28,12 @@ export default class Step extends Component {
         backButton={this.props.backButton}
       >
         <h2>Step: {this.props.name}</h2>
-        <Field required
-           label="Label"
-           name={this.props.name}
-           errorText="Oisann"
-           validate="notEmpty"
+        <Field
+          required
+          label="Label"
+          name={this.props.name}
+          errorText="Oisann"
+          validate="notEmpty"
          />
       </Form>
     );
