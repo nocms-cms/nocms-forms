@@ -52,6 +52,7 @@ class Form extends Component {
   }
 
   handleSubmit(e) {
+    const { wizardStep } = this.props;
     e.preventDefault();
     const formData = {};
     let formIsValid = true;
@@ -59,7 +60,13 @@ class Form extends Component {
     if (this.state.store) {
       Object.keys(this.state.store).forEach((field) => {
         const prop = this.state.store[field];
-        if (prop === null || typeof prop === 'undefined') {
+        if (prop === null) {
+          return;
+        }
+        if (typeof prop === 'undefined') {
+          if (wizardStep) {
+            formData[field] = null;
+          }
           return;
         }
         if (prop.disabled) {
