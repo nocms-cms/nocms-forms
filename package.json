@@ -56,7 +56,7 @@
     "react": "^15.0.0"
   },
    "release": {
-      "verifyConditions": "condition-circle",
-      "debug": false
+    "verifyConditions": "condition-circle",
+    "debug": false
   } 
 }
