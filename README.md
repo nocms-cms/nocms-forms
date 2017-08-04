@@ -11,6 +11,8 @@ Form package for NoCMS written with React. Currently supports the following form
 The form could be a single form or a wizard style multi step form.
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Dependency Status](https://david-dm.org/miles-no/nocms-forms.svg)](https://david-dm.org/miles-no/nocms-forms)
+[![devDependencies](https://david-dm.org/miles-no/nocms-forms/dev-status.svg)](https://david-dm.org/miles-no/nocms-forms?type=dev)
 
 ## Installation
 Install nocms-forms from npm and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
