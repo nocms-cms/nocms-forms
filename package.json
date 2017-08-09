@@ -14,7 +14,7 @@
     "url": "https://github.com/miles-no/nocms-forms.git"
   },
   "scripts": {
-    "dev": "webpack --watch --inline",
+    "dev": "webpack --watch",
     "test": "",
     "bump-version": "./node_modules/bump-version/bin/bump patch",
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1 --plugins babel-plugin-add-module-exports",
@@ -49,8 +49,8 @@
     "react-dom": "^15.6.1",
     "semantic-release": "^6.3.6",
     "watch": "^0.19.1",
-    "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.7.1"
   },
   "peerDependencies": {
     "react": "^15.0.0"
