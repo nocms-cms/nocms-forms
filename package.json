@@ -21,9 +21,9 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
-    "nocms-events": "^0.1.2",
-    "nocms-stores": "^0.1.2",
-    "nocms-utils": "^0.1.1",
+    "nocms-events": "^1.0.0",
+    "nocms-stores": "^1.0.0",
+    "nocms-utils": "^1.0.0",
     "nocms-validation": "^1.0.3",
     "prop-types": "^15.5.8"
   },
