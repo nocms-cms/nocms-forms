@@ -16,9 +16,9 @@
   "scripts": {
     "dev": "webpack --watch",
     "test": "",
-    "bump-version": "./node_modules/bump-version/bin/bump patch",
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "eslint": "eslint --ext .js, .jsx ."
   },
   "dependencies": {
     "nocms-events": "^1.0.0",
@@ -36,12 +36,12 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.16.0",
     "condition-circle": "^1.5.0",
-    "eslint": "^3.19.0",
-    "eslint-config-webteam": "^1.1.1",
+    "eslint": "^4.5.0",
+    "eslint-config-webteam": "^2.0.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.3.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "semantic-release": "^6.3.6",
