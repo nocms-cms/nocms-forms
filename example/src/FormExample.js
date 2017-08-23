@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react';
 import { Form, Field } from 'nocms-forms';
-const Spinner = require('./Spinner');
+import Spinner from './Spinner';
 
 const storeName = 'test-form';
 

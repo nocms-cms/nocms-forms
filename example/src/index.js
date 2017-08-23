@@ -1,18 +1,14 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const FormExample = require('./FormExample');
-const WizardExample = require('./WizardExample');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import FormExample from './FormExample';
+import WizardExample from './WizardExample';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <FormExample />
-        <hr />
-        <WizardExample />
-      </div>
-		);
-  }
-}
+const App = () => (
+  <div>
+    <FormExample />
+    <hr />
+    <WizardExample />
+  </div>
+);
 
 ReactDOM.render(<App />, document.getElementById('app'));
