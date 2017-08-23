@@ -17,7 +17,7 @@
     "dev": "webpack --watch",
     "test": "",
     "bump-version": "./node_modules/bump-version/bin/bump patch",
-    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1 --plugins babel-plugin-add-module-exports",
+    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
@@ -32,7 +32,6 @@
     "babel-core": "^6.10.4",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
-    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.16.0",

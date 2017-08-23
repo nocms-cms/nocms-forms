@@ -1,7 +1,7 @@
-export Form from './Form';
-export Input from './Input';
-export RadioButtons from './RadioButtons';
-export Select from './Select';
-export TextArea from './TextArea';
-export Wizard from './Wizard';
-export Field from './Field';
+export { default as Form } from './Form';
+export { default as Input } from './Input';
+export { default as RadioButtons } from './RadioButtons';
+export { default as Select } from './Select';
+export { default as TextArea } from './TextArea';
+export { default as Wizard } from './Wizard';
+export { default as Field } from './Field';
