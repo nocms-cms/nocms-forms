@@ -66,24 +66,26 @@ const Select = (props) => {
           {required && requiredMark ? <span className={requiredClass}>{requiredMark}</span> : null}
           {!required && notRequiredMark ? <span className={notRequiredClass}>{notRequiredMark}</span> : null}
         </span>
-        { multiple ? <MultipleSelect name={name} disabled={disabled} value={value} handleChange={props.handleChange} onKeyDown={handleKeyDown} onBlur={props.validate}>
-          {optionsListCompleted}
-        </MultipleSelect> :
-        <select
-          name={name}
-          disabled={disabled}
-          value={value}
-          aria-invalid={!isValid}
-          aria-required={required}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onBlur={validate}
-        >
-          {optionsListCompleted}
-        </select> }
+        { multiple ?
+          <MultipleSelect name={name} disabled={disabled} value={value} handleChange={props.handleChange} onKeyDown={handleKeyDown} onBlur={props.validate}>
+            {optionsListCompleted}
+          </MultipleSelect> :
+          <select
+            name={name}
+            disabled={disabled}
+            value={value}
+            aria-invalid={!isValid}
+            aria-required={required}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onBlur={validate}
+          >
+            {optionsListCompleted}
+          </select>
+        }
         {errorText && !isValid ?
           <div className={errorTextClass}>{errorText}</div>
-        : null}
+          : null}
       </label>
     </div>
   );

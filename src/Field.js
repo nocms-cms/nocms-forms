@@ -105,7 +105,7 @@ class Field extends Component {
   }
 
   didDependentOnValueChanged(store, changes) {
-    const fields = this.props.dependOn.split(',').map(f => f.trim());
+    const fields = this.props.dependOn.split(',').map((f) => { return f.trim(); });
     const values = {};
 
     // Check if any of the changed values are in the dependOn list
@@ -144,13 +144,13 @@ class Field extends Component {
         if (e.target.checked) {
           value = [...oldValue, e.target.value];
         } else {
-          value = oldValue.filter(v => v !== e.target.value);
+          value = oldValue.filter((v) => { return v !== e.target.value; });
         }
       } else {
         value = e.currentTarget.checked;
       }
     } else if (this.props.type === 'select' && this.props.multiple) {
-      value = [...e.target.options].filter(o => o.selected).map(o => o.value);
+      value = [...e.target.options].filter((o) => { return o.selected; }).map((o) => { return o.value; });
     } else {
       value = e.currentTarget.value;
     }

@@ -150,18 +150,18 @@ class Form extends Component {
     }
     return (
       <form
-        ref={node => this.setFormEl(node)}
+        ref={(node) => { return this.setFormEl(node); }}
         onSubmit={this.handleSubmit}
         className={className}
         noValidate
       >
         {this.state.errorText ?
           <div className="form__error form__error-summary visible">{this.state.errorText}</div>
-        : null}
+          : null}
         {this.props.children}
         {utils.isBrowser() ?
           buttons
-        : spinner }
+          : spinner }
       </form>
     );
   }

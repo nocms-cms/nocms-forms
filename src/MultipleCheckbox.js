@@ -24,15 +24,17 @@ const MultipleCheckbox = (props) => {
   const toggleCheckbox = (e) => {
     handleChange(e);
   };
-  const createCheckboxes = props.options.map((option, idx) => (<Checkbox
-    label={option.label}
-    value={option.value}
-    checkedValues={value}
-    name={props.name}
-    handleCheckboxChange={toggleCheckbox}
-    key={idx}
-    labelClass={labelClass}
-  />),
+  const createCheckboxes = props.options.map((option, idx) => {
+    return (<Checkbox
+      label={option.label}
+      value={option.value}
+      checkedValues={value}
+      name={props.name}
+      handleCheckboxChange={toggleCheckbox}
+      key={idx}
+      labelClass={labelClass}
+    />);
+  },
   );
 
   return (

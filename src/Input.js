@@ -44,7 +44,7 @@ const Input = (props) => {
     <div className={containerClasses}>
       {inlineLabel && errorText && !props.isValid ?
         <div className={errorTextClass}>{errorText}</div>
-      : null}
+        : null}
       <label id={labelId}>
         <span className={labelClass}>
           {label}
@@ -70,7 +70,7 @@ const Input = (props) => {
         />
         {!inlineLabel && errorText && !props.isValid ?
           <div className={errorTextClass}>{errorText}</div>
-        : null}
+          : null}
       </label>
     </div>
   );

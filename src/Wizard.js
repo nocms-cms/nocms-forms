@@ -14,7 +14,7 @@ export default class Wizard extends Component {
       currentStep: 0,
       lastStepIndex: props.steps.length - 1,
       wizardData: {},
-      initialStates: props.steps.map(step => step.initialState || {}),
+      initialStates: props.steps.map((step) => { return step.initialState || {}; }),
     };
   }
 
@@ -115,7 +115,7 @@ export default class Wizard extends Component {
     return (<div className={this.props.className}>
       { this.state.showReceipt ?
         this.props.receipt(this.state.wizardData)
-      :
+        :
         <div>
           { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
           { step.component }

@@ -64,7 +64,7 @@ const TextArea = (props) => {
 
         {errorText && !props.isValid ?
           <div className={errorTextClass}>{errorText}</div>
-       : null}
+          : null}
       </label>
     </div>
   );

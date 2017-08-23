@@ -39,7 +39,7 @@ const Checkbox = (props) => {
     <div className={containerClasses}>
       {inlineLabel && errorText && !props.isValid ?
         <div className={errorTextClass}>{errorText}</div>
-      : null}
+        : null}
       <label id={labelId}>
         <input
           type={type}
@@ -61,7 +61,7 @@ const Checkbox = (props) => {
         </span>
         {!inlineLabel && errorText && !props.isValid ?
           <div className={errorTextClass}>{errorText}</div>
-        : null}
+          : null}
       </label>
     </div>
   );
