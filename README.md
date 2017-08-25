@@ -86,7 +86,7 @@ Props:
 Wraps the form with functionality for a multistep form.
 
 Props:
-- `steps` is an array containing all the steps for the wizard on the format `[{title: 'Header step 1', component: <FirstStep />, overrideGoNext: this.overrideGoNext[optional], initialState: { secondstep: 't2' }[optional]}, ... ]`
+- `steps` is an array containing all the steps for the wizard on the format `[{title: 'Header step 1', component: <FirstStep />, initialState: { secondstep: 't2' }[optional]}, ... ]`
 - `store` is the name of the store (string)
 - `className` for the wizard (string/default `wizard`)
 - `goBack` is called on back button click, used if you want something more than just the previous step (function/default go to previous step)
