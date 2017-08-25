@@ -3,6 +3,17 @@ import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
 
+const getInitialStates = (steps) => {
+  if (steps instanceof Array) {
+    return steps.map((step) => { return step.initialState || {}; });
+  }
+  const initialStates = {};
+  Object.keys(steps).forEach((stepName) => {
+    initialStates[stepName] = steps[stepName].initialState;
+  });
+  return initialStates;
+};
+
 export default class Wizard extends Component {
   constructor(props) {
     super(props);
@@ -11,10 +22,10 @@ export default class Wizard extends Component {
     this.handleFinish = this.handleFinish.bind(this);
     this.applyWizardProps = this.applyWizardProps.bind(this);
     this.state = {
-      currentStep: 0,
-      lastStepIndex: props.steps.length - 1,
+      currentStep: props.firstStep || 0,
+      lastStep: props.lastStep || props.steps.length - 1,
       wizardData: {},
-      initialStates: props.steps.map((step) => { return step.initialState || {}; }),
+      initialStates: getInitialStates(props.steps),
     };
   }
 
@@ -89,7 +100,7 @@ export default class Wizard extends Component {
     const wizardData = Object.assign(this.state.wizardData, formData);
     this.setState({ wizardData });
 
-    if (this.state.currentStep === this.state.lastStepIndex) {
+    if (this.state.currentStep === this.state.lastStep) {
       this.handleFinish(formData);
       this.setState({ showReceipt: true });
       return;
@@ -98,7 +109,11 @@ export default class Wizard extends Component {
       this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
       return;
     }
-    this.setState({ currentStep: Math.min(this.state.lastStepIndex, this.state.currentStep + 1) });
+    if (typeof this.state.lastStep === 'number') {
+      this.setState({ currentStep: Math.min(this.state.lastStep, this.state.currentStep + 1) });
+      return;
+    }
+    throw new Error('Named step wizard without goNext override');
   }
 
   handleFinish(formData) {
@@ -117,7 +132,7 @@ export default class Wizard extends Component {
         this.props.receipt(this.state.wizardData)
         :
         <div>
-          { this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStepIndex + 1)}
+          { typeof this.state.lastStep === 'number' && this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStep + 1)}
           { step.component }
         </div>
       }
@@ -126,7 +141,9 @@ export default class Wizard extends Component {
 }
 
 Wizard.propTypes = {
-  steps: PropTypes.array,
+  steps: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  firstStep: PropTypes.string,
+  lastStep: PropTypes.string,
   store: PropTypes.string,
   goBack: PropTypes.func,
   goNext: PropTypes.func,

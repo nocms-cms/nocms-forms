@@ -39,8 +39,9 @@ const RadioButtons = (props) => {
     if (option.disabled) {
       labelClasses += ` ${labelClass}--disabled`;
     }
+    const key = `${name}_${index}`;
     return (
-      <label key={`${name}_${index}`} className={labelClasses}>
+      <label key={key} className={labelClasses}>
         <input
           checked={value === option.value}
           type="radio"
@@ -65,7 +66,7 @@ const RadioButtons = (props) => {
         {radios}
         {errorText && !props.isValid ?
           <div className={errorTextClass}>{props.errorText}</div>
-        : null}
+          : null}
       </fieldset>
     </div>
   );

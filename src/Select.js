@@ -36,13 +36,13 @@ const Select = (props) => {
       if (typeof option === 'string') {
         option = { label: option, value: option };
       }
-      return <option key={index} value={option.value}>{option.label}</option>;
+      return <option key={`opt${index}`} value={option.value}>{option.label}</option>; // eslint-disable-line react/no-array-index-key
     });
   };
 
   const getGroupedOptionsList = (optionsArr) => {
     return optionsArr.map((o, index) => {
-      return <optgroup label={o.groupLabel} key={index}>{ getOptionsList(o.options) }</optgroup>;
+      return <optgroup label={o.groupLabel} key={index}>{ getOptionsList(o.options) }</optgroup>; // eslint-disable-line react/no-array-index-key
     });
   };
 
