@@ -30,11 +30,21 @@ export default class Wizard extends Component {
   }
 
   componentWillUnmount() {
-    if (utils.isBrowser()) {
-      this.props.steps.forEach((step, index) => {
+    if (!utils.isBrowser()) {
+      return;
+    }
+    const steps = this.props.steps;
+
+    if (steps instanceof Array) {
+      steps.forEach((step, index) => {
         stores.remove(this.getStoreForStep(index));
       });
+      return;
     }
+
+    Object.keys(steps).forEach((stepName) => {
+      stores.remove(this.getStoreForStep(stepName));
+    });
   }
 
   getStoreForStep(step) {
@@ -54,8 +64,6 @@ export default class Wizard extends Component {
       index: current,
       component: this.applyWizardProps(stepComponent),
       store: this.getStoreForStep(),
-      isFirst: current === 0,
-      isLast: current === this.props.steps.length - 1,
       initialState: this.state.initialStates[current],
       stepHeader: step.stepHeader,
       stepFooter: step.stepFooter,
