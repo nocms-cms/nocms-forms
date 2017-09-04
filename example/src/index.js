@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import FormExample from './FormExample';
 import WizardExample from './WizardExample';
 import WizardExampleWithNamedSteps from './WizardExampleWithNamedSteps';
+import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigation';
 
 const App = () => (
   <div>
@@ -11,6 +12,8 @@ const App = () => (
     <WizardExample />
     <hr />
     <WizardExampleWithNamedSteps />
+    <hr />
+    <WizardExampleWithCustomNavigation />
   </div>
 );
 

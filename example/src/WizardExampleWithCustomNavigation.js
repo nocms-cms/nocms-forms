@@ -8,7 +8,7 @@ import ComplexStep from './ComplexStep.js';
 
 const wizardStoreName = 'test-form-wizard';
 
-export default class WizardExample extends Component {
+export default class WizardExampleWithCustomNavigation extends Component {
 
   constructor() {
     super();
@@ -20,9 +20,11 @@ export default class WizardExample extends Component {
         description: { title: 'Overskrift steg 4', component: <Step name="namedFurthStep" />},
         summary: { title: 'Overskrift steg 5', component: <Step name="namedFifthStep" /> },
       },
+      currentStep: 'login',
     };
-    this.progressIndicator = this.progressIndicator.bind(this);
-    this.handleFinish = this.handleFinish.bind(this);
+    this.renderNavigation = this.renderNavigation.bind(this);
+    this.handleStepNavigation = this.handleStepNavigation.bind(this);
+
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
   }
@@ -55,29 +57,50 @@ export default class WizardExample extends Component {
     return flow[Math.max(0, stepIndex - 1)];
   }
 
+  renderNavigation() {
+    const steps = this.state.steps;
+    return (
+      <ul>
+        { Object.keys(steps).map((step) => {
+          return (
+            <li key={`navigate_to_${step}`}>
+              <a href={`#${step}`} onClick={this.handleStepNavigation}>{steps[step].title}</a>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  handleStepNavigation(e) {
+    this.setState({ currentStep: e.target.hash.substring(1) });
+  }
+
   render(){
     return (
       <div>
-        <h2>Wizard form example 2</h2>
+        <h2>Wizard example - custom navigation</h2>
         <div>
+        {this.renderNavigation()}
         <Wizard
-         receipt={this.renderReceipt}
-         firstStep='login'
-         lastStep='summary'
-         goNext={this.goNext}
-         goBack={this.goBack}
-         progressIndicator={this.progressIndicator}
-         nextButtonText="Et steg frem"
-         formClass="custom-form-class"
-         className="wizard_parent"
-         wizardStepClassName="Hu hei"
-         backButtonText="Et steg tilbake"
-         finishButtonText="Fullfør"
-         nextButtonClassName="bling"
-         store={wizardStoreName}
-         steps={this.state.steps}
-         nextButtonClassName="knapp neste-knapp"
-         handleFinish={this.handleFinish}
+          receipt={this.renderReceipt}
+          firstStep='login'
+          lastStep='summary'
+          currentStep={this.state.currentStep}
+          goNext={this.goNext}
+          goBack={this.goBack}
+          progressIndicator={this.progressIndicator}
+          nextButtonText="Et steg frem"
+          formClass="custom-form-class"
+          className="wizard_parent"
+          wizardStepClassName="Hu hei"
+          backButtonText="Et steg tilbake"
+          finishButtonText="Fullfør"
+          nextButtonClassName="bling"
+          store={wizardStoreName}
+          steps={this.state.steps}
+          nextButtonClassName="knapp neste-knapp"
+          handleFinish={this.handleFinish}
         />
         </div>
       </div>
@@ -85,7 +108,7 @@ export default class WizardExample extends Component {
   }
 };
 
-WizardExample.propTypes = {
+WizardExampleWithCustomNavigation.propTypes = {
 };
 
-module.exports = WizardExample;
+module.exports = WizardExampleWithCustomNavigation;

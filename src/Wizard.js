@@ -29,6 +29,12 @@ export default class Wizard extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    if (props.currentStep && props.currentStep !== this.state.currentStep) {
+      this.setState({ currentStep: props.currentStep });
+    }
+  }
+
   componentWillUnmount() {
     if (!utils.isBrowser()) {
       return;
@@ -153,6 +159,7 @@ Wizard.propTypes = {
   firstStep: PropTypes.string,
   lastStep: PropTypes.string,
   store: PropTypes.string,
+  currentStep: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   goBack: PropTypes.func,
   goNext: PropTypes.func,
   progressIndicator: PropTypes.func,
