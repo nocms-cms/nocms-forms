@@ -6,24 +6,22 @@ import utils from 'nocms-utils';
 export default class ComplexStep extends Component {
   constructor(props){
     super(props);
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.depFunc = this.depFunc.bind(this);
 
-    this.onClick = this.onClick.bind(this);
     if (utils.isBrowser()) {
       stores.subscribe(props.store, this.handleStoreChange);
     }
     this.state = {
       errorText: null,
-      radio: null,
     };
   }
 
-  componentDidMount() {
-    if (utils.isBrowser) {
-      const store = stores.getStore(this.props.store);
-      const initialState = store['complexText'];
+  componentWillUnmount() {
+    if (utils.isBrowser()) {
+      stores.unsubscribe(this.props.store, this.handleStoreChange);
     }
   }
 
@@ -41,10 +39,6 @@ export default class ComplexStep extends Component {
 
   handleStoreChange(store) {
     console.log('change');
-  }
-
-  onClick(event) {
-    this.setState({ radio: event.currentTarget.value });
   }
 
   render(){
