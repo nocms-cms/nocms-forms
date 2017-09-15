@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Wizard } from 'nocms-forms';
+
+const events = require('nocms-events');
+
 import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
 import SelectStep from './SelectStep.js';
 import ComplexStep from './ComplexStep.js';
 
 const wizardStoreName = 'test-form-wizard';
+
 
 export default class WizardExample extends Component {
 
@@ -22,9 +26,12 @@ export default class WizardExample extends Component {
         {title: 'Overskrift steg 4', component: <EmptyStep /> },
         {title: 'Overskrift steg 5', component: <Step name="fifthstep" /> },
       ],
+      wizardComponentKey: 0,
     };
     this.progressIndicator = this.progressIndicator.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
+    this.resetWizard = this.resetWizard.bind(this);
+    events.listenTo('all-stores-cleared', this.resetWizard);
   }
 
   handleFinish(wizardData, cb) {
@@ -43,22 +50,28 @@ export default class WizardExample extends Component {
     );
   }
 
+  resetWizard() {
+    this.setState({ wizardComponentKey: this.state.wizardComponentKey + 1 });
+  }
+
   render(){
     return (
       <div>
         <h2>Wizard form example 1</h2>
         <div>
         <Wizard
+         key={wizardStoreName + this.state.wizardComponentKey}
          receipt={this.renderReceipt}
          progressIndicator={this.progressIndicator}
          nextButtonText="Et steg frem"
          formClass="custom-form-class"
          className="wizard_parent"
+         currentStep={this.state.currentStep}
          wizardStepClassName="Hu hei"
          backButtonText="Et steg tilbake"
          finishButtonText="Fullfør"
          nextButtonClassName="bling"
-         store={wizardStoreName}
+         store={wizardStoreName + this.state.wizardComponentKey}
          steps={this.state.steps}
          nextButtonClassName="knapp neste-knapp"
          handleFinish={this.handleFinish}

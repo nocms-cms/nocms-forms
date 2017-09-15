@@ -5,8 +5,17 @@ import WizardExample from './WizardExample';
 import WizardExampleWithNamedSteps from './WizardExampleWithNamedSteps';
 import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigation';
 
+const stores = require('nocms-stores');
+const events = require('nocms-events');
+
+const clearAllStores = () => {
+  stores.clearAll();
+  events.trigger('all-stores-cleared');
+};
+
 const App = () => (
   <div>
+    <button onClick={clearAllStores}>Clear all stores</button>
     <FormExample />
     <hr />
     <WizardExample />

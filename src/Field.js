@@ -56,7 +56,6 @@ class Field extends Component {
     }
   }
 
-
   applyExistingStoreValue() {
     const store = stores.getStore(this.context.store);
     const initialState = store[this.props.name];
@@ -125,7 +124,8 @@ class Field extends Component {
 
   handleDependentState(store, changes) {
     if (this.didDependentOnValueChanged(store, changes)) {
-      const aggregatedValue = this.props.dependencyFunc(changes, store[this.props.name].value);
+      const dependentProp = store[this.props.name];
+      const aggregatedValue = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
       const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
 
       this.setState(aggregatedState);

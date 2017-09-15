@@ -5,6 +5,7 @@ import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
 import SelectStep from './SelectStep.js';
 import ComplexStep from './ComplexStep.js';
+const events = require('nocms-events');
 
 const wizardStoreName = 'test-form-wizard';
 
@@ -21,12 +22,15 @@ export default class WizardExampleWithCustomNavigation extends Component {
         summary: { title: 'Overskrift steg 5', component: <Step name="namedFifthStep" /> },
       },
       currentStep: 'login',
+      wizardComponentKey: 0,
     };
     this.renderNavigation = this.renderNavigation.bind(this);
     this.handleStepNavigation = this.handleStepNavigation.bind(this);
 
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
+    this.resetWizard = this.resetWizard.bind(this);
+    events.listenTo('all-stores-cleared', this.resetWizard)
   }
 
   handleFinish(wizardData, cb) {
@@ -37,6 +41,10 @@ export default class WizardExampleWithCustomNavigation extends Component {
   renderReceipt(data){
     console.log('Receipt data', data);
     return <div>Kvittering</div>;
+  }
+
+  resetWizard() {
+    this.setState({ wizardComponentKey: this.state.wizardComponentKey + 1 });
   }
 
   progressIndicator(current, numberOfSteps){
@@ -83,6 +91,7 @@ export default class WizardExampleWithCustomNavigation extends Component {
         <div>
         {this.renderNavigation()}
         <Wizard
+          key={wizardStoreName + this.state.wizardComponentKey}
           receipt={this.renderReceipt}
           firstStep='login'
           lastStep='summary'
@@ -97,7 +106,7 @@ export default class WizardExampleWithCustomNavigation extends Component {
           backButtonText="Et steg tilbake"
           finishButtonText="Fullfør"
           nextButtonClassName="bling"
-          store={wizardStoreName}
+          store={wizardStoreName + this.state.wizardComponentKey}
           steps={this.state.steps}
           nextButtonClassName="knapp neste-knapp"
           handleFinish={this.handleFinish}

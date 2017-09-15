@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Field } from 'nocms-forms';
 import Spinner from './Spinner';
 
+const events = require('nocms-events');
+
 const storeName = 'test-form';
 
 export default class FormExample extends React.Component {
@@ -15,7 +17,10 @@ export default class FormExample extends React.Component {
       submitted: false,
       formData: null,
       disabled: true,
+      formKey: 0,
     };
+    this.resetForm = this.resetForm.bind(this);
+    events.listenTo('all-stores-cleared', this.resetForm);
   }
 
   getUppercaseName(dependency) {
@@ -35,6 +40,10 @@ export default class FormExample extends React.Component {
   }
   validateA(value){
     return value === 'a';
+  }
+
+  resetForm() {
+    this.setState({ formKey: this.state.formKey + 1 });
   }
 
   render() {
@@ -89,6 +98,7 @@ export default class FormExample extends React.Component {
     return (
       <div>
         <Form
+          key={this.state.formKey}
           submitButton="Submit"
           className="custom-forms-class"
           store={storeName}

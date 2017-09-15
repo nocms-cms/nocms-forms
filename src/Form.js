@@ -18,15 +18,18 @@ class Form extends Component {
     this.state.isDisabled = false;
     this.state.isSubmitting = false;
     this.state.errorText = null;
-    if (utils.isBrowser()) {
-      stores.createStore(props.store, props.initialState, this.handleStoreChange);
-    }
   }
 
   getChildContext() {
     return {
       store: this.props.store,
     };
+  }
+
+  componentWillMount() {
+    if (utils.isBrowser()) {
+      stores.createStore(this.props.store, this.props.initialState, this.handleStoreChange);
+    }
   }
 
   componentWillUnmount() {
