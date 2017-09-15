@@ -30,7 +30,7 @@ export default class Wizard extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.currentStep && props.currentStep !== this.state.currentStep) {
+    if (typeof props.currentStep !== 'undefined' && props.currentStep !== this.state.currentStep) {
       this.setState({ currentStep: props.currentStep });
     }
   }
@@ -40,7 +40,6 @@ export default class Wizard extends Component {
       return;
     }
     const steps = this.props.steps;
-
     if (steps instanceof Array) {
       steps.forEach((step, index) => {
         stores.remove(this.getStoreForStep(index));
