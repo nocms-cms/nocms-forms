@@ -19,7 +19,8 @@ class Field extends Component {
     this.validate = this.validate.bind(this);
     this.handleEnterKey = this.handleEnterKey.bind(this);
     this.applyExistingStoreValue = this.applyExistingStoreValue.bind(this);
-    this.didDependentOnValueChanged = this.didDependentOnValueChanged.bind(this);
+    this.didDependentOnValueChange = this.didDependentOnValueChange.bind(this);
+    this.initDependentState = this.initDependentState.bind(this);
     this.state = {
       value: props.value,
       isValid: true,
@@ -33,6 +34,10 @@ class Field extends Component {
       stores.subscribe(this.context.store, this.handleStoreChange);
       this.applyExistingStoreValue();
     }
+  }
+
+  componentDidMount() {
+    this.initDependentState();
   }
 
   componentWillReceiveProps(props) {
@@ -75,6 +80,17 @@ class Field extends Component {
     stores.update(this.context.store, inputState);
   }
 
+  initDependentState() {
+    if (this.props.dependOn && this.props.dependencyFunc) {
+      const store = stores.getStore(this.context.store);
+      const fields = {};
+      this.props.dependOn.split(',').forEach((f) => {
+        fields[f] = store[f];
+      });
+      this.handleDependentState(store, fields);
+    }
+  }
+
   handleStoreChange(store, changes) {
     if (this.props.dependOn && this.props.dependencyFunc && this.handleDependentState(store, changes)) {
       return;
@@ -96,34 +112,21 @@ class Field extends Component {
 
   clearFromStore(store, changes) {
     const { name } = this.props;
-    if (this.didDependentOnValueChanged(store, changes)) {
+    if (this.didDependentOnValueChange(store, changes)) {
       if (store[name] && this.props.deleteOnDependencyChange(changes, store[name].value)) {
         stores.update(this.context.store, { [this.props.name]: undefined });
       }
     }
   }
 
-  didDependentOnValueChanged(store, changes) {
+  didDependentOnValueChange(store, changes) {
     const fields = this.props.dependOn.split(',').map((f) => { return f.trim(); });
-    const values = {};
-
     // Check if any of the changed values are in the dependOn list
-    const doUpdate = fields.reduce((val, f) => {
-      values[f] = store[f];
-      if (changes[f]) {
-        return true;
-      }
-      return val;
-    }, false);
-
-    if (!doUpdate) {
-      return false;
-    }
-    return true;
+    return fields.reduce((val, f) => { return !!changes[f] || val; }, false);
   }
 
   handleDependentState(store, changes) {
-    if (this.didDependentOnValueChanged(store, changes)) {
+    if (this.didDependentOnValueChange(store, changes)) {
       const dependentProp = store[this.props.name];
       const aggregatedValue = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
       const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
