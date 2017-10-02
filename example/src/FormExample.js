@@ -24,7 +24,12 @@ export default class FormExample extends React.Component {
   }
 
   getUppercaseName(dependency) {
-    return dependency.name.value.toUpperCase();
+    if (dependency.name) {
+      return dependency.name.value.toUpperCase();
+    }
+    if (dependency.initialDependencyText) {
+      return dependency.initialDependencyText.value.toUpperCase();
+    }
   }
 
   handleReset() {
@@ -74,7 +79,8 @@ export default class FormExample extends React.Component {
       }
     ]
     const initialData = {
-      checkbox: true
+      checkbox: true,
+      initialDependencyText: 'foo',
     };
 
     const multiCheck = [
@@ -236,6 +242,19 @@ export default class FormExample extends React.Component {
             min="2017-01-01"
             max="2017-06-01"
           />
+          <Field
+            {...inputClasses}
+            label="Value from initial state"
+            name="initialDependencyText"
+          />
+          <Field
+            {...inputClasses}
+            dependOn="initialDependencyText"
+            dependencyFunc={this.getUppercaseName}
+            label="Transforms initialDependencyText to uppercase"
+            name="initialDependencyTextUpperCase"
+          />
+
         </Form>
         { this.state.formData ?
           <div>
