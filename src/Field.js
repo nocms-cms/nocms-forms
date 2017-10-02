@@ -21,11 +21,13 @@ class Field extends Component {
     this.applyExistingStoreValue = this.applyExistingStoreValue.bind(this);
     this.didDependentOnValueChange = this.didDependentOnValueChange.bind(this);
     this.initDependentState = this.initDependentState.bind(this);
+    this.getProps = this.getProps.bind(this);
     this.state = {
       value: props.value,
       isValid: true,
       isValidated: false,
       disabled: props.disabled,
+      hidden: false,
     };
   }
 
@@ -41,7 +43,7 @@ class Field extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.disabled !== this.state.disabled) {
+    if (typeof props.disabled !== 'undefined' && props.disabled !== this.state.disabled) {
       this.setState({ disabled: props.disabled, isValid: true, isValidated: false }, () => {
         this.updateStore(this.state.value, true, false);
       });
@@ -59,6 +61,27 @@ class Field extends Component {
         stores.update(this.context.store, inputState);
       }
     }
+  }
+
+  getProps() {
+    const result = Object.assign({}, this.props, this.state);
+
+    if (this.state.aggregatedValue) {
+      result.value = this.state.aggregatedValue;
+    }
+    if (this.state.aggregatedDisabled) {
+      result.disabled = this.state.aggregatedDisabled;
+    }
+    if (this.state.aggregatedReadOnly) {
+      result.readOnly = this.state.aggregatedReadOnly;
+    }
+    if (this.state.aggregatedHidden) {
+      result.hidden = this.state.aggregatedHidden;
+    }
+    if (this.state.aggregatedControlGroupClass) {
+      result.controlGroupClass = `${result.controlGroupClass} ${this.state.aggregatedControlGroupClass}`;
+    }
+    return result;
   }
 
   applyExistingStoreValue() {
@@ -127,12 +150,39 @@ class Field extends Component {
 
   handleDependentState(store, changes) {
     if (this.didDependentOnValueChange(store, changes)) {
-      const dependentProp = store[this.props.name];
-      const aggregatedValue = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
-      const aggregatedState = { value: aggregatedValue, isValid: true, isValidated: true };
+      const aggregatedState = { isValid: true, isValidated: true };
 
-      this.setState(aggregatedState);
-      this.updateStore(aggregatedValue, true, true);
+      const dependentProp = store[this.props.name];
+      const dependencyFuncResult = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
+      if (typeof dependencyFuncResult === 'object') {
+        if (typeof dependencyFuncResult.disabled !== 'undefined') {
+          aggregatedState.aggregatedDisabled = dependencyFuncResult.disabled;
+        }
+
+        if (typeof dependencyFuncResult.hidden !== 'undefined') {
+          aggregatedState.aggregatedHidden = dependencyFuncResult.hidden;
+        }
+
+        if (typeof dependencyFuncResult.value !== 'undefined') {
+          aggregatedState.aggregatedValue = dependencyFuncResult.value;
+        }
+
+        if (typeof dependencyFuncResult.readOnly !== 'undefined') {
+          aggregatedState.aggregatedReadOnly = dependencyFuncResult.readOnly;
+        }
+
+        if (typeof dependencyFuncResult.controlGroupClass !== 'undefined') {
+          aggregatedState.aggregatedControlGroupClass = dependencyFuncResult.controlGroupClass;
+        }
+      } else {
+        aggregatedState.aggregatedValue = dependencyFuncResult;
+      }
+
+      this.setState(aggregatedState, () => {
+        if (aggregatedState.value) {
+          this.updateStore(aggregatedState.value, true, true);
+        }
+      });
       return true;
     }
     return false;
@@ -184,7 +234,7 @@ class Field extends Component {
   }
 
   validate() {
-    if (this.props.disabled) {
+    if (this.state.disabled) {
       return true;
     }
     if (!this.props.validate && !this.props.required) {
@@ -201,12 +251,13 @@ class Field extends Component {
 
   render() {
     const { type, options, multiple } = this.props;
-    const props = Object.assign({}, this.props, this.state);
+    const props = this.getProps(this.props, this.state);
 
     props.handleChange = this.handleChange;
     props.handleKeyDown = this.handleEnterKey;
     props.validate = this.validate;
     props.key = this.props.name;
+
     if (type === 'hidden') {
       return <Hidden {...props} />;
     }

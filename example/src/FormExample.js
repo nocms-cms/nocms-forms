@@ -12,6 +12,7 @@ export default class FormExample extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.toggleDisabledField = this.toggleDisabledField.bind(this);
+    this.complexDependencyValueHandler = this.complexDependencyValueHandler.bind(this);
     this.state = {
       errorText: '',
       submitted: false,
@@ -49,6 +50,43 @@ export default class FormExample extends React.Component {
 
   resetForm() {
     this.setState({ formKey: this.state.formKey + 1 });
+  }
+
+  complexDependencyValueHandler(dependency) {
+    const value = dependency.complexDependencyValue.value;
+    if (value === 'example1') {
+      return {
+        value,
+        disabled: true,
+        hidden: false,
+        readOnly: false,
+        controlGroupClass: value,
+      };
+    }
+    if (value === 'example2') {
+      return {
+        value,
+        disabled: false,
+        readOnly: true,
+        hidden: false,
+        controlGroupClass: value,
+      };
+    }
+    if (value === 'example3') {
+      return {
+        value,
+        disabled: false,
+        readOnly: false,
+        hidden: true,
+        controlGroupClass: value,
+      };
+    }
+    return {
+      value,
+      disabled: value === 'disabled',
+      hidden: value === 'hidden',
+      readOnly: value === 'readOnly'
+    };
   }
 
   render() {
@@ -253,6 +291,19 @@ export default class FormExample extends React.Component {
             dependencyFunc={this.getUppercaseName}
             label="Transforms initialDependencyText to uppercase"
             name="initialDependencyTextUpperCase"
+          />
+
+          <Field
+            {...inputClasses}
+            label="Complex dependency value"
+            name="complexDependencyValue"
+          />
+          <Field
+            {...inputClasses}
+            dependOn="complexDependencyValue"
+            dependencyFunc={this.complexDependencyValueHandler}
+            label="disabled, hidden, value"
+            name="complexDependencyHandler"
           />
 
         </Form>
