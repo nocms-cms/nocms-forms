@@ -38,7 +38,7 @@ export default class ComplexStep extends Component {
   }
 
   handleStoreChange(store) {
-    console.log('change');
+    // console.log('Complex step store change');
   }
 
   render(){
