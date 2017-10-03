@@ -56,7 +56,7 @@ const Input = (props) => {
           autoComplete="off"
           maxLength={maxLength}
           name={name}
-          value={props.value}
+          value={props.value || ''}
           disabled={disabled ? true : null}
           readOnly={readOnly ? true : null}
           placeholder={placeholder}
