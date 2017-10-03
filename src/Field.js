@@ -66,9 +66,6 @@ class Field extends Component {
   getProps() {
     const result = Object.assign({}, this.props, this.state);
 
-    if (this.state.aggregatedValue) {
-      result.value = this.state.aggregatedValue;
-    }
     if (this.state.aggregatedDisabled) {
       result.disabled = this.state.aggregatedDisabled;
     }
@@ -122,7 +119,7 @@ class Field extends Component {
       return;
     }
     let newState = store[this.props.name];
-    if (typeof newState !== 'object') {
+    if (newState === null || typeof newState !== 'object') {
       // Upgrade simple data values to input state in store
       newState = {
         value: newState,
@@ -137,9 +134,11 @@ class Field extends Component {
     const { name } = this.props;
     if (this.didDependentOnValueChange(store, changes)) {
       if (store[name] && this.props.deleteOnDependencyChange(changes, store[name].value)) {
-        stores.update(this.context.store, { [this.props.name]: undefined });
+        stores.update(this.context.store, { [this.props.name]: null });
+        return true;
       }
     }
+    return false;
   }
 
   didDependentOnValueChange(store, changes) {
@@ -155,16 +154,16 @@ class Field extends Component {
       const dependentProp = store[this.props.name];
       const dependencyFuncResult = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
       if (typeof dependencyFuncResult === 'object') {
+        if (typeof dependencyFuncResult.value !== 'undefined') {
+          aggregatedState.value = dependencyFuncResult.value;
+        }
+
         if (typeof dependencyFuncResult.disabled !== 'undefined') {
           aggregatedState.aggregatedDisabled = dependencyFuncResult.disabled;
         }
 
         if (typeof dependencyFuncResult.hidden !== 'undefined') {
           aggregatedState.aggregatedHidden = dependencyFuncResult.hidden;
-        }
-
-        if (typeof dependencyFuncResult.value !== 'undefined') {
-          aggregatedState.aggregatedValue = dependencyFuncResult.value;
         }
 
         if (typeof dependencyFuncResult.readOnly !== 'undefined') {
@@ -175,7 +174,7 @@ class Field extends Component {
           aggregatedState.aggregatedControlGroupClass = dependencyFuncResult.controlGroupClass;
         }
       } else {
-        aggregatedState.aggregatedValue = dependencyFuncResult;
+        aggregatedState.value = dependencyFuncResult;
       }
 
       this.setState(aggregatedState, () => {
@@ -226,8 +225,9 @@ class Field extends Component {
       value,
       isValid,
       isValidated,
-      disabled: this.state.disabled,
+      disabled: typeof this.state.aggregatedDisabled === 'boolean' ? this.state.aggregatedDisabled : this.state.disabled,
       validate: this.validate,
+      hidden: this.state.aggregatedHidden,
     };
 
     stores.update(this.context.store, state);
@@ -257,6 +257,10 @@ class Field extends Component {
     props.handleKeyDown = this.handleEnterKey;
     props.validate = this.validate;
     props.key = this.props.name;
+
+    if (this.state.aggregatedHidden) {
+      return null;
+    }
 
     if (type === 'hidden') {
       return <Hidden {...props} />;
