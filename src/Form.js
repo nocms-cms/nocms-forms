@@ -13,11 +13,13 @@ class Form extends Component {
     super(props);
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = props.initialState || {};
-    this.state.isValid = false;
-    this.state.isDisabled = false;
-    this.state.isSubmitting = false;
-    this.state.errorText = null;
+    this.state = {
+      initialState: props.initialState || {},
+      isValid: false,
+      isDisabled: false,
+      isSubmitting: false,
+      errorText: null,
+    };
   }
 
   getChildContext() {
@@ -64,6 +66,9 @@ class Form extends Component {
       Object.keys(this.state.store).forEach((field) => {
         const prop = this.state.store[field];
         if (prop === null) {
+          return;
+        }
+        if (prop.hidden || prop.disabled) {
           return;
         }
         if (typeof prop === 'undefined') {
