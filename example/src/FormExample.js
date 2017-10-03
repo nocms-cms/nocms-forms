@@ -85,7 +85,7 @@ export default class FormExample extends React.Component {
       value,
       disabled: value === 'disabled',
       hidden: value === 'hidden',
-      readOnly: value === 'readOnly'
+      readOnly: value === 'readOnly',
     };
   }
 
@@ -145,7 +145,7 @@ export default class FormExample extends React.Component {
           key={this.state.formKey}
           submitButton="Submit"
           className="custom-forms-class"
-          store={storeName}
+          store={`${storeName}-${this.state.formKey}`}
           initialState={initialData}
           errorText={this.state.errorText}
           onSubmit={this.handleSubmit}
