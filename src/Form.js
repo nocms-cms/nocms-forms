@@ -68,16 +68,13 @@ class Form extends Component {
         if (prop === null) {
           return;
         }
-        if (prop.hidden || prop.disabled) {
-          return;
-        }
         if (typeof prop === 'undefined') {
           if (wizardStep) {
             formData[field] = null;
           }
           return;
         }
-        if (prop.disabled) {
+        if (prop.hidden || prop.disabled) {
           return;
         }
         if (typeof prop !== 'object' || prop instanceof Array) {
