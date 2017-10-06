@@ -45,7 +45,7 @@ class Field extends Component {
   componentWillReceiveProps(props) {
     if (typeof props.disabled !== 'undefined' && props.disabled !== this.state.disabled) {
       this.setState({ disabled: props.disabled, isValid: true, isValidated: false }, () => {
-        this.updateStore(this.state.value, true, false);
+        this.updateStore({ value: this.state.value, isValid: true, isValidated: false });
       });
     }
   }
@@ -150,7 +150,7 @@ class Field extends Component {
   handleDependentState(store, changes) {
     if (this.didDependentOnValueChange(store, changes)) {
       const dependentProp = store[this.props.name];
-      const aggregatedState = Object.assign({}, dependentProp);
+      const aggregatedState = {};
       const dependencyFuncResult = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
       if (typeof dependencyFuncResult === 'object') {
         if (typeof dependencyFuncResult.value !== 'undefined') {
@@ -177,7 +177,14 @@ class Field extends Component {
       }
 
       this.setState(aggregatedState, () => {
-        this.updateStore(aggregatedState.value, true, true);
+        this.updateStore({
+          value: aggregatedState.value,
+          isValid: aggregatedState.isValid,
+          isValidated: aggregatedState.isValidated,
+          hidden: aggregatedState.aggregatedHidden,
+          readOnly: aggregatedState.aggregatedReadOnly,
+          disabled: aggregatedState.aggregatedDisabled,
+        }, true);
       });
       return true;
     }
@@ -203,7 +210,7 @@ class Field extends Component {
     } else {
       value = e.currentTarget.value;
     }
-    this.updateStore(value, true, this.state.isValidated);
+    this.updateStore({ value, isValid: true, isValidated: this.state.isValidated });
     if (this.props.onChange) {
       this.props.onChange(e, e.currentTarget.value);
     }
@@ -215,8 +222,16 @@ class Field extends Component {
       this.validate();
     }
   }
+  updateStore(obj, patch) {
+    const state = {};
+    state[this.props.name] = Object.keys(obj)
+      .filter((key) => { return typeof obj[key] !== 'undefined'; })
+      .reduce((result, key) => { result[key] = obj[key]; return result; }, {}); // eslint-disable-line no-param-reassign
+    state[this.props.name].validate = this.validate;
+    stores[patch ? 'patch' : 'update'](this.context.store, state);
+  }
 
-  updateStore(value, isValid, isValidated) {
+  updateStorez(value, isValid, isValidated) {
     const state = {};
     state[this.props.name] = {
       value,
@@ -242,7 +257,7 @@ class Field extends Component {
       value = this.props.dateParser(value);
     }
     const isValid = Validator.validate(value, this.props.validate, this.props.required);
-    this.updateStore(value, isValid, true);
+    this.updateStore({ value, isValid, isValidated: true });
     return isValid;
   }
 

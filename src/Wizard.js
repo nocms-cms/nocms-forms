@@ -123,7 +123,7 @@ export default class Wizard extends Component {
       return;
     }
     if (this.props.steps instanceof Array) {
-      this.setState({ currentStep: Math.min(this.props.steps.length -1, this.state.currentStep + 1) });
+      this.setState({ currentStep: Math.min(this.props.steps.length - 1, this.state.currentStep + 1) });
       return;
     }
     throw new Error('Named step wizard without goNext override');

@@ -45,7 +45,7 @@ new WebpackDevServer(webpack(config), {
   }
 });
 console.log('-------------------------');
-console.log(`Local web server runs at http://${host}: ${port}`);
+console.log(`Local web server runs at http://${host}:${port}`);
 console.log('-------------------------');
 
 module.exports = config;
