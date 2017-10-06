@@ -89,6 +89,10 @@ export default class FormExample extends React.Component {
     };
   }
 
+  fieldHider (dependecy) {
+    return { hidden: dependecy.fieldToggler.value === 'one' }
+  }
+
   render() {
     const radioOptions = [
       {
@@ -306,6 +310,22 @@ export default class FormExample extends React.Component {
             name="complexDependencyHandler"
           />
 
+          <Field
+            type="radio"
+            {...inputClasses}
+            required
+            errorText="Oh no"
+            label="Conditional hider"
+            name="fieldToggler"
+            options={radioOptions}
+          />
+          <Field
+            {...inputClasses}
+            dependOn="fieldToggler"
+            dependencyFunc={this.fieldHider}
+            label="No value dependency"
+            name="complexDependencyHandlerNoValueDependency"
+          />
         </Form>
         { this.state.formData ?
           <div>

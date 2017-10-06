@@ -149,9 +149,8 @@ class Field extends Component {
 
   handleDependentState(store, changes) {
     if (this.didDependentOnValueChange(store, changes)) {
-      const aggregatedState = { isValid: true, isValidated: true };
-
       const dependentProp = store[this.props.name];
+      const aggregatedState = Object.assign({}, dependentProp);
       const dependencyFuncResult = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
       if (typeof dependencyFuncResult === 'object') {
         if (typeof dependencyFuncResult.value !== 'undefined') {
@@ -178,9 +177,7 @@ class Field extends Component {
       }
 
       this.setState(aggregatedState, () => {
-        if (aggregatedState.value) {
-          this.updateStore(aggregatedState.value, true, true);
-        }
+        this.updateStore(aggregatedState.value, true, true);
       });
       return true;
     }
