@@ -122,8 +122,8 @@ export default class Wizard extends Component {
       this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
       return;
     }
-    if (typeof this.state.lastStep === 'number') {
-      this.setState({ currentStep: Math.min(this.state.lastStep, this.state.currentStep + 1) });
+    if (this.props.steps instanceof Array) {
+      this.setState({ currentStep: Math.min(this.props.steps.length -1, this.state.currentStep + 1) });
       return;
     }
     throw new Error('Named step wizard without goNext override');
