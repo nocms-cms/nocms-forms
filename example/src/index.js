@@ -4,6 +4,7 @@ import FormExample from './FormExample';
 import WizardExample from './WizardExample';
 import WizardExampleWithNamedSteps from './WizardExampleWithNamedSteps';
 import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigation';
+import WizardExampleWithHiddenStepFields from './WizardExampleWithHiddenStepFields';
 
 const stores = require('nocms-stores');
 const events = require('nocms-events');
@@ -23,6 +24,8 @@ const App = () => (
     <WizardExampleWithNamedSteps />
     <hr />
     <WizardExampleWithCustomNavigation />
+    <hr />
+    <WizardExampleWithHiddenStepFields />
   </div>
 );
 
