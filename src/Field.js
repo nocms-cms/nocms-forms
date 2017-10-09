@@ -34,18 +34,20 @@ class Field extends Component {
   componentWillMount() {
     if (utils.isBrowser()) {
       stores.subscribe(this.context.store, this.handleStoreChange);
-      this.applyExistingStoreValue();
     }
   }
 
   componentDidMount() {
-    this.initDependentState();
+    if (utils.isBrowser()) {
+      this.applyExistingStoreValue();
+      this.initDependentState();
+    }
   }
 
   componentWillReceiveProps(props) {
     if (typeof props.disabled !== 'undefined' && props.disabled !== this.state.disabled) {
       this.setState({ disabled: props.disabled, isValid: true, isValidated: false }, () => {
-        this.updateStore({ value: this.state.value, isValid: true, isValidated: false });
+        this.patchStore({ value: this.state.value, isValid: true, isValidated: false });
       });
     }
   }
@@ -66,17 +68,8 @@ class Field extends Component {
   getProps() {
     const result = Object.assign({}, this.props, this.state);
 
-    if (this.state.aggregatedDisabled) {
-      result.disabled = this.state.aggregatedDisabled;
-    }
-    if (this.state.aggregatedReadOnly) {
-      result.readOnly = this.state.aggregatedReadOnly;
-    }
-    if (this.state.aggregatedHidden) {
-      result.hidden = this.state.aggregatedHidden;
-    }
     if (this.state.aggregatedControlGroupClass) {
-      result.controlGroupClass = `${result.controlGroupClass} ${this.state.aggregatedControlGroupClass}`;
+      result.controlGroupClass = `${this.props.controlGroupClass} ${this.state.controlGroupClass}`;
     }
     return result;
   }
@@ -85,7 +78,14 @@ class Field extends Component {
     const store = stores.getStore(this.context.store);
     const initialState = store[this.props.name];
     const inputState = {};
-    inputState[this.props.name] = { isValid: true, isValidated: !this.props.required, validate: this.validate, disabled: this.state.disabled };
+    inputState[this.props.name] = {
+      isValid: true,
+      isValidated: !this.props.required,
+      validate: this.validate,
+      disabled: this.state.disabled || initialState && initialState.disabled,
+      hidden: initialState && initialState.hidden,
+      readOnly: initialState && initialState.readOnly,
+    };
 
     if (typeof initialState === 'undefined' || initialState === null) {
       if (this.props.type === 'text' || this.props.type === 'textarea' || this.props.type === 'hidden' || (this.props.type === 'select' && !this.props.multiple)) {
@@ -118,6 +118,8 @@ class Field extends Component {
     if (this.props.dependOn && this.props.deleteOnDependencyChange && this.clearFromStore(store, changes)) {
       return;
     }
+
+    // TODO: This should execute only if the component's dependencies or value is changed.
     let newState = store[this.props.name];
     if (newState === null || typeof newState !== 'object') {
       // Upgrade simple data values to input state in store
@@ -144,7 +146,7 @@ class Field extends Component {
   didDependentOnValueChange(store, changes) {
     const fields = this.props.dependOn.split(',').map((f) => { return f.trim(); });
     // Check if any of the changed values are in the dependOn list
-    return fields.reduce((val, f) => { return !!changes[f] || val; }, false);
+    return fields.reduce((val, f) => { return val || !!changes[f]; }, false);
   }
 
   handleDependentState(store, changes) {
@@ -155,36 +157,33 @@ class Field extends Component {
       if (typeof dependencyFuncResult === 'object') {
         if (typeof dependencyFuncResult.value !== 'undefined') {
           aggregatedState.value = dependencyFuncResult.value;
+          aggregatedState.isValid = true;
+          aggregatedState.isValidated = false;
         }
 
         if (typeof dependencyFuncResult.disabled !== 'undefined') {
-          aggregatedState.aggregatedDisabled = dependencyFuncResult.disabled;
+          aggregatedState.disabled = dependencyFuncResult.disabled;
         }
 
         if (typeof dependencyFuncResult.hidden !== 'undefined') {
-          aggregatedState.aggregatedHidden = dependencyFuncResult.hidden;
+          aggregatedState.hidden = dependencyFuncResult.hidden;
         }
 
         if (typeof dependencyFuncResult.readOnly !== 'undefined') {
-          aggregatedState.aggregatedReadOnly = dependencyFuncResult.readOnly;
+          aggregatedState.readOnly = dependencyFuncResult.readOnly;
         }
 
         if (typeof dependencyFuncResult.controlGroupClass !== 'undefined') {
-          aggregatedState.aggregatedControlGroupClass = dependencyFuncResult.controlGroupClass;
+          aggregatedState.controlGroupClass = dependencyFuncResult.controlGroupClass;
         }
       } else {
         aggregatedState.value = dependencyFuncResult;
+        aggregatedState.isValid = true;
+        aggregatedState.isValidated = false;
       }
 
       this.setState(aggregatedState, () => {
-        this.updateStore({
-          value: aggregatedState.value,
-          isValid: aggregatedState.isValid,
-          isValidated: aggregatedState.isValidated,
-          hidden: aggregatedState.aggregatedHidden,
-          readOnly: aggregatedState.aggregatedReadOnly,
-          disabled: aggregatedState.aggregatedDisabled,
-        }, true);
+        this.patchStore(aggregatedState);
       });
       return true;
     }
@@ -210,7 +209,7 @@ class Field extends Component {
     } else {
       value = e.currentTarget.value;
     }
-    this.updateStore({ value, isValid: true, isValidated: this.state.isValidated });
+    this.patchStore({ value, isValid: true, isValidated: this.state.isValidated });
     if (this.props.onChange) {
       this.props.onChange(e, e.currentTarget.value);
     }
@@ -222,27 +221,12 @@ class Field extends Component {
       this.validate();
     }
   }
-  updateStore(obj, patch) {
+  patchStore(obj) {
     const state = {};
-    state[this.props.name] = Object.keys(obj)
-      .filter((key) => { return typeof obj[key] !== 'undefined'; })
-      .reduce((result, key) => { result[key] = obj[key]; return result; }, {}); // eslint-disable-line no-param-reassign
+    state[this.props.name] = Object.assign({}, obj);
+
     state[this.props.name].validate = this.validate;
-    stores[patch ? 'patch' : 'update'](this.context.store, state);
-  }
-
-  updateStorez(value, isValid, isValidated) {
-    const state = {};
-    state[this.props.name] = {
-      value,
-      isValid,
-      isValidated,
-      disabled: typeof this.state.aggregatedDisabled === 'boolean' ? this.state.aggregatedDisabled : this.state.disabled,
-      validate: this.validate,
-      hidden: this.state.aggregatedHidden,
-    };
-
-    stores.update(this.context.store, state);
+    stores.patch(this.context.store, state);
   }
 
   validate() {
@@ -257,7 +241,7 @@ class Field extends Component {
       value = this.props.dateParser(value);
     }
     const isValid = Validator.validate(value, this.props.validate, this.props.required);
-    this.updateStore({ value, isValid, isValidated: true });
+    this.patchStore({ value, isValid, isValidated: true });
     return isValid;
   }
 
@@ -270,7 +254,7 @@ class Field extends Component {
     props.validate = this.validate;
     props.key = this.props.name;
 
-    if (this.state.aggregatedHidden) {
+    if (this.state.hidden) {
       return null;
     }
 
