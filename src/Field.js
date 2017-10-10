@@ -87,7 +87,7 @@ class Field extends Component {
       isValid: true,
       isValidated: !this.props.required,
       validate: this.validate,
-      disabled: this.state.disabled || initialState && initialState.disabled,
+      disabled: this.state.disabled || (initialState && initialState.disabled),
       hidden: initialState && initialState.hidden,
       readOnly: initialState && initialState.readOnly,
     };
@@ -187,9 +187,8 @@ class Field extends Component {
         aggregatedState.isValidated = false;
       }
 
-      this.setState(aggregatedState, () => {
-        this.patchStore(aggregatedState);
-      });
+      this.setState(aggregatedState);
+      this.patchStore(aggregatedState);
       return true;
     }
     return false;
@@ -300,6 +299,7 @@ Field.propTypes = {
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
   options: PropTypes.array,
+  controlGroupClass: PropTypes.string,
 };
 
 Field.defaultProps = {
