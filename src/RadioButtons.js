@@ -49,7 +49,6 @@ const RadioButtons = (props) => {
           name={name}
           disabled={option.disabled}
           onChange={handleChange}
-          onClick={handleChange}
           onKeyDown={props.handleKeyDown}
         />
         <span className={radioLabelClass}>{option.label}</span>
