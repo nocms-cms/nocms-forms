@@ -184,7 +184,7 @@ export default class FormExample extends React.Component {
             notRequiredMark="Not required"
             {...inputClasses}
             label="Not required text field marked as not required"
-            name="email"
+            name="notRequiredField"
             errorText="Wrong e-mail"
             validate="email"
           />
