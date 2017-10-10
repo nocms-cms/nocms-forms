@@ -34,12 +34,12 @@ class Field extends Component {
   componentWillMount() {
     if (utils.isBrowser()) {
       stores.subscribe(this.context.store, this.handleStoreChange);
+      this.applyExistingStoreValue();
     }
   }
 
   componentDidMount() {
     if (utils.isBrowser()) {
-      this.applyExistingStoreValue();
       this.initDependentState();
     }
   }
