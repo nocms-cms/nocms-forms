@@ -46,8 +46,13 @@ class Field extends Component {
 
   componentWillReceiveProps(props) {
     if (typeof props.disabled !== 'undefined' && props.disabled !== this.state.disabled) {
-      this.setState({ disabled: props.disabled, isValid: true, isValidated: false }, () => {
-        this.patchStore({ value: this.state.value, isValid: true, isValidated: false });
+      const newState = { disabled: props.disabled };
+      if (props.disabled) {
+        newState.isValid = true;
+        newState.isValidated = false;
+      }
+      this.setState(newState, () => {
+        this.patchStore(newState);
       });
     }
   }
