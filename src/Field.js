@@ -157,8 +157,11 @@ class Field extends Component {
   handleDependentState(store, changes) {
     if (this.didDependentOnValueChange(store, changes)) {
       const dependentProp = store[this.props.name];
+      const dependUponProps = {};
+      this.props.dependOn.split(',').forEach((d) => { dependUponProps[d] = changes[d] || store[d]; });
+
       const aggregatedState = {};
-      const dependencyFuncResult = this.props.dependencyFunc(changes, dependentProp ? dependentProp.value : undefined);
+      const dependencyFuncResult = this.props.dependencyFunc(dependUponProps, dependentProp ? dependentProp.value : undefined);
       if (typeof dependencyFuncResult === 'object') {
         if (typeof dependencyFuncResult.value !== 'undefined') {
           aggregatedState.value = dependencyFuncResult.value;
