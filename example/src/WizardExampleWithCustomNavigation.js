@@ -7,7 +7,7 @@ import SelectStep from './SelectStep.js';
 import ComplexStep from './ComplexStep.js';
 const events = require('nocms-events');
 
-const wizardStoreName = 'test-form-wizard';
+const wizardStoreName = 'test-form-wizard-custom-navigation';
 
 export default class WizardExampleWithCustomNavigation extends Component {
 
