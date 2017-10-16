@@ -141,6 +141,7 @@ class Field extends Component {
     const { name } = this.props;
     if (this.didDependentOnValueChange(store, changes)) {
       if (store[name] && this.props.deleteOnDependencyChange(changes, store[name].value)) {
+        // TODO: deleteOnDependencyChange should be removed, as it is better handeled using dependencyFunc object returns
         stores.update(this.context.store, { [this.props.name]: null });
         return true;
       }
