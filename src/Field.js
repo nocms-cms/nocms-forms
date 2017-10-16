@@ -71,7 +71,7 @@ class Field extends Component {
   }
 
   getProps() {
-    const result = Object.assign({}, this.props, this.state);
+    const result = Object.assign({}, this.state, this.props);
 
     if (this.state.aggregatedControlGroupClass) {
       result.controlGroupClass = `${this.props.controlGroupClass} ${this.state.controlGroupClass}`;
