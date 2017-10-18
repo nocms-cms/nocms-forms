@@ -20,6 +20,7 @@ export default class Wizard extends Component {
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
+    this.getFlattenedWizardData = this.getFlattenedWizardData.bind(this);
     this.applyWizardProps = this.applyWizardProps.bind(this);
     this.state = {
       currentStep: props.firstStep || 0,
@@ -86,12 +87,19 @@ export default class Wizard extends Component {
     </button>);
   }
 
+  getFlattenedWizardData(wizardData) {
+    const data = wizardData || this.state.wizardData;
+    const flattened = Object.assign.apply(null, [{}].concat(Object.keys(data).map((key) => { return data[key]; })));
+
+    return flattened;
+  }
+
   applyWizardProps(component) {
     const props = {
       store: this.getStoreForStep(),
       goNext: this.goNext,
       handleFinish: this.handleFinish,
-      wizardData: this.state.wizardData,
+      wizardData: this.getFlattenedWizardData(),
       backButton: this.getBackButton(),
       initialState: this.getInitialStateForStep(),
     };
@@ -103,23 +111,25 @@ export default class Wizard extends Component {
       e.preventDefault();
     }
     if (this.props.goBack) {
-      this.setState({ currentStep: this.props.goBack(this.state.wizardData, this.state.currentStep) });
+      this.setState({ currentStep: this.props.goBack(this.getFlattenedWizardData(), this.state.currentStep) });
       return;
     }
     this.setState({ currentStep: Math.max(0, this.state.currentStep - 1) });
   }
 
   goNext(formData) {
-    const wizardData = Object.assign(this.state.wizardData, formData);
+    const stepData = Object.assign({}, formData);
+    const wizardData = this.state.wizardData;
+    wizardData[this.state.currentStep] = stepData;
     this.setState({ wizardData });
 
     if (this.state.currentStep === this.state.lastStep) {
-      this.handleFinish(formData);
+      this.handleFinish(wizardData);
       this.setState({ showReceipt: true });
       return;
     }
     if (this.props.goNext) {
-      this.setState({ currentStep: this.props.goNext(wizardData, this.state.currentStep) });
+      this.setState({ currentStep: this.props.goNext(this.getFlattenedWizardData(), this.state.currentStep) });
       return;
     }
     if (this.props.steps instanceof Array) {
@@ -129,9 +139,8 @@ export default class Wizard extends Component {
     throw new Error('Named step wizard without goNext override');
   }
 
-  handleFinish(formData) {
-    const wizardData = Object.assign(this.state.wizardData, formData);
-    this.props.handleFinish(wizardData, (err) => {
+  handleFinish(wizardData) {
+    this.props.handleFinish(this.getFlattenedWizardData(wizardData), (err) => {
       if (!err) {
         this.setState({ showReceipt: true });
       }
@@ -142,7 +151,7 @@ export default class Wizard extends Component {
     const step = this.getStep();
     return (<div className={this.props.className}>
       { this.state.showReceipt ?
-        this.props.receipt(this.state.wizardData)
+        this.props.receipt(this.getFlattenedWizardData())
         :
         <div>
           { typeof this.state.lastStep === 'number' && this.props.progressIndicator && this.props.progressIndicator(step.index + 1, this.state.lastStep + 1)}
