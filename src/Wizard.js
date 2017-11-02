@@ -125,7 +125,6 @@ export default class Wizard extends Component {
 
     if (this.state.currentStep === this.state.lastStep) {
       this.handleFinish(wizardData);
-      this.setState({ showReceipt: true });
       return;
     }
     if (this.props.goNext) {
