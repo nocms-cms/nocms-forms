@@ -37,7 +37,7 @@ class SubForm extends Component {
     });
 
     const value = {};
-    value[this.props.name] = { value: formData, isValid, isValidated, validate: this.validate, getValue: () => { this.getValue(); } };
+    value[this.props.name] = { value: formData, isValid, isValidated, validate: this.validate, getValue: () => { return this.getValue(); } };
 
     stores.patch(this.context.store, value);
   }
