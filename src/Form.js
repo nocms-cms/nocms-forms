@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
@@ -89,7 +88,11 @@ class Form extends Component {
           thisOneIsValid = prop.isValid;
         }
         if (formIsValid) {
-          formData[field] = prop.value;
+          if (prop.getValue) {
+            formData[field] = prop.getValue();
+          } else {
+            formData[field] = prop.value;
+          }
         }
 
         formIsValid = formIsValid && thisOneIsValid;
