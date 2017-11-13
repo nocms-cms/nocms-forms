@@ -81,8 +81,12 @@ class SubForm extends Component {
 }
 
 SubForm.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   children: PropTypes.node,
+};
+
+SubForm.defaultProps = {
+  name: 'subform',
 };
 
 SubForm.childContextTypes = {
