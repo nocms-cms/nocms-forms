@@ -25,7 +25,8 @@
     "nocms-stores": "^1.2.3",
     "nocms-utils": "^1.0.0",
     "nocms-validation": "^1.0.3",
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.5.8",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

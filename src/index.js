@@ -6,3 +6,4 @@ export { default as TextArea } from './TextArea';
 export { default as Wizard } from './Wizard';
 export { default as Field } from './Field';
 export { default as SubForm } from './SubForm';
+export { default as InputList } from './InputList';
