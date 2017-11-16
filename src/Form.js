@@ -13,7 +13,7 @@ class Form extends Component {
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      initialState: Object.assign({}, props.initialState), 
+      initialState: Object.assign({}, props.initialState),
       isValid: false,
       isDisabled: false,
       isSubmitting: false,
