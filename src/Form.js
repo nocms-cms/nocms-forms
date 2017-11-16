@@ -29,7 +29,7 @@ class Form extends Component {
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      stores.createStore(this.props.store, this.props.initialState, this.handleStoreChange);
+      stores.createStore(this.props.store, this.state.initialState, this.handleStoreChange);
     }
   }
 
