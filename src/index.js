@@ -7,3 +7,4 @@ export { default as Wizard } from './Wizard';
 export { default as Field } from './Field';
 export { default as SubForm } from './SubForm';
 export { default as InputList } from './InputList';
+export { default as InputListItem } from './InputListItem';

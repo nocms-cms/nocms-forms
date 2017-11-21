@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
@@ -6,7 +6,7 @@ import utils from 'nocms-utils';
 class SubForm extends Component {
   constructor(props, context) {
     super(props);
-    this.store = `${context.store}-${this.props.name}`;
+    this.store = `${context.store}-${props.name}`;
 
     this.onChange = this.onChange.bind(this);
     this.validate = this.validate.bind(this);
@@ -20,7 +20,7 @@ class SubForm extends Component {
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      const initialState = {};
+      const initialState = Object.assign({}, this.props.initialState);
 
       stores.createStore(this.store, initialState, this.onChange);
       stores.patch(this.context.store, { isValid: true, isValidated: false, validate: this.validate });
@@ -66,7 +66,6 @@ class SubForm extends Component {
 
       if (!field.isValidated) {
         thisFieldIsValid = field.validate();
-        field.isValidated = true;
       }
 
       allFieldsAreValid = allFieldsAreValid && thisFieldIsValid;
@@ -81,13 +80,11 @@ class SubForm extends Component {
 }
 
 SubForm.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   children: PropTypes.node,
+  initialState: PropTypes.object,
 };
 
-SubForm.defaultProps = {
-  name: 'subform',
-};
 
 SubForm.childContextTypes = {
   store: PropTypes.string,

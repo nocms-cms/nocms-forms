@@ -2,69 +2,60 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
-import uuid from 'uuid/v4';
 
 class InputList extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
-
-    this.store = `${context.store}-${props.name}`;
     this.state = {
-      items: [props.of],
+      length: 0,
+      data: {},
     };
 
     this.add = this.add.bind(this);
+    this.addListItem = this.addListItem.bind(this);
     this.remove = this.remove.bind(this);
     this.handleStoreChange = this.handleStoreChange.bind(this);
+    this.getValue = this.getValue.bind(this);
     this.validate = this.validate.bind(this);
-  }
-
-  getChildContext() {
-    return {
-      store: this.store,
-    };
   }
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      const initialState = {};
-      stores.createStore(this.store, initialState, this.handleStoreChange);
+      const store = stores.getStore(this.context.store);
+      this.setState({ length: store[this.props.name] ? store[this.props.name].length || 0 : 0 });
 
-      stores.patch(this.context.store, {
+      const obj = {};
+      obj[this.props.name] = {
         isValid: true,
         isValidated: false,
-        validate: () => { return this.validate; },
-      });
+        validate: this.validate,
+        getValue: this.getValue,
+      };
+
+      stores.patch(this.context.store, obj);
     }
   }
 
   getValue() {
-    const store = stores.getStore(this.store);
-
-    return Object.values(store).reduce((value, field) => {
-      if (field.getValue) {
-        return [...value, field.getValue()];
+    const value = [];
+    const store = this.state.data;
+    Object.keys(store).forEach((field) => {
+      if (store[field]) {
+        value.push(store[field].getValue());
       }
-      return [...value, field.value];
-    }, []);
+    });
+    return value;
   }
 
   validate() {
-    let allFieldsAreValid = false;
-    const store = stores.getStore(this.store);
+    const store = this.state.data;
 
-    Object.values(store).forEach((field) => {
-      let thisFieldIsValid = false;
-
-      if (!field.isValidated) {
-        thisFieldIsValid = field.validate();
-        field.isValidated = true;
+    return Object.keys(store).reduce((valid, field) => {
+      if (store[field]) {
+        return valid && store[field].validate();
       }
-
-      allFieldsAreValid = allFieldsAreValid && thisFieldIsValid;
-    });
-
-    return allFieldsAreValid;
+      return false;
+    }, true);
   }
 
   handleStoreChange(formData) {
@@ -93,7 +84,7 @@ class InputList extends Component {
     const { of } = this.props;
 
     const item = React.cloneElement(of, {
-      name: `${of.props.name}-${uuid()}`,
+      store: `${of.props.name}-${this.state.items.length}`,
     });
 
     const items = [...this.state.items, item];
@@ -101,38 +92,37 @@ class InputList extends Component {
   }
 
   remove(e, item) {
-    e.preventDefault();
 
-    const items = this.state.items.filter((itm) => { return itm.props.name !== item.props.name; });
-    //  copy the contents of the existing store
-    const store = stores.getStore(this.store);
-    //  remove the item from the store
-    delete store[item.props.name];
-    //  remove the existing store
-    stores.remove(this.store, this.handleStoreChange);
-    //  create a new store that does not contain the removed item
-    stores.createStore(this.store, store, this.handleStoreChange);
+  }
 
-    this.setState({ items });
-    //  Trigger handleStoreChange such that we don't get validation errors on the input element we just removed.
-    this.handleStoreChange(stores.getStore(this.store));
+  addListItem(storeName, getValue, validate) {
+    const data = this.state.data;
+    data[storeName] = { getValue, validate };
+
+    this.setState({ data });
   }
 
   render() {
     const { addButtonText, removeButtonText, showRemoveButton, addButtonClassName, removeButtonClassName } = this.props;
+    const items = [];
+
+    for (let i = 0; i < this.state.length; i++) { // eslint-disable-line no-plusplus
+      const item = React.cloneElement(this.props.of, {
+        store: `${this.context.store}-${this.props.name}-${i}`,
+        addListItem: this.addListItem,
+      });
+
+      items.push(
+        <div key={i}>
+          { item }
+          { showRemoveButton && <button className={removeButtonClassName} onClick={(e) => { return this.remove(e, item); }}>{removeButtonText}</button> }
+        </div>,
+      );
+    }
 
     return (
       <div>
-        {
-          this.state.items.map((item) => {
-            return (
-              <div key={item.props.name ? item.props.name : 'name'}>
-                { item }
-                { showRemoveButton && <button className={removeButtonClassName} onClick={(e) => { return this.remove(e, item); }}>{removeButtonText}</button> }
-              </div>
-            );
-          })
-        }
+        { items }
         <br />
         <button className={addButtonClassName} onClick={this.add}>{addButtonText}</button>
       </div>

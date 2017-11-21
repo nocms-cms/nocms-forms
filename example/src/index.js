@@ -7,6 +7,7 @@ import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigati
 import WizardExampleWithHiddenStepFields from './WizardExampleWithHiddenStepFields';
 import DependenciesExample from './DependenciesExample';
 import DateExample from './DateExample';
+import NestedFormExample from './NestedFormExample';
 
 const stores = require('nocms-stores');
 const { triggerGlobal } = require('nocms-events');
@@ -19,6 +20,8 @@ const clearAllStores = () => {
 const App = () => (
   <div>
     <button onClick={clearAllStores}>Clear all stores</button>
+    <NestedFormExample />
+    <hr/>
     <FormExample />
     <hr />
     <WizardExample />

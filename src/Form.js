@@ -19,6 +19,8 @@ class Form extends Component {
       isSubmitting: false,
       errorText: null,
     };
+
+    this.createStore = this.createStore.bind(this);
   }
 
   getChildContext() {
@@ -29,7 +31,7 @@ class Form extends Component {
 
   componentWillMount() {
     if (utils.isBrowser()) {
-      stores.createStore(this.props.store, this.state.initialState, this.handleStoreChange);
+      this.createStore(this.props.store, this.state.initialState);
     }
   }
 
@@ -45,6 +47,32 @@ class Form extends Component {
 
   setFormEl(formEl) {
     this.formEl = formEl;
+  }
+
+  createStore(name, initialState, doNotListen) {
+    const is = {};
+    Object.keys(initialState).forEach((key) => {
+      const field = initialState[key];
+
+      if (typeof field !== 'object') {
+        is[key] = field;
+      }
+      if (typeof field === 'object') {
+        if (field instanceof Array) {
+          field.forEach((item, idx) => {
+            this.createStore(`${name}-${key}-${idx}`, item, true);
+          });
+          is[key] = { length: field.length };
+        } else {
+          this.createStore(`${name}-${key}`, field, true);
+        }
+      }
+    });
+    if (doNotListen) {
+      stores.createStore(name, is);
+      return;
+    }
+    stores.createStore(name, is, this.handleStoreChange);
   }
 
   handleStoreChange(store) {
