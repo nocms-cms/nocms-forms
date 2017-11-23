@@ -5,6 +5,7 @@ import WizardExample from './WizardExample';
 import WizardExampleWithNamedSteps from './WizardExampleWithNamedSteps';
 import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigation';
 import WizardExampleWithHiddenStepFields from './WizardExampleWithHiddenStepFields';
+import DependenciesExample from './DependenciesExample';
 import DateExample from './DateExample';
 
 const stores = require('nocms-stores');
@@ -27,6 +28,8 @@ const App = () => (
     <WizardExampleWithCustomNavigation />
     <hr />
     <WizardExampleWithHiddenStepFields />
+    <hr />
+    <DependenciesExample />
     <hr />
     <DateExample />
   </div>
