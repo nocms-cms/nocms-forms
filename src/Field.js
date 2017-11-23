@@ -124,7 +124,6 @@ class Field extends Component {
       return;
     }
 
-    // TODO: This should execute only if the component's dependencies or value is changed.
     let newState = store[this.props.name];
     if (newState === null || typeof newState !== 'object') {
       // Upgrade simple data values to input state in store
@@ -159,7 +158,7 @@ class Field extends Component {
     if (this.didDependentOnValueChange(store, changes)) {
       const dependentProp = store[this.props.name];
       const dependUponProps = {};
-      this.props.dependOn.split(',').forEach((d) => { dependUponProps[d] = changes[d] || store[d]; });
+      this.props.dependOn.split(',').forEach((d) => { dependUponProps[d] = store[d]; });
 
       const aggregatedState = {};
       const dependencyFuncResult = this.props.dependencyFunc(dependUponProps, dependentProp ? dependentProp.value : undefined);
