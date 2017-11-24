@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Wizard } from 'nocms-forms';
 
-const events = require('nocms-events');
+const { listenToGlobal } = require('nocms-events');
 
 import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
@@ -31,7 +31,7 @@ export default class WizardExample extends Component {
     this.progressIndicator = this.progressIndicator.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
     this.resetWizard = this.resetWizard.bind(this);
-    events.listenTo('all-stores-cleared', this.resetWizard);
+    listenToGlobal('all-stores-cleared', this.resetWizard);
   }
 
   handleFinish(wizardData, cb) {

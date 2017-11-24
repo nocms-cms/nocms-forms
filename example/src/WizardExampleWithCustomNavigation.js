@@ -5,7 +5,7 @@ import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
 import SelectStep from './SelectStep.js';
 import ComplexStep from './ComplexStep.js';
-const events = require('nocms-events');
+const { listenToGlobal } = require('nocms-events');
 
 const wizardStoreName = 'test-form-wizard-custom-navigation';
 
@@ -30,7 +30,7 @@ export default class WizardExampleWithCustomNavigation extends Component {
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
     this.resetWizard = this.resetWizard.bind(this);
-    events.listenTo('all-stores-cleared', this.resetWizard)
+    listenToGlobal('all-stores-cleared', this.resetWizard);
   }
 
   handleFinish(wizardData, cb) {

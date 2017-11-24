@@ -7,7 +7,7 @@ import SelectStep from './SelectStep.js';
 import ComplexStep from './ComplexStep.js';
 
 const wizardStoreName = 'test-form-wizard-named-steps';
-const events = require('nocms-events');
+const { listenToGlobal } = require('nocms-events');
 
 export default class WizardExample extends Component {
 
@@ -28,7 +28,7 @@ export default class WizardExample extends Component {
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
     this.resetWizard = this.resetWizard.bind(this);
-    events.listenTo('all-stores-cleared', this.resetWizard)
+    listenToGlobal('all-stores-cleared', this.resetWizard)
   }
 
   handleFinish(wizardData, cb) {

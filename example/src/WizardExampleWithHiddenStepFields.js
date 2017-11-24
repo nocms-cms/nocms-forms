@@ -4,7 +4,7 @@ import { Wizard } from 'nocms-forms';
 import HiddenFieldStep from './HiddenFieldStep';
 import Step from './Step';
 
-const events = require('nocms-events');
+const { listenToGlobal } = require('nocms-events');
 
 const wizardStoreName = 'test-form-wizard-with-hidden-fields';
 
@@ -22,7 +22,7 @@ export default class WizardExampleWithHiddenStepFields extends Component {
     };
     this.handleFinish = this.handleFinish.bind(this);
     this.resetWizard = this.resetWizard.bind(this);
-    events.listenTo('all-stores-cleared', this.resetWizard);
+    listenToGlobal('all-stores-cleared', this.resetWizard);
   }
 
   handleFinish(wizardData, cb) {

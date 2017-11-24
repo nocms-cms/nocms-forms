@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Field } from 'nocms-forms';
 import Spinner from './Spinner';
 
-const events = require('nocms-events');
+const { listenToGlobal } = require('nocms-events');
 
 const storeName = 'test-form';
 
@@ -21,7 +21,7 @@ export default class FormExample extends React.Component {
       formKey: 0,
     };
     this.resetForm = this.resetForm.bind(this);
-    events.listenTo('all-stores-cleared', this.resetForm);
+    listenToGlobal('all-stores-cleared', this.resetForm);
   }
 
   getUppercaseName(dependency) {
@@ -225,6 +225,7 @@ export default class FormExample extends React.Component {
             name="select"
             emptyLabel="Velg noe gøy"
             required
+            readOnly
           />
           <Field
             type="select"

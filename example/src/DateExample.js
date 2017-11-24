@@ -3,14 +3,14 @@ import { Form, Field } from 'nocms-forms';
 import Spinner from './Spinner';
 import moment from 'moment';
 
-const events = require('nocms-events');
+const { listenToGlobal } = require('nocms-events');
 
 const storeName = 'date-test-form';
 
 const dateFormats = [
   moment.ISO_8601,
   'DD.MM.YYYY',
-  'MM/DD/YYYY'
+  'MM/DD/YYYY',
 ];
 
 const convertToIso = (dependency) => {
@@ -35,7 +35,7 @@ export default class FormExample extends React.Component {
       formKey: 0,
     };
     this.resetForm = this.resetForm.bind(this);
-    events.listenTo('all-stores-cleared', this.resetForm);
+    listenToGlobal('all-stores-cleared', this.resetForm);
   }
 
   handleReset() {

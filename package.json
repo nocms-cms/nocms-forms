@@ -16,12 +16,12 @@
   "scripts": {
     "dev": "webpack --watch",
     "test": "",
-    "prepublish": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1",
+    "prepare": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "eslint": "eslint --ext .js, .jsx ."
   },
   "dependencies": {
-    "nocms-events": "^1.0.0",
+    "nocms-events": "^1.2.0",
     "nocms-stores": "^1.2.3",
     "nocms-utils": "^1.0.0",
     "nocms-validation": "^1.0.3",

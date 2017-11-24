@@ -9,11 +9,11 @@ import DependenciesExample from './DependenciesExample';
 import DateExample from './DateExample';
 
 const stores = require('nocms-stores');
-const events = require('nocms-events');
+const { triggerGlobal } = require('nocms-events');
 
 const clearAllStores = () => {
   stores.clearAll();
-  events.trigger('all-stores-cleared');
+  triggerGlobal('all-stores-cleared');
 };
 
 const App = () => (

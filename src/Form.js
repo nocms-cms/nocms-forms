@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
-import events from 'nocms-events';
+import { triggerGlobal } from 'nocms-events';
 
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
@@ -106,7 +106,7 @@ class Form extends Component {
       return;
     }
     this.setState({ isSubmitting: true, isDisabled: true });
-    events.trigger('form_sent', this.props.store);
+    triggerGlobal('form_sent', this.props.store);
 
     if (this.props.onSubmit) {
       this.props.onSubmit(formData, this.handleFinishSubmit.bind(this));
