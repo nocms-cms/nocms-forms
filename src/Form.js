@@ -33,10 +33,6 @@ class Form extends Component {
     };
   }
 
-  componentWillMount() {
-
-  }
-
   componentWillUnmount() {
     if (utils.isBrowser()) {
       if (this.props.wizardStep) {
