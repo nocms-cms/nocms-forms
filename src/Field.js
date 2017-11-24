@@ -34,7 +34,6 @@ class Field extends Component {
   componentWillMount() {
     if (utils.isBrowser()) {
       stores.subscribe(this.context.store, this.handleStoreChange);
-      console.log("Field store:", this.context.store);
       this.applyExistingStoreValue();
     }
   }

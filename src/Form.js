@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
 import { triggerGlobal } from 'nocms-events';
+import uuid from 'uuid/v4';
 
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
@@ -21,6 +22,9 @@ class Form extends Component {
     };
 
     this.createStore = this.createStore.bind(this);
+    if (utils.isBrowser()) {
+      this.createStore(this.props.store, this.state.initialState);
+    }
   }
 
   getChildContext() {
@@ -30,9 +34,7 @@ class Form extends Component {
   }
 
   componentWillMount() {
-    if (utils.isBrowser()) {
-      this.createStore(this.props.store, this.state.initialState);
-    }
+
   }
 
   componentWillUnmount() {
@@ -59,10 +61,13 @@ class Form extends Component {
       }
       if (typeof field === 'object') {
         if (field instanceof Array) {
+          const idMap = [];
           field.forEach((item, idx) => {
-            this.createStore(`${name}-${key}-${idx}`, item, true);
+            const id = uuid();
+            this.createStore(`${name}-${key}-${id}`, item, true);
+            idMap[idx] = id;
           });
-          is[key] = { length: field.length };
+          is[key] = { length: field.length, idMap };
         } else {
           this.createStore(`${name}-${key}`, field, true);
         }

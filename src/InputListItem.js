@@ -20,6 +20,11 @@ class InputListItem extends Component {
   componentWillMount() {
     if (utils.isBrowser()) {
       stores.createStore(this.props.store, this.handleStoreChange);
+    }
+  }
+
+  componentDidMount() {
+    if (utils.isBrowser()) {
       this.props.addListItem(this.props.store, this.getValue, this.validate);
     }
   }
@@ -66,7 +71,7 @@ InputListItem.propTypes = {
   store: PropTypes.string,
   children: PropTypes.node,
   addListItem: PropTypes.func,
-
+  removeListItem: PropTypes.func,
 };
 
 export default InputListItem;

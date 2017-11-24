@@ -2,27 +2,36 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
+import uuid from 'uuid/v4';
 
 class InputList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       length: 0,
-      data: {},
+      store: {},
+      items: [],
+      idMap: [],
     };
 
-    this.add = this.add.bind(this);
     this.addListItem = this.addListItem.bind(this);
-    this.remove = this.remove.bind(this);
+    this.removeListItem = this.removeListItem.bind(this);
     this.handleStoreChange = this.handleStoreChange.bind(this);
     this.getValue = this.getValue.bind(this);
     this.validate = this.validate.bind(this);
+    this.createItem = this.createItem.bind(this);
+    this.createItems = this.createItems.bind(this);
+    this.onAddClick = this.onAddClick.bind(this);
   }
 
   componentWillMount() {
     if (utils.isBrowser()) {
       const store = stores.getStore(this.context.store);
-      this.setState({ length: store[this.props.name] ? store[this.props.name].length || 0 : 0 });
+      const field = store[this.props.name];
+
+      if (field) {
+        this.setState({ idMap: field.idMap, length: field ? field.length || 0 : 0 }, this.createItems);
+      }
 
       const obj = {};
       obj[this.props.name] = {
@@ -36,9 +45,21 @@ class InputList extends Component {
     }
   }
 
+  onAddClick(e) {
+    e.preventDefault();
+
+    const idMap = [...this.state.idMap, uuid()];
+
+    this.setState({ idMap }, () => {
+      const item = this.createItem(this.state.length);
+      const items = [...this.state.items, item];
+      this.setState({ items, length: this.state.length + 1 });
+    });
+  }
+
   getValue() {
     const value = [];
-    const store = this.state.data;
+    const store = this.state.store;
     Object.keys(store).forEach((field) => {
       if (store[field]) {
         value.push(store[field].getValue());
@@ -48,7 +69,7 @@ class InputList extends Component {
   }
 
   validate() {
-    const store = this.state.data;
+    const store = this.state.store;
 
     return Object.keys(store).reduce((valid, field) => {
       if (store[field]) {
@@ -73,58 +94,90 @@ class InputList extends Component {
       isValid,
       isValidated,
       validate: this.validate,
-      getValue: () => { return this.getValue(); },
+      getValue: this.getValue,
     };
 
     stores.patch(this.context.store, value);
   }
 
-  add(e) {
-    e.preventDefault();
-    const { of } = this.props;
+  addListItem(storeName, getValue, validate) {
+    const store = this.state.store;
+    store[storeName] = { getValue, validate };
 
-    const item = React.cloneElement(of, {
-      store: `${of.props.name}-${this.state.items.length}`,
+    this.setState({ store });
+  }
+
+  removeListItem(e, item) {
+    e.preventDefault();
+
+    const store = this.state.store;
+    delete store[item.props.store];
+
+    stores.clearStore(item.props.store);
+    const idMap = this.state.idMap.filter((id) => { return !item.props.store.includes(id); });
+
+    this.setState({ idMap, store }, () => {
+      const items = this.state.items.filter((itm) => { return !item.props.store.includes(itm.key); });
+      this.setState({ items, length: this.state.length - 1 });
+    });
+  }
+
+  createItem(index) {
+    const {
+      removeButtonText,
+      showRemoveButton,
+      removeButtonClassName,
+    } = this.props;
+
+    const item = React.cloneElement(this.props.of, {
+      store: `${this.context.store}-${this.props.name}-${this.state.idMap[index]}`,
+      addListItem: this.addListItem,
+      removeListItem: this.removeListItem,
     });
 
-    const items = [...this.state.items, item];
+    const component = (
+      <div key={this.state.idMap[index]}>
+        { item }
+        {
+          showRemoveButton &&
+            <button
+              className={removeButtonClassName}
+              onClick={(e) => { return item.props.removeListItem(e, item); }}
+            >
+              {removeButtonText}
+            </button>
+        }
+      </div>
+    );
+    return component;
+  }
+
+  createItems() {
+    const items = [];
+
+    for (let i = 0; i < this.state.length; i++) { // eslint-disable-line no-plusplus  
+      const item = this.createItem(i);
+      items.push(item);
+    }
+
     this.setState({ items });
   }
 
-  remove(e, item) {
-
-  }
-
-  addListItem(storeName, getValue, validate) {
-    const data = this.state.data;
-    data[storeName] = { getValue, validate };
-
-    this.setState({ data });
-  }
-
   render() {
-    const { addButtonText, removeButtonText, showRemoveButton, addButtonClassName, removeButtonClassName } = this.props;
-    const items = [];
-
-    for (let i = 0; i < this.state.length; i++) { // eslint-disable-line no-plusplus
-      const item = React.cloneElement(this.props.of, {
-        store: `${this.context.store}-${this.props.name}-${i}`,
-        addListItem: this.addListItem,
-      });
-
-      items.push(
-        <div key={i}>
-          { item }
-          { showRemoveButton && <button className={removeButtonClassName} onClick={(e) => { return this.remove(e, item); }}>{removeButtonText}</button> }
-        </div>,
-      );
-    }
+    const {
+      addButtonText,
+      addButtonClassName,
+    } = this.props;
 
     return (
       <div>
-        { items }
+        { this.state.items }
         <br />
-        <button className={addButtonClassName} onClick={this.add}>{addButtonText}</button>
+        <button
+          className={addButtonClassName}
+          onClick={this.onAddClick}
+        >{addButtonText}
+        </button>
       </div>
     );
   }

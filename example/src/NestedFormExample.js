@@ -57,7 +57,7 @@ class NestedFormExample extends Component {
           name="colors"
           of={
             <InputListItem>
-              <Field name="color" label="Color" required/>
+              <Field name="color" label="Color" required />
             </InputListItem>
           }
         />
