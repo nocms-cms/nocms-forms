@@ -1,9 +1,9 @@
-import { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
 
-class SubForm extends Component {
+class SubForm extends React.Component {
   constructor(props, context) {
     super(props);
     this.store = `${context.store}-${props.name}`;
@@ -75,7 +75,7 @@ class SubForm extends Component {
   }
 
   render() {
-    return this.props.children || '';
+    return <div>{this.props.children}</div> || '';
   }
 }
 

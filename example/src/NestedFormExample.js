@@ -10,33 +10,9 @@ class NestedFormExample extends Component {
 
     this.state = {
       initialState: {
-        meta: {
-          title: 'title',
-          subtitle: 'subtitle',
-        },
-        sections: [
-          { 
-            title: 'subform title',
-            type: 'Program',
-            activities: [
-              {
-                title: 'activity 1'
-              }
-            ]
-          },
-          {
-            title: 'subform2 title',
-            type: 'Heading',
-            activities: [
-              {
-                title: 'activity 2'
-              },
-              {
-                title: 'activity 3'
-              }
-            ]
-          }
-        ]
+        firstname: 'Tom',
+        lastname: 'Johnson',
+        hobbies: [{ name: 'Soccer', description: 'Run after a ball'}]
       }
     }
 
@@ -46,94 +22,42 @@ class NestedFormExample extends Component {
   render() {
     return (
       <Form
-        initialState={{ colors: [{ color: 'blue'}, { color: 'red' }]} }
+        initialState={this.state.initialState}
         submitButtonText="Save"
         submitButtonClassName="btn btn-lg btn-submit"
         store="edit-camp-form"
         submittingText="Saving..."
         onSubmit={this.handleSubmit}
       >
+        <Field name="firstname" label="First name" />
+        <Field name="lastname" label="Last name" />
+        <h3>Nicknames</h3>
         <InputList
-          name="colors"
+          name="nicknames"
           of={
             <InputListItem>
-              <Field name="color" label="Color" required />
+              <Field name="nickname" label="Nickname" />
             </InputListItem>
-          }
+          } 
+        />
+        <h3>Address</h3>
+        <SubForm name="address">
+          <Field name="street" label="Street" />
+          <Field name="city" label="City" />
+          <Field name="zip" label="Zip code" />
+        </SubForm>
+        <h3>Hobbies</h3>
+        <InputList
+          name="hobbies"
+          of={
+            <InputListItem>
+              <Field name="name" label="Hobby name" />
+              <Field name="description" label="Hobby description"/>
+            </InputListItem>
+          } 
         />
       </Form>
     )
-   // const { onSubmit, camp } = this.props;
-   /*
-    return (
-      <div>
-        <h1>Edit {this.state.initialState.title}</h1>
-        <Form
-          initialState={this.state.initialState}
-          submitButtonText="Save"
-          submitButtonClassName="btn btn-lg btn-submit"
-          store="edit-camp-form"
-          submittingText="Saving..."
-          onSubmit={this.handleSubmit}
-        >
-          <SubForm name="meta">
-            <div>
-              <Field name="title" label="Title" />
-              <Field name="subtitle" label="Subtitle" />
-              <Field name="menuHeading" label="Menu heading" /> 
-            </div>
-          </SubForm>
-          <div className="row">
-              <hr/>
-              <h2>Sections</h2>       
-              <hr/>
-              <InputList
-                name="sections"
-                addButtonText="New section"
-                addButtonClassName="btn"
-                removeButtonText="Remove section"
-                of={
-                    <SubForm>
-                      <fieldset className="fieldset-section">
-                        <legend>Section</legend>
-                        <div className="col-md-6">
-                          <Field name="title" label="Title" />              
-                          <Field name="type" label="Type" type="select" options={sectionTypes}/>                        
-                        </div>
-                        <div className="col-md-6 activities-section">
-                          <h3>Activities</h3>
-                          <InputList
-                            name="activities"
-                            addButtonText="New activity"
-                            addButtonClassName="btn"
-                            removeButtonText="Remove"
-                            of={
-                              <SubForm>
-                                <fieldset>
-                                  <legend>Activity</legend>
-                                  <Field name="title" label="Title" />
-                                  <Field name="location" label="Location" />
-                                  <Field name="description" label="Description" />
-                                  <SubForm name="time">
-                                    <div>
-                                      <Field name="start" label="Start" type="time"/>
-                                      <Field name="end" label="End" type="time"/>
-                                    </div>
-                                  </SubForm>
-                                </fieldset>
-                              </SubForm>
-                            }
-                          />
-                        </div>
-                      </fieldset>
-                    </SubForm>
-                  }                
-                />
-          </div>
-          <br/>
-        </Form>
-      </div>
-    ); */
   }
 
   handleSubmit(formData, cb) {

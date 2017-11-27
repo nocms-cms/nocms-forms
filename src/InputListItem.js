@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import stores from 'nocms-stores';
 import utils from 'nocms-utils';
@@ -59,7 +59,7 @@ class InputListItem extends Component {
   }
 
   render() {
-    return this.props.children || '';
+    return <div>{this.props.children}</div> || '';
   }
 }
 
@@ -71,7 +71,6 @@ InputListItem.propTypes = {
   store: PropTypes.string,
   children: PropTypes.node,
   addListItem: PropTypes.func,
-  removeListItem: PropTypes.func,
 };
 
 export default InputListItem;
