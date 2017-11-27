@@ -13,7 +13,7 @@ class NestedFormExample extends Component {
         firstname: 'Tom',
         lastname: 'Johnson',
         nicknames: [{ nickname: 'Tommy'}, { nickname: 'Tim'}]
-        // hobbies:  [{ name: 'Soccer', description: 'Run after a ball'}]
+        // hobbies: [{ name: 'Soccer', description: 'Run after a ball'}]
       }
     }
 
