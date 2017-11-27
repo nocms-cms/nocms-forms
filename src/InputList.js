@@ -203,8 +203,4 @@ InputList.contextTypes = {
   store: PropTypes.string,
 };
 
-InputList.childContextTypes = {
-  store: PropTypes.string,
-};
-
 export default InputList;
