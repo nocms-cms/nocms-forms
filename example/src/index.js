@@ -20,8 +20,6 @@ const clearAllStores = () => {
 const App = () => (
   <div>
     <button onClick={clearAllStores}>Clear all stores</button>
-    <NestedFormExample />
-    <hr/>
     <FormExample />
     <hr />
     <WizardExample />
@@ -35,6 +33,8 @@ const App = () => (
     <DependenciesExample />
     <hr />
     <DateExample />
+    <hr />
+    <NestedFormExample />
   </div>
 );
 
