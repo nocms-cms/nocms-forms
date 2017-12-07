@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "webpack --watch",
     "test": "",
-    "prepare": "babel ./src --out-dir ./lib --source-maps --presets env,react,stage-1",
+    "prepare": "babel ./src --out-dir ./lib --source-maps",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "eslint": "eslint --ext .js, .jsx ."
   },
@@ -29,13 +29,12 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.10.4",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.1",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-1": "^6.16.0",
+    "@babel/cli": "^7.0.0-beta.34",
+    "@babel/preset-env": "^7.0.0-beta.34",
+    "@babel/core": "^7.0.0-beta.34",
+    "@babel/preset-react": "^7.0.0-beta.34",
+    "babel-eslint": "^8.0.3",
+    "babel-loader": "^8.0.0-beta.0",
     "condition-circle": "^1.5.0",
     "eslint": "^4.5.0",
     "eslint-config-webteam": "^2.0.0",

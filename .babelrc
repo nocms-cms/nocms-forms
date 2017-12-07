@@ -1,12 +1,11 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/env", {
       "targets": {
         "browsers": ["last 2 versions", "IE 11"]
       },
       "debug": false
     }],
-    "react",
-    "stage-1"
+    "@babel/react"
   ]
 }
