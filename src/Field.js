@@ -87,9 +87,9 @@ class Field extends Component {
       isValid: true,
       isValidated: !this.props.required,
       validate: this.validate,
-      disabled: this.state.disabled || (initialState && initialState.disabled),
-      hidden: initialState && initialState.hidden,
-      readOnly: initialState && initialState.readOnly,
+      disabled: !!(this.state.disabled || (initialState && initialState.disabled)),
+      hidden: !!(initialState && initialState.hidden),
+      readOnly: !!(initialState && initialState.readOnly),
     };
 
     if (typeof initialState === 'undefined' || initialState === null) {
