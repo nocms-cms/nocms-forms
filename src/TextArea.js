@@ -27,6 +27,7 @@ const TextArea = (props) => {
     isValidated,
     cols,
     rows,
+    readOnly,
   } = props;
 
   let containerClasses = controlGroupClass;
@@ -57,6 +58,7 @@ const TextArea = (props) => {
           maxLength={maxLength}
           value={props.value}
           disabled={disabled}
+          readOnly={readOnly ? true : null}
           placeholder={placeholder}
           rows={rows}
           cols={cols}
@@ -97,6 +99,7 @@ TextArea.propTypes = {
   placeholder: PropTypes.string,
   cols: PropTypes.number,
   rows: PropTypes.number,
+  readOnly: PropTypes.bool,
 };
 
 TextArea.defaultProps = {
