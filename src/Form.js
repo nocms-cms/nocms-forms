@@ -55,7 +55,7 @@ class Form extends Component {
       if (typeof field !== 'object') {
         is[key] = field;
       }
-      if (typeof field === 'object') {
+      if (typeof field === 'object' && field !== null) {
         if (field instanceof Array) {
           const idMap = [];
           field.forEach((item, idx) => {
