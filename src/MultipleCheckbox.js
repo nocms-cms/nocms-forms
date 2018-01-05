@@ -60,7 +60,10 @@ MultipleCheckbox.propTypes = {
   checkboxClass: PropTypes.string,
   label: PropTypes.string,
   labelId: PropTypes.string,
-  options: PropTypes.array,
+  options: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.string,
+  ]),
   value: PropTypes.array,
 };
 
