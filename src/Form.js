@@ -8,6 +8,12 @@ import uuid from 'uuid/v4';
 const SUBMITTING_DEFAULT = '...';
 const SUBMIT_BUTTON_DEFAULT = 'OK';
 
+const allElementsAreStrings = (array) => {
+  return array.every((element) => {
+    return typeof element === 'string';
+  });
+};
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -57,13 +63,17 @@ class Form extends Component {
       }
       if (typeof field === 'object' && field !== null) {
         if (field instanceof Array) {
-          const idMap = [];
-          field.forEach((item, idx) => {
-            const id = uuid();
-            this.createStore(`${name}-${key}-${id}`, item, true);
-            idMap[idx] = id;
-          });
-          is[key] = { length: field.length, idMap };
+          if (allElementsAreStrings(field)) {
+            is[key] = field;
+          } else {
+            const idMap = [];
+            field.forEach((item, idx) => {
+              const id = uuid();
+              this.createStore(`${name}-${key}-${id}`, item, true);
+              idMap[idx] = id;
+            });
+            is[key] = { length: field.length, idMap };
+          }
         } else {
           this.createStore(`${name}-${key}`, field, true);
         }

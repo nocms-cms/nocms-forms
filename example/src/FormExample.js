@@ -120,11 +120,7 @@ export default class FormExample extends React.Component {
         options: [{label: 'Carrot', value: 'carrot'}, {label: 'Potato', value: 'potato'}, {label: 'Garlic', value: 'garlic'}]
       }
     ]
-    const initialData = {
-      checkbox: true,
-      initialDependencyText: 'foo',
-    };
-
+ 
     const multiCheck = [
       {
         label: 'Carrot',
@@ -134,6 +130,10 @@ export default class FormExample extends React.Component {
         label: 'Apple',
         value: 'two',
       },
+      {
+        label: 'Orange',
+        value: 'three',
+      },
     ]
     const inputClasses = {
       controlGroupClass: 'custom-control-group',
@@ -141,7 +141,13 @@ export default class FormExample extends React.Component {
       errorWrapperClass: 'error',
       errorTextClass: 'custom-error',
       labelClass: 'custom-label',
-    }
+    };
+
+    const initialData = {
+      checkbox: true,
+      initialDependencyText: 'foo',
+      multiCheckWithDefault: ['two', 'three'],
+    };
 
     return (
       <div>
@@ -274,6 +280,15 @@ export default class FormExample extends React.Component {
             label="Check"
             options={multiCheck}
             name="multicheck"
+            emptyLabel="Velg flere gøye ting"
+            multiple
+          />
+          <Field
+            type="checkbox"
+            {...inputClasses}
+            label="Check med forhåndsutfylt"
+            options={multiCheck}
+            name="multiCheckWithDefault"
             emptyLabel="Velg flere gøye ting"
             multiple
           />
