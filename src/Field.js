@@ -290,6 +290,7 @@ Field.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array,
+    PropTypes.bool,
   ]),
   disabled: PropTypes.bool,
   required: PropTypes.bool,
