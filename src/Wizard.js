@@ -79,7 +79,7 @@ export default class Wizard extends Component {
   }
 
   getBackButton() {
-    if (this.state.currentStep === 0) {
+    if (this.state.currentStep === 0 || this.state.currentStep === this.props.firstStep) {
       return null;
     }
     return (<button onClick={this.goBack} className={this.props.backButtonClassName}>
