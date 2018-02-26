@@ -54,27 +54,27 @@ export default class WizardExample extends Component {
     this.setState({ wizardComponentKey: this.state.wizardComponentKey + 1 });
   }
 
-  render(){
+  render() {
     return (
       <div>
         <h2>Wizard form example 1</h2>
         <div>
         <Wizard
-         key={wizardStoreName + this.state.wizardComponentKey}
-         receipt={this.renderReceipt}
-         progressIndicator={this.progressIndicator}
-         nextButtonText="Et steg frem"
-         formClass="custom-form-class"
-         className="wizard_parent"
-         currentStep={this.state.currentStep}
-         wizardStepClassName="Hu hei"
-         backButtonText="Et steg tilbake"
-         finishButtonText="Fullfør"
-         nextButtonClassName="bling"
-         store={wizardStoreName + this.state.wizardComponentKey}
-         steps={this.state.steps}
-         nextButtonClassName="knapp neste-knapp"
-         handleFinish={this.handleFinish}
+          key={wizardStoreName + this.state.wizardComponentKey}
+          receipt={this.renderReceipt}
+          progressIndicator={this.progressIndicator}
+          nextButtonText="Et steg frem"
+          formClass="custom-form-class"
+          className="wizard_parent"
+          currentStep={this.state.currentStep}
+          wizardStepClassName="Hu hei"
+          backButtonText="Et steg tilbake"
+          finishButtonText="Fullfør"
+          nextButtonClassName="bling"
+          store={wizardStoreName + this.state.wizardComponentKey}
+          steps={this.state.steps}
+          nextButtonClassName="knapp neste-knapp"
+          handleFinish={this.handleFinish}
         />
         </div>
       </div>

@@ -15,7 +15,7 @@ export default class Step extends Component {
     this.props.goNext(formData);
   }
 
-  render(){
+  render() {
     return (
       <Form
         wizardStep
@@ -26,6 +26,7 @@ export default class Step extends Component {
         store={this.props.store}
         errorText={this.state.errorText}
         backButton={this.props.backButton}
+        submitButtonText="Neste"
       >
         <h2>Step: {this.props.name}</h2>
         <Field
