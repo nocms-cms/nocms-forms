@@ -21,7 +21,7 @@
     "eslint": "eslint --ext .js, .jsx ."
   },
   "dependencies": {
-    "nocms-events": "^1.2.0",
+    "nocms-events": "^1.2.1",
     "nocms-stores": "^1.4.1",
     "nocms-utils": "^1.0.0",
     "nocms-validation": "^1.1.3",

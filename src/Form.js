@@ -46,7 +46,7 @@ class Form extends Component {
         stores.unsubscribe(this.props.store, this.handleStoreChange);
         return;
       }
-      stores.remove(this.props.store, this.handleStoreChange);
+      stores.remove(`${this.props.store}*`, this.handleStoreChange);
     }
   }
 

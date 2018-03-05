@@ -17,7 +17,6 @@ export default class StepWithSubform extends Component {
   }
 
   render() {
-    console.log(this.props.initialState);
     return (
       <Form
         wizardStep
