@@ -25,7 +25,7 @@ class App extends React.Component {
       formExample: false,
       wizardExample: false,
       wizardExampleWithNamedInputs: false,
-      wizardExampleWithCustomNavigation: true,
+      wizardExampleWithCustomNavigation: false,
       wizardExampleWithHiddenStepFields: false,
       dependenciesExample: false,
       dateExample: false,

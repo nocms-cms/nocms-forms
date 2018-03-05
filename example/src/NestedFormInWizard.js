@@ -29,6 +29,11 @@ class NestedFormInWizard extends Component {
     cb(null);
   }
 
+  renderReceipt(data){
+    console.log('Receipt data', data);
+    return <div>Kvittering</div>;
+  }
+
   render() {
     return (
       <div>
@@ -45,6 +50,7 @@ class NestedFormInWizard extends Component {
           store={wizardStoreName}
           steps={this.state.steps}
           handleFinish={this.handleFinish}
+          receipt={this.renderReceipt}
         />
       </div>
     );
