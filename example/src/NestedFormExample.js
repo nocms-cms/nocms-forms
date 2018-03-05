@@ -2,9 +2,6 @@
 import React, { Component } from 'react';
 import { Form, SubForm, InputList, Field, InputListItem, Wizard } from 'nocms-forms';
 import Step1 from './Step';
-import StepWithNesting from './StepWithNesting';
-
-const wizardStoreName = 'test-nested-form-wizard';
 
 class NestedFormExample extends Component {
 
@@ -15,24 +12,12 @@ class NestedFormExample extends Component {
       initialState: {
         firstname: 'Tom',
         lastname: 'Johnson',
-        nicknames: [{ nickname: 'Tommy'}, { nickname: 'Tim'}]
-        // hobbies: [{ name: 'Soccer', description: 'Run after a ball'}]
+        nicknames: [{ nickname: 'Tommy'}, { nickname: 'Tim'}],
+        hobbies: [{ name: 'Soccer', description: 'Run after a ball'}],
       },
-      steps:
-        [
-          { title: 'Overskrift steg 1', component: <Step1 name="wizardNestedOne" /> },
-          { title: 'Overskrift steg 2', component: <StepWithNesting name="wizardNestedSecond" /> },
-          { title: 'Overskrift steg 3', component: <Step1 name="wizardNestedThree" /> },
-        ],
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleFinish = this.handleFinish.bind(this);
-  }
-
-  handleFinish(wizardData, cb) {
-    console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
-    cb(null);
   }
 
   handleSubmit(formData, cb) {
@@ -80,20 +65,6 @@ class NestedFormExample extends Component {
             }
           />
         </Form>
-        <h3>Nested form in Wizard</h3>
-        <Wizard
-          key="nested-wizard"
-          formClass="custom-form-class"
-          className="wizard_parent"
-          currentStep={this.state.currentStep}
-          wizardStepClassName="Hu hei"
-          backButtonText="Et steg tilbake"
-          finishButtonText="Fullfør"
-          nextButtonClassName="bling"
-          store={wizardStoreName}
-          steps={this.state.steps}
-          handleFinish={this.handleFinish}
-        />
       </div>
     );
   }

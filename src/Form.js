@@ -26,7 +26,7 @@ class Form extends Component {
       isSubmitting: false,
       errorText: null,
     };
-
+    this.storeIds = [];
     this.createStore = this.createStore.bind(this);
     if (utils.isBrowser()) {
       this.createStore(this.props.store, this.state.initialState);
@@ -36,6 +36,7 @@ class Form extends Component {
   getChildContext() {
     return {
       store: this.props.store,
+      wizardStep: this.props.wizardStep,
     };
   }
 
@@ -55,35 +56,53 @@ class Form extends Component {
 
   createStore(name, initialState, doNotListen) {
     const is = {};
+    const childStores = [];
     Object.keys(initialState).forEach((key) => {
       const field = initialState[key];
-
+      // Primary values goes right into the store. They will be upgraded with metadata by the field components
       if (typeof field !== 'object') {
         is[key] = field;
       }
+      // This is either subforms or inputlists, or multiple select values.
       if (typeof field === 'object' && field !== null) {
+        // This is either InputLists or multiple select values.
         if (field instanceof Array) {
+          // Multi select boxes are arrays of strings, whereas input lists are arrays of objects.
           if (allElementsAreStrings(field)) {
             is[key] = field;
           } else {
+            // This is InputLists
+            // They have meta data in the field property in the parent store and each list item have their own store
             const idMap = [];
+
+            const parentStore = stores.getStore(this.props.store);
+            // If the store has already been created, we do nothing, as the render methods of Field and InputList will attach to the existing store and get their values.
+            if (parentStore && parentStore[field]) {
+              return;
+            }
+            // Otherwise, we iterate over the items and create child stores. The ids of the stores are saved in idMap of the parent store.
             field.forEach((item, idx) => {
               const id = uuid();
-              this.createStore(`${name}-${key}-${id}`, item, true);
+              const newStore = this.createStore(`${name}-${key}-${id}`, item, true);
+              childStores.push(newStore);
               idMap[idx] = id;
             });
             is[key] = { length: field.length, idMap };
           }
         } else {
-          this.createStore(`${name}-${key}`, field, true);
+          // This is a sub form, which has a key that is already aggregated from the field's name.
+          const newStore = this.createStore(`${name}-${key}`, field, true);
+          childStores.push(newStore);
         }
       }
     });
+    // If we have a child store which is created by a parent, we don't want the parent to listen to the child store.
     if (doNotListen) {
       stores.createStore(name, is);
-      return;
+      return name;
     }
     stores.createStore(name, is, this.handleStoreChange);
+    return name;
   }
 
   handleStoreChange(store) {
@@ -239,6 +258,7 @@ Form.defaultProps = {
 
 Form.childContextTypes = {
   store: PropTypes.string,
+  wizardStep: PropTypes.bool,
 };
 
 export default Form;

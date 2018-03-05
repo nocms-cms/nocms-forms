@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "nocms-events": "^1.2.0",
-    "nocms-stores": "^1.2.3",
+    "nocms-stores": "^1.4.1",
     "nocms-utils": "^1.0.0",
     "nocms-validation": "^1.1.3",
     "prop-types": "^15.5.8",
