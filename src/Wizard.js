@@ -40,17 +40,7 @@ export default class Wizard extends Component {
     if (!utils.isBrowser()) {
       return;
     }
-    const steps = this.props.steps;
-    if (steps instanceof Array) {
-      steps.forEach((step, index) => {
-        stores.remove(this.getStoreForStep(index));
-      });
-      return;
-    }
-
-    Object.keys(steps).forEach((stepName) => {
-      stores.remove(this.getStoreForStep(stepName));
-    });
+    stores.remove(`${this.props.store}*`);
   }
 
   getStoreForStep(step) {
