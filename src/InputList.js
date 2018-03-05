@@ -22,38 +22,39 @@ class InputList extends Component {
     this.createItem = this.createItem.bind(this);
     this.createItems = this.createItems.bind(this);
     this.onAddClick = this.onAddClick.bind(this);
+    this.patchStore = this.patchStore.bind(this);
   }
 
   componentWillMount() {
     if (utils.isBrowser()) {
       const store = stores.getStore(this.context.store);
       const field = store[this.props.name];
-
+      let idMap;
       if (field) {
-        this.setState({ idMap: field.idMap, length: field ? field.length || 0 : 0 }, this.createItems);
+        let length = field.length || 0;
+        if (field.idMap) {
+          length = field.idMap.length;
+        }
+        this.setState({ idMap: field.idMap, length }, this.createItems);
+        if (field.idMap) {
+          idMap = field.idMap;
+        }
       }
-
-      const obj = {};
-      obj[this.props.name] = {
-        isValid: true,
-        isValidated: false,
-        validate: this.validate,
-        getValue: this.getValue,
-      };
-
-      stores.patch(this.context.store, obj);
+      this.patchStore(idMap);
     }
   }
 
   onAddClick(e) {
     e.preventDefault();
-
-    const idMap = [...this.state.idMap, uuid()];
+    const newId = uuid();
+    const idMap = [...this.state.idMap, newId];
 
     this.setState({ idMap }, () => {
       const item = this.createItem(this.state.length);
       const items = [...this.state.items, item];
       this.setState({ items, length: this.state.length + 1 });
+
+      this.patchStore(idMap);
     });
   }
 
@@ -66,6 +67,19 @@ class InputList extends Component {
       }
     });
     return value;
+  }
+
+  patchStore(idMap) {
+    const obj = {};
+    obj[this.props.name] = {
+      isValid: true,
+      isValidated: false,
+      validate: this.validate,
+      getValue: this.getValue,
+      idMap: idMap || [],
+    };
+
+    stores.patch(this.context.store, obj);
   }
 
   validate() {
@@ -120,6 +134,8 @@ class InputList extends Component {
       const items = this.state.items.filter((itm) => { return !item.props.store.includes(itm.key); });
       this.setState({ items, length: this.state.length - 1 });
     });
+
+    this.patchStore(idMap);
   }
 
   createItem(index) {
