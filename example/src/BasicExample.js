@@ -41,8 +41,6 @@ export default class BasicExample extends React.Component {
           onSubmit={this.handleSubmit}
         >
           <Field
-            required
-            errorText="Hey! I'm required"
             label="What's your name"
             name="name"
           />
