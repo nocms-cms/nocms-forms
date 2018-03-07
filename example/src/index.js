@@ -26,7 +26,7 @@ class App extends React.Component {
       basicExample: true,
       formExample: false,
       wizardExample: false,
-      wizardExampleWithNamedInputs: false,
+      wizardExampleWithNamedSteps: false,
       wizardExampleWithCustomNavigation: false,
       wizardExampleWithHiddenStepFields: false,
       dependenciesExample: false,
@@ -53,7 +53,7 @@ class App extends React.Component {
           <button style={{ border: this.state.basicExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('basicExample')}>Basic example</button>
           <button style={{ border: this.state.formExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('formExample')}>Form example</button>
           <button style={{ border: this.state.wizardExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('wizardExample')}>Wizard example</button>
-          <button style={{ border: this.state.wizardExampleWithNamedInputs ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('wizardExampleWithNamedInputs')}>Wizard example with named steps</button>
+          <button style={{ border: this.state.wizardExampleWithNamedSteps ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('wizardExampleWithNamedSteps')}>Wizard example with named steps</button>
           <button style={{ border: this.state.wizardExampleWithCustomNavigation ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('wizardExampleWithCustomNavigation')}>Wizard example with custom navigation</button>
           <button style={{ border: this.state.dependenciesExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('dependenciesExample')}>Example with dependencies</button>
           <button style={{ border: this.state.dateExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('dateExample')}>Date example</button>
@@ -64,7 +64,7 @@ class App extends React.Component {
         { this.state.basicExample ? <BasicExample /> : null }
         { this.state.formExample ? <FormExample /> : null }
         { this.state.wizardExample ? <WizardExample /> : null }
-        { this.state.wizardExampleWithNamedInputs ? <WizardExampleWithNamedSteps /> : null }
+        { this.state.wizardExampleWithNamedSteps ? <WizardExampleWithNamedSteps /> : null }
         { this.state.wizardExampleWithCustomNavigation ? <WizardExampleWithCustomNavigation /> : null }
         { this.state.wizardExampleWithHiddenStepFields ? <WizardExampleWithHiddenStepFields /> : null }
         { this.state.dependenciesExample ? <DependenciesExample /> : null }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Field } from 'nocms-forms';
+import SourceCode from './SourceCode';
+import FormData from './FormData';
 import Spinner from './Spinner';
-
-const { listenToGlobal } = require('nocms-events');
+import { listenToGlobal, stopListenToGlobal } from 'nocms-events';
 
 const storeName = 'test-form';
 
@@ -22,6 +23,10 @@ export default class FormExample extends React.Component {
     };
     this.resetForm = this.resetForm.bind(this);
     listenToGlobal('all-stores-cleared', this.resetForm);
+  }
+
+  componentWillUnmount() {
+    stopListenToGlobal('all-stores-cleared', this.handleReset);
   }
 
   getUppercaseName(dependency) {
@@ -151,6 +156,7 @@ export default class FormExample extends React.Component {
 
     return (
       <div>
+        <SourceCode name="formExample" />
         <Form
           key={this.state.formKey}
           submitButton="Submit"
@@ -160,11 +166,11 @@ export default class FormExample extends React.Component {
           errorText={this.state.errorText}
           onSubmit={this.handleSubmit}
           spinner={<Spinner />}
-          submittingText='Vent litt'
+          submittingText='Please wait'
         >
           <Field
             required
-            errorText="foo"
+            errorText="Hey! I'm required"
             {...inputClasses}
             store={storeName}
             label="Text field"
@@ -181,7 +187,7 @@ export default class FormExample extends React.Component {
           <Field
             required
             {...inputClasses}
-            label="Required text field with e-mail validation"
+            label="Required email"
             name="email"
             errorText="Wrong e-mail"
             validate="email"
@@ -189,7 +195,7 @@ export default class FormExample extends React.Component {
           <Field
             notRequiredMark="Not required"
             {...inputClasses}
-            label="Not required text field marked as not required"
+            label="Unrequired email using notREquiredMark prop"
             name="notRequiredField"
             errorText="Wrong e-mail"
             validate="email"
@@ -218,7 +224,7 @@ export default class FormExample extends React.Component {
             type="radio"
             {...inputClasses}
             required
-            errorText="Oh no"
+            errorText="Please select me"
             label="Radio buttons"
             name="radio"
             options={radioOptions}
@@ -229,7 +235,7 @@ export default class FormExample extends React.Component {
             label="Select"
             options={selectOptions}
             name="select"
-            emptyLabel="Velg noe gøy"
+            emptyLabel="Choooe something"
             required
             readOnly
           />
@@ -247,7 +253,7 @@ export default class FormExample extends React.Component {
             label="Select from groups"
             options={groupedSelectOptions}
             name="groupedselect"
-            emptyLabel="Velg noe gøy"
+            emptyLabel="Choooe something"
             groupedOptions
           />
           <Field
@@ -280,25 +286,25 @@ export default class FormExample extends React.Component {
             label="Check"
             options={multiCheck}
             name="multicheck"
-            emptyLabel="Velg flere gøye ting"
+            emptyLabel="Choooe multiple somethings"
             multiple
           />
           <Field
             type="checkbox"
             {...inputClasses}
-            label="Check med forhåndsutfylt"
+            label="Check, preselected"
             options={multiCheck}
             name="multiCheckWithDefault"
-            emptyLabel="Velg flere gøye ting"
+            emptyLabel="Choooe multiple somethings"
             multiple
           />
           <Field
-            label="Some date.."
+            label="Some date in 2017"
             name="date"
             type="date"
             errorText="Invalid date format"
             min="2017-01-01"
-            max="2017-06-01"
+            max="2017-12-31"
           />
           <Field
             {...inputClasses}
@@ -343,16 +349,8 @@ export default class FormExample extends React.Component {
             name="complexDependencyHandlerNoValueDependency"
           />
         </Form>
-        { this.state.formData ?
-          <div>
-            <h2>Form result</h2>
-            <ul>
-              { Object.keys(this.state.formData).map((field) => {
-                return <li key={field}>{field} : {this.state.formData[field] === true ? 'true': this.state.formData[field]}</li>;
-              })}
-            </ul>
-          </div>
-        : null }
+
+        <FormData formData={this.state.formData} />
       </div>
     );
   }

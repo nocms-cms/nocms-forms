@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Wizard } from 'nocms-forms';
+import FormData from './FormData';
+import SourceCode from './SourceCode';
 import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
 import SelectStep from './SelectStep.js';
@@ -32,7 +34,7 @@ export default class WizardExample extends Component {
   }
 
   handleFinish(wizardData, cb) {
-    console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
+    this.setState({ formData: wizardData });    
     cb(null);
   }
 
@@ -41,8 +43,7 @@ export default class WizardExample extends Component {
   }
 
   renderReceipt(data){
-    console.log('Receipt data', data);
-    return <div>Kvittering</div>;
+    return <div>...and you're done!</div>;
   }
 
   progressIndicator(current, numberOfSteps){
@@ -67,7 +68,7 @@ export default class WizardExample extends Component {
     return (
       <div>
         <h2>Wizard form example 2</h2>
-        <div>
+        <SourceCode name="wizardExampleWithNamedSteps" />
         <Wizard
          key={wizardStoreName + this.state.wizardComponentKey}
          receipt={this.renderReceipt}
@@ -88,7 +89,7 @@ export default class WizardExample extends Component {
          nextButtonClassName="knapp neste-knapp"
          handleFinish={this.handleFinish}
         />
-        </div>
+        <FormData formData={this.state.formData} />
       </div>
     );
   }

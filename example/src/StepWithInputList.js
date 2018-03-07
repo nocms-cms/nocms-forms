@@ -26,7 +26,7 @@ export default class StepWithNesting extends Component {
         store={this.props.store}
         errorText={this.state.errorText}
         backButton={this.props.backButton}
-        submitButtonText="Fullfør"
+        submitButtonText="Finish"
       >
         <h4>Step: {this.props.name}</h4>
         <InputList

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Field } from 'nocms-forms';
+import FormData from './FormData';
+import SourceCode from './SourceCode';
 import Spinner from './Spinner';
 
 const events = require('nocms-events');
@@ -57,10 +59,11 @@ export default class DependenciesExample extends React.Component {
       errorWrapperClass: 'error',
       errorTextClass: 'custom-error',
       labelClass: 'custom-label',
-    }
+    };
 
     return (
       <div>
+        <SourceCode name="dependenciesExample" />
         <Form
           key={this.state.formKey}
           store={`${storeName}-${this.state.formKey}`}
@@ -92,16 +95,7 @@ export default class DependenciesExample extends React.Component {
             dependencyFunc={this.handleVisibleIfYesFieldChange}
           />
         </Form>
-        { this.state.formData ?
-          <div>
-            <h2>Form result</h2>
-            <ul>
-              { Object.keys(this.state.formData).map((field) => {
-                return <li key={field}>{field} : {this.state.formData[field] === true ? 'true': this.state.formData[field]}</li>;
-              })}
-            </ul>
-          </div>
-        : null }
+        <FormData formData={this.state.formData} />
       </div>
     );
   }

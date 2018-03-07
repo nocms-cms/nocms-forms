@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { Form, SubForm, InputList, Field, InputListItem, Wizard } from 'nocms-forms';
 import Step1 from './Step';
+import FormData from './FormData';
+import SourceCode from './SourceCode';
 import StepWithInputList from './StepWithInputList';
 import StepWithSubForm from './StepWithSubForm';
 
@@ -19,25 +21,27 @@ class NestedFormInWizard extends Component {
           { title: 'Nested 1', component: <StepWithSubForm name="wizardNestedSubform" />, initialState: { address: { street: 'Dude Road', city: '22D', zip: '1235' }} },
           { title: 'Nested 3', component: <Step1 name="wizardNestedThree" /> },
         ],
+      formData: null,
     };
 
     this.handleFinish = this.handleFinish.bind(this);
   }
 
   handleFinish(wizardData, cb) {
-    console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
+    this.setState({ formData: wizardData });
     cb(null);
   }
 
   renderReceipt(data){
-    console.log('Receipt data', data);
-    return <div>Kvittering</div>;
+    return <div>...and you're done!</div>;
   }
 
   render() {
     return (
       <div>
         <h3>Nested form in Wizard</h3>
+        <SourceCode name="nestedFormInWizardExample" />
+        
         <Wizard
           key="nested-wizard"
           formClass="custom-form-class"
@@ -52,6 +56,7 @@ class NestedFormInWizard extends Component {
           handleFinish={this.handleFinish}
           receipt={this.renderReceipt}
         />
+        <FormData formData={this.state.formData} />        
       </div>
     );
   }

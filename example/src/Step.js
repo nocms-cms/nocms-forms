@@ -26,14 +26,14 @@ export default class Step extends Component {
         store={this.props.store}
         errorText={this.state.errorText}
         backButton={this.props.backButton}
-        submitButtonText="Neste"
+        submitButtonText="Next"
       >
         <h2>Step: {this.props.name}</h2>
         <Field
           required
           label="Label"
           name={this.props.name}
-          errorText="Oisann"
+          errorText="Hey! I'm required"
           validate="notEmpty"
          />
       </Form>

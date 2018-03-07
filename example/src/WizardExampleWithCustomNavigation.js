@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Wizard } from 'nocms-forms';
+import FormData from './FormData';
+import SourceCode from './SourceCode';
 import EmptyStep from './EmptyStep.js';
 import Step from './Step.js';
 import SelectStep from './SelectStep.js';
@@ -26,6 +28,7 @@ export default class WizardExampleWithCustomNavigation extends Component {
     };
     this.renderNavigation = this.renderNavigation.bind(this);
     this.handleStepNavigation = this.handleStepNavigation.bind(this);
+    this.handleFinish = this.handleFinish.bind(this);
 
     this.goBack = this.goBack.bind(this);
     this.goNext = this.goNext.bind(this);
@@ -34,13 +37,12 @@ export default class WizardExampleWithCustomNavigation extends Component {
   }
 
   handleFinish(wizardData, cb) {
-    console.log('Wizard completed with the following data', wizardData, 'What do you want to do with them?');
+    this.setState({ formData: wizardData });
     cb(null);
   }
 
-  renderReceipt(data){
-    console.log('Receipt data', data);
-    return <div>Kvittering</div>;
+  renderReceipt(){
+    return <div>...and you're done!</div>;
   }
 
   resetWizard() {
@@ -88,7 +90,7 @@ export default class WizardExampleWithCustomNavigation extends Component {
     return (
       <div>
         <h2>Wizard example - custom navigation</h2>
-        <div>
+        <SourceCode name="wizardExampleWithCustomNavigation" />
         {this.renderNavigation()}
         <Wizard
           key={wizardStoreName + this.state.wizardComponentKey}
@@ -111,7 +113,7 @@ export default class WizardExampleWithCustomNavigation extends Component {
           nextButtonClassName="knapp neste-knapp"
           handleFinish={this.handleFinish}
         />
-        </div>
+        <FormData formData={this.state.formData} />
       </div>
     );
   }

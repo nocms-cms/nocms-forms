@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 
 const sourceCodeUrls = {
   basicExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/BasicExample.js',
+  formExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/FormExample.js',
+  wizardExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/WizardExample.js',
+  wizardExampleWithNamedSteps: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/WizardExampleWithNamedSteps.js',
+  wizardExampleWithCustomNavigation: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/WizardExampleWithCustomNavigation.js',
+  dependenciesExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/DependenciesExample.js',
+  dateExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/DateExample.js',
+  nestedFormExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/NestedFormExample.js',
+  nestedFormInWizardExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/NestedFormInWizard.js',
 };
 
 const SourceCode = (props) => {

@@ -1,7 +1,8 @@
 /* eslint class-methods-use-this: off */
 import React, { Component } from 'react';
 import { Form, SubForm, InputList, Field, InputListItem, Wizard } from 'nocms-forms';
-import Step1 from './Step';
+import FormData from './FormData';
+import SourceCode from './SourceCode';
 
 class NestedFormExample extends Component {
 
@@ -21,7 +22,7 @@ class NestedFormExample extends Component {
   }
 
   handleSubmit(formData, cb) {
-    console.log(formData);
+    this.setState({ formData, })
     cb();
   }
 
@@ -29,6 +30,8 @@ class NestedFormExample extends Component {
     return (
       <div>
         <h2>Nested form</h2>
+        <SourceCode name="nestedFormExample" />
+        
         <Form
           initialState={this.state.initialState}
           submitButtonText="Save"
@@ -65,6 +68,7 @@ class NestedFormExample extends Component {
             }
           />
         </Form>
+        <FormData formData={this.state.formData} />        
       </div>
     );
   }

@@ -21,11 +21,11 @@ export default class SelectStep extends Component {
     ];
     const radioOptions = [
       {
-        label: 'Ja',
+        label: 'Yes',
         value: 'yes'
       },
       {
-        label: 'Nei',
+        label: 'No',
         value: 'no',
       }
     ];
@@ -44,11 +44,11 @@ export default class SelectStep extends Component {
           required
           label="Label"
           name="select"
-          errorText="Oisann"
+          errorText="Hey§ I'm required"
           validate="notEmpty"
           type="select"
           options={singleSelectOptions}
-          emptyLabel="Gjør et valg"
+          emptyLabel="Choose something"
          />
          <Field
            required
@@ -64,7 +64,7 @@ export default class SelectStep extends Component {
             required
             label="Radio"
             name="radio2"
-            errorText="Oisann igjen"
+            errorText="Hey! I'm required"
             validate="notEmpty"
             type="radio"
             required

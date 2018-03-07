@@ -8,12 +8,8 @@ export default class ComplexStep extends Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleStoreChange = this.handleStoreChange.bind(this);
     this.depFunc = this.depFunc.bind(this);
 
-    if (utils.isBrowser()) {
-      stores.subscribe(props.store, this.handleStoreChange);
-    }
     this.state = {
       errorText: null,
     };
@@ -37,18 +33,14 @@ export default class ComplexStep extends Component {
     this.props.goNext(formData);
   }
 
-  handleStoreChange(store) {
-    // console.log('Complex step store change');
-  }
-
   render(){
     const radioOptions = [
       {
-        label: 'Ja',
+        label: 'Yes',
         value: 'yes'
       },
       {
-        label: 'Nei',
+        label: 'Np',
         value: 'no',
       }
     ];
@@ -65,7 +57,7 @@ export default class ComplexStep extends Component {
       >
         <Field
           type="radio"
-          label="Velg ja eller nei"
+          label="Chose one"
           name="selector"
           options={radioOptions}
           onChange={this.onClick}
@@ -76,7 +68,7 @@ export default class ComplexStep extends Component {
           dependOn="selector"
           deleteOnDependencyChange={this.depFunc}
           name="dependent"
-          label="Jeg er avhengig"
+          label="I'm dependent"
         />
       </Form>
     );

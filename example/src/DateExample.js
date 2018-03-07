@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Field } from 'nocms-forms';
+import FormData from './FormData';
+import SourceCode from './SourceCode';
 import Spinner from './Spinner';
 import moment from 'moment';
 
@@ -78,6 +80,8 @@ export default class FormExample extends React.Component {
 
     return (
       <div>
+        <SourceCode name="dateExample" />
+
         <Form
           key={this.state.formKey}
           store={`${storeName}-${this.state.formKey}`}
@@ -117,16 +121,7 @@ export default class FormExample extends React.Component {
           />
 
         </Form>
-        { this.state.formData ?
-          <div>
-            <h2>Form result</h2>
-            <ul>
-              { Object.keys(this.state.formData).map((field) => {
-                return <li key={field}>{field} : {this.state.formData[field] === true ? 'true': this.state.formData[field]}</li>;
-              })}
-            </ul>
-          </div>
-        : null }
+        <FormData formData={this.state.formData} />
       </div>
     );
   }
