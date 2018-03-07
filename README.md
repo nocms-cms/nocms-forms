@@ -48,7 +48,7 @@ npm run dev
 
 Then open [`localhost:9000`](http://localhost:9000) in a browser.
 
-You can also visit the [wiki](./wiki) for more examples.
+You can also visit the [wiki](https://github.com/miles-no/nocms-forms/wiki) for more examples.
 
 ## Commit message format and publishing
 
