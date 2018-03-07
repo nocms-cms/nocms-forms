@@ -1,14 +1,5 @@
 # NoCMS Forms
-Form package for NoCMS written with React. Currently supports the following form fields:
-
-* Text input
-* Text area
-* RadioButtons
-* Check boxes (single or multiple)
-* Select (single, multiple, optgroup)
-* Hidden text field
-
-The form could be a single form or a wizard style multi step form.
+Form package for NoCMS written with React. Supports both simple forms or wizards with multiple steps.
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![Dependency Status](https://david-dm.org/miles-no/nocms-forms.svg)](https://david-dm.org/miles-no/nocms-forms)
@@ -21,10 +12,11 @@ Install nocms-forms from npm and include it in your own React build process (usi
 yarn add nocms-forms
 ```
 
-### Example of use
+### Basic example
 
 ```js
 import { Form, Field } from 'nocms-forms';
+
 const storeName = 'example';
 <Form
   submitButton="Submit"
@@ -39,7 +31,7 @@ const storeName = 'example';
   <Field
     required
     errorText="foo"
-    labelClass: "custom-label",
+    labelClass="custom-label",
     store={storeName}
     label="Text field"
     name="name"
@@ -56,10 +48,6 @@ npm run dev
 ```
 
 Then open [`localhost:9000`](http://localhost:9000) in a browser.
-
-## Commit message format and publishing
-
-This repository is published using `semantic-release`, with the default [AngularJS Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit).
 
 ## API
 
@@ -122,3 +110,7 @@ Props:
 - `requiredMark` text or symbol to mark a field as required (string/default `*`)
 
 TODO: More props. More examples.
+
+## Commit message format and publishing
+
+This repository is published using `semantic-release`, with the default [AngularJS Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit).

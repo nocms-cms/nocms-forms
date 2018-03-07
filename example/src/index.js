@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FormExample from './FormExample';
+import BasicExample from './BasicExample';
 import WizardExample from './WizardExample';
 import WizardExampleWithNamedSteps from './WizardExampleWithNamedSteps';
 import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigation';
@@ -22,6 +23,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      basicExample: true,
       formExample: false,
       wizardExample: false,
       wizardExampleWithNamedInputs: false,
@@ -48,6 +50,7 @@ class App extends React.Component {
       <div>
         <p>Toggle the different examples using the buttons</p>
         <div>
+          <button style={{ border: this.state.basicExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('basicExample')}>Basic example</button>
           <button style={{ border: this.state.formExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('formExample')}>Form example</button>
           <button style={{ border: this.state.wizardExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('wizardExample')}>Wizard example</button>
           <button style={{ border: this.state.wizardExampleWithNamedInputs ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('wizardExampleWithNamedInputs')}>Wizard example with named steps</button>
@@ -58,6 +61,7 @@ class App extends React.Component {
           <button style={{ border: this.state.nestedFormInWizardExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('nestedFormInWizardExample')}>Nested fields in wizard</button>
         </div>
         <hr />
+        { this.state.basicExample ? <BasicExample /> : null }
         { this.state.formExample ? <FormExample /> : null }
         { this.state.wizardExample ? <WizardExample /> : null }
         { this.state.wizardExampleWithNamedInputs ? <WizardExampleWithNamedSteps /> : null }
