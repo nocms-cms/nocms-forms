@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.34",
-    "@babel/preset-env": "^7.0.0-beta.34",
     "@babel/core": "^7.0.0-beta.34",
+    "@babel/preset-env": "^7.0.0-beta.34",
     "@babel/preset-react": "^7.0.0-beta.34",
     "babel-eslint": "^8.0.3",
     "babel-loader": "^8.0.0-beta.0",
@@ -42,7 +42,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.3.0",
-    "moment": "^2.19.2",
+    "moment": "^2.21.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "semantic-release": "^6.3.6",
