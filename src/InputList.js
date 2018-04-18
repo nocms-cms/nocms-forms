@@ -34,11 +34,9 @@ class InputList extends Component {
         let length = field.length || 0;
         if (field.idMap) {
           length = field.idMap.length;
+          idMap = field.idMap || [];
         }
         this.setState({ idMap: field.idMap, length }, this.createItems);
-        if (field.idMap) {
-          idMap = field.idMap;
-        }
       }
       this.patchStore(idMap);
     }
