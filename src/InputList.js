@@ -36,7 +36,7 @@ class InputList extends Component {
           length = field.idMap.length;
           idMap = field.idMap || [];
         }
-        this.setState({ idMap: field.idMap, length }, this.createItems);
+        this.setState({ idMap: field.idMap || [], length }, this.createItems);
       }
       this.patchStore(idMap);
     }
