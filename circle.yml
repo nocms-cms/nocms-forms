@@ -1,8 +1,0 @@
-machine:
-  node:
-    version: v7.10.0
-test:
-  override:
-    - echo "TESTS ARE MANUALLY OVERRIDEN IN circle.yml. Write tests."
-  post:
-    - DEBUG=condition npm run semantic-release || true

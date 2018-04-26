@@ -17,8 +17,8 @@
     "dev": "webpack --watch",
     "test": "",
     "prepare": "babel ./src --out-dir ./lib --source-maps",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "eslint": "eslint --ext .js, .jsx ."
+    "eslint": "eslint --ext .js, .jsx .",
+    "nsp": "nsp check"
   },
   "dependencies": {
     "nocms-events": "^1.2.1",
@@ -35,7 +35,6 @@
     "@babel/preset-react": "^7.0.0-beta.34",
     "babel-eslint": "^8.0.3",
     "babel-loader": "^8.0.0-beta.0",
-    "condition-circle": "1.5.0",
     "eslint": "^4.5.0",
     "eslint-config-webteam": "^2.0.0",
     "eslint-loader": "^1.9.0",
@@ -43,18 +42,15 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.3.0",
     "moment": "^2.21.0",
+    "nsp": "^3.2.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "semantic-release": "^6.3.6",
+    "semantic-release": "^15.1.7",
     "watch": "^1.0.2",
     "webpack": "^3.5.2",
     "webpack-dev-server": "^2.7.1"
   },
   "peerDependencies": {
     "react": "^15.0.0 || ^16.0.0"
-  },
-  "release": {
-    "verifyConditions": "condition-circle",
-    "debug": false
   }
 }
