@@ -11,6 +11,7 @@ const sourceCodeUrls = {
   dateExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/DateExample.js',
   nestedFormExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/NestedFormExample.js',
   nestedFormInWizardExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/NestedFormInWizard.js',
+  customFieldExample: 'https://github.com/miles-no/nocms-forms/blob/master/example/src/CustomFieldExample.js',
 };
 
 const SourceCode = (props) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import FormExample from './FormExample';
 import BasicExample from './BasicExample';
+import CustomFieldExample from './CustomFieldExample';
 import WizardExample from './WizardExample';
 import WizardExampleWithNamedSteps from './WizardExampleWithNamedSteps';
 import WizardExampleWithCustomNavigation from './WizardExampleWithCustomNavigation';
@@ -33,6 +34,7 @@ class App extends React.Component {
       dateExample: false,
       nestedFormExample: false,
       nestedFormInWizardExample: false,
+      customField: false,
     };
     this.toggleExample = this.toggleExample.bind(this);
   }
@@ -59,6 +61,7 @@ class App extends React.Component {
           <button style={{ border: this.state.dateExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('dateExample')}>Date example</button>
           <button style={{ border: this.state.nestedFormExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('nestedFormExample')}>Nested fields example</button>
           <button style={{ border: this.state.nestedFormInWizardExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('nestedFormInWizardExample')}>Nested fields in wizard</button>
+          <button style={{ border: this.state.customField ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('customField')}>Custom field</button>
         </div>
         <hr />
         { this.state.basicExample ? <BasicExample /> : null }
@@ -71,6 +74,7 @@ class App extends React.Component {
         { this.state.dateExample ? <DateExample /> : null }
         { this.state.nestedFormExample ? <NestedFormExample /> : null }
         { this.state.nestedFormInWizardExample ? <NestedFormInWizardExample /> : null }
+        { this.state.customField ? <CustomFieldExample /> : null }
         <hr />
         <p>This button will clear all stores, deleting all form data in every form. See how each form is behaving when data is cleared.</p>
         <button onClick={clearAllStores}>Clear all stores</button>

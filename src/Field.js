@@ -10,6 +10,7 @@ import Hidden from './Hidden';
 import RadioButtons from './RadioButtons';
 import TextArea from './TextArea';
 import MultipleCheckbox from './MultipleCheckbox';
+import InputWrapper from './InputWrapper';
 
 class Field extends Component {
   constructor(props) {
@@ -197,10 +198,11 @@ class Field extends Component {
     return false;
   }
 
-
   handleChange(e) {
     let value;
-    if (this.props.type === 'checkbox') {
+    if (this.props.children) {
+      value = e;
+    } else if (this.props.type === 'checkbox') {
       if (this.props.multiple) {
         const oldValue = this.state.value || [];
         if (e.target.checked) {
@@ -265,6 +267,10 @@ class Field extends Component {
       return null;
     }
 
+    if (this.props.children) {
+      return <InputWrapper {...props}>{React.cloneElement(this.props.children, { handleChange: this.handleChange })}</InputWrapper>;
+    }
+
     if (type === 'hidden') {
       return <Hidden {...props} />;
     }
@@ -272,15 +278,15 @@ class Field extends Component {
       return <RadioButtons {...props} />;
     }
     if (type === 'textarea') {
-      return <TextArea {...props} />;
+      return <InputWrapper {...props}><TextArea {...props} /></InputWrapper>;
     }
     if (type === 'select') {
-      return <Select {...props} />;
+      return <InputWrapper {...props}><Select {...props} /></InputWrapper>;
     }
     if (type === 'checkbox') {
-      return options && multiple ? <MultipleCheckbox {...props} /> : <Checkbox {...props} />;
+      return options && multiple ? <MultipleCheckbox {...props} /> : <InputWrapper {...props}><Checkbox {...props} /></InputWrapper>;
     }
-    return <Input {...props} />;
+    return <InputWrapper {...props}><Input {...props} /></InputWrapper>;
   }
 }
 
@@ -303,6 +309,7 @@ Field.propTypes = {
   onChange: PropTypes.func,
   multiple: PropTypes.bool,
   options: PropTypes.array,
+  children: PropTypes.node,
   controlGroupClass: PropTypes.string,
 };
 
