@@ -28,7 +28,7 @@ class Field extends Component {
       isValid: true,
       isValidated: false,
       disabled: props.disabled,
-      hidden: false,
+      hidden: props.hidden,
     };
   }
 
@@ -300,6 +300,7 @@ Field.propTypes = {
   ]),
   disabled: PropTypes.bool,
   required: PropTypes.bool,
+  hidden: PropTypes.bool,
   deleteOnUnmount: PropTypes.bool,
   validate: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   dependOn: PropTypes.string,
