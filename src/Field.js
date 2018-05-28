@@ -252,7 +252,7 @@ class Field extends Component {
       value = this.props.dateParser(value);
     }
 
-    const isValid = typeof this.props.validate === 'function' ? this.props.validate(value, this.store) : Validator.validate(value, this.props.validate, this.props.required);
+    const isValid = Validator.validate(value, this.props.validate, this.props.required, this.store);
 
     this.patchStore({ value, isValid, isValidated: true });
     return isValid;
