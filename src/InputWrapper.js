@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 const InputWrapper = (props) => {
   const {
     controlGroupClass,
+    checkboxClass,
     successWrapperClass,
     errorText,
     errorTextClass,
@@ -31,6 +32,9 @@ const InputWrapper = (props) => {
   }
   if (inlineLabel) {
     containerClasses += ` ${inlineLabelClass}`;
+  }
+  if (type === 'checkbox' && checkboxClass) {
+    containerClasses += ` ${checkboxClass}`;
   }
 
   return (
@@ -66,6 +70,7 @@ InputWrapper.propTypes = {
   inlineLabelClass: PropTypes.string,
   labelClass: PropTypes.string,
   controlGroupClass: PropTypes.string,
+  checkboxClass: PropTypes.string,
   errorText: PropTypes.string,
   required: PropTypes.bool,
   inlineLabel: PropTypes.bool,
