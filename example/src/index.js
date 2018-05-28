@@ -11,6 +11,7 @@ import NestedFormInWizardExample from './NestedFormInWizard';
 import DependenciesExample from './DependenciesExample';
 import DateExample from './DateExample';
 import NestedFormExample from './NestedFormExample';
+import ContextValidationExample from './ContextValidationExample';
 
 const stores = require('nocms-stores');
 const { triggerGlobal } = require('nocms-events');
@@ -35,6 +36,7 @@ class App extends React.Component {
       nestedFormExample: false,
       nestedFormInWizardExample: false,
       customField: false,
+      contextValidation: false,
     };
     this.toggleExample = this.toggleExample.bind(this);
   }
@@ -62,6 +64,7 @@ class App extends React.Component {
           <button style={{ border: this.state.nestedFormExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('nestedFormExample')}>Nested fields example</button>
           <button style={{ border: this.state.nestedFormInWizardExample ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('nestedFormInWizardExample')}>Nested fields in wizard</button>
           <button style={{ border: this.state.customField ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('customField')}>Custom field</button>
+          <button style={{ border: this.state.contextValidation ? '2px solid black' : '1px solid gray' }} onClick={this.toggleExample('contextValidation')}>Context validation</button>
         </div>
         <hr />
         { this.state.basicExample ? <BasicExample /> : null }
@@ -75,6 +78,7 @@ class App extends React.Component {
         { this.state.nestedFormExample ? <NestedFormExample /> : null }
         { this.state.nestedFormInWizardExample ? <NestedFormInWizardExample /> : null }
         { this.state.customField ? <CustomFieldExample /> : null }
+        { this.state.contextValidation ? <ContextValidationExample /> : null }
         <hr />
         <p>This button will clear all stores, deleting all form data in every form. See how each form is behaving when data is cleared.</p>
         <button onClick={clearAllStores}>Clear all stores</button>

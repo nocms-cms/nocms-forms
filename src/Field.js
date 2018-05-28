@@ -23,6 +23,7 @@ class Field extends Component {
     this.didDependentOnValueChange = this.didDependentOnValueChange.bind(this);
     this.initDependentState = this.initDependentState.bind(this);
     this.getProps = this.getProps.bind(this);
+    this.store = {};
     this.state = {
       value: props.value,
       isValid: true,
@@ -118,6 +119,7 @@ class Field extends Component {
   }
 
   handleStoreChange(store, changes) {
+    this.store = store;
     if (this.props.dependOn && this.props.dependencyFunc && this.handleDependentState(store, changes)) {
       return;
     }
@@ -249,7 +251,9 @@ class Field extends Component {
     if (this.props.type === 'date' && this.props.dateParser) {
       value = this.props.dateParser(value);
     }
-    const isValid = Validator.validate(value, this.props.validate, this.props.required);
+
+    const isValid = typeof this.props.validate === 'function' ? this.props.validate(value, this.store) : Validator.validate(value, this.props.validate, this.props.required);
+
     this.patchStore({ value, isValid, isValidated: true });
     return isValid;
   }
