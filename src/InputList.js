@@ -150,7 +150,7 @@ class InputList extends Component {
     });
 
     const component = (
-      <div key={this.state.idMap[index]}>
+      <div key={this.state.idMap[index]} className="form__input-list-item">
         { item }
         {
           showRemoveButton &&

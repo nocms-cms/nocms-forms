@@ -59,7 +59,7 @@ class InputListItem extends Component {
   }
 
   render() {
-    return <div className="form__input-list-item">{this.props.children}</div> || '';
+    return <div>{this.props.children}</div> || '';
   }
 }
 
