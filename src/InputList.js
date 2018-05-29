@@ -184,14 +184,15 @@ class InputList extends Component {
     } = this.props;
 
     return (
-      <div>
+      <div className="form__input-list">
         { this.state.items }
-        <br />
-        <button
-          className={addButtonClassName}
-          onClick={this.onAddClick}
-        >{addButtonText}
-        </button>
+        <div className="form__input-list-add">
+          <button
+            className={addButtonClassName}
+            onClick={this.onAddClick}
+          >{addButtonText}
+          </button>
+        </div>
       </div>
     );
   }
