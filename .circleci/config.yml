@@ -2,12 +2,12 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:9.5.0
+      - image: circleci/node:10.3.0
     steps:
       - checkout
       - run:
           name: Install npm packages
-          command: npm i
+          command: npm ci
       - run:
           name: Linting
           command: npm run eslint
@@ -19,10 +19,10 @@ jobs:
           command: npm test
   release:
     docker:
-      - image: circleci/node:9.5.0
+      - image: circleci/node:10.3.0
     steps:
       - checkout
-      - run: npm i
+      - run: npm ci
       - run: npx semantic-release
 
 workflows:
