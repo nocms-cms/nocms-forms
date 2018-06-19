@@ -22,7 +22,7 @@ class NestedFormExample extends Component {
   }
 
   handleSubmit(formData, cb) {
-    this.setState({ formData, })
+    this.setState({ formData, });
     cb();
   }
 
@@ -31,7 +31,7 @@ class NestedFormExample extends Component {
       <div>
         <h2>Nested form</h2>
         <SourceCode name="nestedFormExample" />
-        
+
         <Form
           initialState={this.state.initialState}
           submitButtonText="Save"
@@ -40,35 +40,38 @@ class NestedFormExample extends Component {
           submittingText="Saving..."
           onSubmit={this.handleSubmit}
         >
-          <Field name="firstname" label="First name" />
-          <Field name="lastname" label="Last name" />
+          <Field name="firstname" label="First name" autoComplete="nope" />
+          <Field name="lastname" label="Last name" autoComplete="nope" />
           <h3>Nicknames</h3>
+
+          <SubForm name="nickname">
+            <Field name="nickname" label="Nickname" autoComplete="nope" />
+          </SubForm>
+
+          <h3>Address</h3>
           <InputList
-            name="nicknames"
+            name="addresses"
             of={
               <InputListItem>
-                <Field name="nickname" label="Nickname" />
+                <Field name="street" label="Street" autoComplete="street-address" />
+                <Field name="city" label="City" autoComplete="address-level2" />
+                <Field name="zip" label="Zip code" autoComplete="postal-code" />
               </InputListItem>
             }
           />
-          <h3>Address</h3>
-          <SubForm name="address">
-            <Field name="street" label="Street" />
-            <Field name="city" label="City" />
-            <Field name="zip" label="Zip code" />
-          </SubForm>
+
           <h3>Hobbies</h3>
           <InputList
             name="hobbies"
             of={
               <InputListItem>
-                <Field name="name" label="Hobby name" />
-                <Field name="description" label="Hobby description" />
+                <Field name="name" label="Hobby name" autoComplete="nope" />
+                <Field name="description" label="Hobby description" autoComplete="nope" />
               </InputListItem>
             }
           />
         </Form>
-        <FormData formData={this.state.formData} />        
+        <FormData formData={this.state.formData} />
       </div>
     );
   }

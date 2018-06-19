@@ -316,6 +316,7 @@ Field.propTypes = {
   options: PropTypes.array,
   children: PropTypes.node,
   controlGroupClass: PropTypes.string,
+  autoComplete: PropTypes.string,
 };
 
 Field.defaultProps = {

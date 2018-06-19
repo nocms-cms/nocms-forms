@@ -143,13 +143,24 @@ class InputList extends Component {
       removeButtonClassName,
     } = this.props;
 
+    const storeName = `${this.context.store}-${this.props.name}-${this.state.idMap[index]}`;
+
+    // Enrich all children with the same autoComplete section id.
+    const children = React.Children.map(
+      this.props.of.props.children,
+      (child) => {
+        return React.cloneElement(child, {
+          autoComplete: `section-${storeName} ${child.props.autoComplete}`,
+        });
+      });
+
     const item = React.cloneElement(this.props.of, {
-      store: `${this.context.store}-${this.props.name}-${this.state.idMap[index]}`,
+      store: `${storeName}`,
       addListItem: this.addListItem,
       removeListItem: this.removeListItem,
-    });
+    }, children);
 
-    const component = (
+    return (
       <div key={this.state.idMap[index]} className="form__input-list-item">
         { item }
         {
@@ -163,13 +174,12 @@ class InputList extends Component {
         }
       </div>
     );
-    return component;
   }
 
   createItems() {
     const items = [];
 
-    for (let i = 0; i < this.state.length; i++) { // eslint-disable-line no-plusplus  
+    for (let i = 0; i < this.state.length; i++) { // eslint-disable-line no-plusplus
       const item = this.createItem(i);
       items.push(item);
     }
