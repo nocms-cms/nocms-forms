@@ -19,7 +19,7 @@ const Input = (props) => {
   return (
     <input
       type={type}
-      autoComplete="off"
+      autoComplete={props.autoComplete || 'off'}
       maxLength={maxLength}
       name={name}
       value={props.value || ''}
@@ -52,6 +52,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   min: PropTypes.string,
   max: PropTypes.string,
+  autoComplete: PropTypes.string,
 };
 
 Input.defaultProps = {
