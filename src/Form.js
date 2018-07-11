@@ -197,6 +197,7 @@ class Form extends Component {
       centerSubmitButton,
       noSubmitButton,
       disableNextButton,
+      additionalStepControls,
     } = this.props;
     let submitInProgress;
     if (spinner) {
@@ -215,6 +216,7 @@ class Form extends Component {
       const disabled = this.state.disabled || disableNext;
       buttons = (<div className={buttonContainerClassName}>
         {this.props.backButton}
+        {additionalStepControls || null}
         <button disabled={disabled} type="submit" className={submitButtonClassName || 'button button__primary'}>{buttonText}</button>
       </div>);
     }
@@ -256,6 +258,10 @@ Form.propTypes = {
    * function to check next button status
    */
   disableNextButton: PropTypes.func,
+  /**
+   * Support for additional buttons in the prev/next zone
+   */
+  additonalStepControls: PropTypes.element,
 };
 
 Form.defaultProps = {

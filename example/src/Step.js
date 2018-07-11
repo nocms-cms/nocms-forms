@@ -6,6 +6,7 @@ export default class Step extends Component {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.disableNextButton = this.disableNextButton.bind(this);
+    this.clearValue = this.clearValue.bind(this);
     this.state = {
       errorText: null,
       value: '',
@@ -14,6 +15,14 @@ export default class Step extends Component {
 
   disableNextButton() {
     return this.state.value === 'disableNext';
+  }
+
+  clearValue(evt) {
+    evt.preventDefault();
+    let newState = Object.assign({}, this.state);
+    newState.value = '';
+
+    this.setState(newState);
   }
 
   handleSubmit(formData, cb){
@@ -25,8 +34,19 @@ export default class Step extends Component {
     const onChange = (evt) => {
       let newState = Object.assign({}, this.state);
       newState.value = evt.target.value;
+
       this.setState(newState);
     };
+
+    const customControls = (
+      <button
+        className="customButton"
+        disabled={!this.state.value}
+        onClick={this.clearValue}
+      >
+        Clear
+      </button>
+    );
 
     return (
       <Form
@@ -40,6 +60,7 @@ export default class Step extends Component {
         backButton={this.props.backButton}
         submitButtonText="Next"
         disableNextButton={this.disableNextButton}
+        additionalStepControls={customControls}
       >
         <h2>Step: {this.props.name}</h2>
         <Field
