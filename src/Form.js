@@ -261,7 +261,7 @@ Form.propTypes = {
   /**
    * Support for additional buttons in the prev/next zone
    */
-  additonalStepControls: PropTypes.element,
+  additionalStepControls: PropTypes.element,
 };
 
 Form.defaultProps = {
