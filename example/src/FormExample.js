@@ -152,6 +152,7 @@ export default class FormExample extends React.Component {
       checkbox: true,
       initialDependencyText: 'foo',
       multiCheckWithDefault: ['two', 'three'],
+      preselectedRadio: 'two'
     };
 
     return (
@@ -227,6 +228,14 @@ export default class FormExample extends React.Component {
             errorText="Please select me"
             label="Radio buttons"
             name="radio"
+            options={radioOptions}
+          />
+          <Field
+            type="radio"
+            {...inputClasses}
+            errorText="Please select me"
+            label="Preselected radio buttons"
+            name="preselectedRadio"
             options={radioOptions}
           />
           <Field
