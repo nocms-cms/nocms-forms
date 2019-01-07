@@ -5,9 +5,24 @@ export default class Step extends Component {
   constructor(){
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.disableNextButton = this.disableNextButton.bind(this);
+    this.clearValue = this.clearValue.bind(this);
     this.state = {
       errorText: null,
+      value: '',
     };
+  }
+
+  disableNextButton() {
+    return this.state.value === 'disableNext';
+  }
+
+  clearValue(evt) {
+    evt.preventDefault();
+    let newState = Object.assign({}, this.state);
+    newState.value = '';
+
+    this.setState(newState);
   }
 
   handleSubmit(formData, cb){
@@ -16,6 +31,23 @@ export default class Step extends Component {
   }
 
   render() {
+    const onChange = (evt) => {
+      let newState = Object.assign({}, this.state);
+      newState.value = evt.target.value;
+
+      this.setState(newState);
+    };
+
+    const customControls = (
+      <button
+        className="customButton"
+        disabled={!this.state.value}
+        onClick={this.clearValue}
+      >
+        Clear
+      </button>
+    );
+
     return (
       <Form
         wizardStep
@@ -27,12 +59,16 @@ export default class Step extends Component {
         errorText={this.state.errorText}
         backButton={this.props.backButton}
         submitButtonText="Next"
+        disableNextButton={this.disableNextButton}
+        additionalStepControls={customControls}
       >
         <h2>Step: {this.props.name}</h2>
         <Field
           required
           label="Label"
           name={this.props.name}
+          value={this.state.value}
+          onChange={onChange}
           errorText="Hey! I'm required"
           validate="notEmpty"
          />
